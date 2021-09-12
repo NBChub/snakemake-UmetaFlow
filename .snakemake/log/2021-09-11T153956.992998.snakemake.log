@@ -1,0 +1,5 @@
+WorkflowError in line 14 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/common.smk:
+Failed to open source file /Users/eeko/Desktop/Metabolomics/Snakemake/schemas/config.schema.yaml
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/eeko/Desktop/Metabolomics/Snakemake/schemas/config.schema.yaml'
+  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile", line 1, in <module>
+  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/common.smk", line 14, in <module>

@@ -1,0 +1,9 @@
+Building DAG of jobs...
+Creating conda environment workflow/envs/pyopenms.yaml...
+Downloading and installing remote packages.
+CreateCondaEnvironmentException:
+Could not create conda environment from /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/../envs/pyopenms.yaml:
+Encountered problems while solving:
+  - nothing provides requested pyopenms ==2.7.0 PyPI
+
+

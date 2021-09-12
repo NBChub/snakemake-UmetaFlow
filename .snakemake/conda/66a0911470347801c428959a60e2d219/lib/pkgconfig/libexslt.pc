@@ -1,0 +1,12 @@
+prefix=/Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/66a0911470347801c428959a60e2d219
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+
+Name: libexslt
+Version: 0.8.20
+Description: EXSLT Extension library
+Requires: libxml-2.0
+Libs: -L${libdir} -lexslt -lxslt -L/Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/66a0911470347801c428959a60e2d219/lib -lxml2 -L/Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/66a0911470347801c428959a60e2d219/lib -lz -L/Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/66a0911470347801c428959a60e2d219/lib -llzma -lpthread -L/Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/66a0911470347801c428959a60e2d219/lib -liconv -L/Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/66a0911470347801c428959a60e2d219/lib -licui18n -licuuc -licudata -lm  
+Cflags: -I${includedir}

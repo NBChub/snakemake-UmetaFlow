@@ -1,0 +1,175 @@
+{
+  "build": "h577c468_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/osx-64",
+  "constrains": [],
+  "depends": [
+    "jpeg >=9d,<10a",
+    "libtiff >=4.2.0,<5.0a0"
+  ],
+  "extracted_package_dir": "/Users/eeko/mambaforge/pkgs/lcms2-2.12-h577c468_0",
+  "features": "",
+  "files": [
+    "bin/jpgicc",
+    "bin/linkicc",
+    "bin/psicc",
+    "bin/tificc",
+    "bin/transicc",
+    "include/lcms2.h",
+    "include/lcms2_plugin.h",
+    "lib/liblcms2.2.dylib",
+    "lib/liblcms2.a",
+    "lib/liblcms2.dylib",
+    "lib/pkgconfig/lcms2.pc",
+    "share/man/man1/jpgicc.1",
+    "share/man/man1/linkicc.1",
+    "share/man/man1/psicc.1",
+    "share/man/man1/tificc.1",
+    "share/man/man1/transicc.1"
+  ],
+  "fn": "lcms2-2.12-h577c468_0.tar.bz2",
+  "license": "MIT",
+  "link": {
+    "source": "/Users/eeko/mambaforge/pkgs/lcms2-2.12-h577c468_0",
+    "type": 1
+  },
+  "md5": "abce77b852b73670e85e104746b0ea1b",
+  "name": "lcms2",
+  "package_tarball_full_path": "/Users/eeko/mambaforge/pkgs/lcms2-2.12-h577c468_0.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "bin/jpgicc",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/Users/runner/miniforge3/conda-bld/lcms2_1612644364818/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla",
+        "sha256": "96f478f108609ee4f9012b36a026a95b193eafc3c0f1e8fc44a2354f7f2e4bba",
+        "sha256_in_prefix": "b4e82c07d2a7a43f0886195def7fa8e9b390748833bd125727b95ddb9103350e",
+        "size_in_bytes": 36476
+      },
+      {
+        "_path": "bin/linkicc",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/Users/runner/miniforge3/conda-bld/lcms2_1612644364818/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla",
+        "sha256": "e4ad4f15f5ead36567a5be7a11bc0c728e50e51cd94459293fac08d22d1655ab",
+        "sha256_in_prefix": "d67b2543221016ca03497335f8e71125d84c01d7ba94a4d6756b871083aae7e7",
+        "size_in_bytes": 25216
+      },
+      {
+        "_path": "bin/psicc",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/Users/runner/miniforge3/conda-bld/lcms2_1612644364818/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla",
+        "sha256": "080b55399bbd5523cd89b4cf4f5d00cceb6e90cce6f8068a12e169f1cfd2b582",
+        "sha256_in_prefix": "ba5d0fda70070eaaa63ba533c938c92002bd8bf571f4613798dad4afef844bf6",
+        "size_in_bytes": 20140
+      },
+      {
+        "_path": "bin/tificc",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/Users/runner/miniforge3/conda-bld/lcms2_1612644364818/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla",
+        "sha256": "9984c3b92abe50d04772d3bcb18eee2370bd30ccf153e8ea063ae6d3476b3b28",
+        "sha256_in_prefix": "a0ad8d13bc3f5fb999604ddc5dcd36796e49fc7a5059b29c15299bbd6d49e339",
+        "size_in_bytes": 35572
+      },
+      {
+        "_path": "bin/transicc",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/Users/runner/miniforge3/conda-bld/lcms2_1612644364818/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla",
+        "sha256": "3ed7bdf627db080b9798d6d3e59b238e94940062710ca7e1c2b37efbd7b00fb6",
+        "sha256_in_prefix": "a166c7afef9a17bab2583cc1c8693e447fb31c2753924ba0d1ae605ab055321c",
+        "size_in_bytes": 39892
+      },
+      {
+        "_path": "include/lcms2.h",
+        "path_type": "hardlink",
+        "sha256": "bc9c523be6fa2e9d3578db9a506a4a87038c09a39b311b2a2603787b77fa1a25",
+        "sha256_in_prefix": "bc9c523be6fa2e9d3578db9a506a4a87038c09a39b311b2a2603787b77fa1a25",
+        "size_in_bytes": 102268
+      },
+      {
+        "_path": "include/lcms2_plugin.h",
+        "path_type": "hardlink",
+        "sha256": "9f8ef9f81af620fb77f10ff7eacc85a1fde9cfff12789d4d8bbd63d42468ddb4",
+        "sha256_in_prefix": "9f8ef9f81af620fb77f10ff7eacc85a1fde9cfff12789d4d8bbd63d42468ddb4",
+        "size_in_bytes": 30692
+      },
+      {
+        "_path": "lib/liblcms2.2.dylib",
+        "path_type": "hardlink",
+        "sha256": "8393898b51f8c30ae36c52759089c7a71714d058a8e3028b547dce891a1cef10",
+        "sha256_in_prefix": "8393898b51f8c30ae36c52759089c7a71714d058a8e3028b547dce891a1cef10",
+        "size_in_bytes": 404224
+      },
+      {
+        "_path": "lib/liblcms2.a",
+        "path_type": "hardlink",
+        "sha256": "9ace3c62f05a0400e83a4f0b88cb065f190deef2b9e6c108f4d9ef4fc4a796f0",
+        "sha256_in_prefix": "9ace3c62f05a0400e83a4f0b88cb065f190deef2b9e6c108f4d9ef4fc4a796f0",
+        "size_in_bytes": 583352
+      },
+      {
+        "_path": "lib/liblcms2.dylib",
+        "path_type": "softlink",
+        "sha256": "8393898b51f8c30ae36c52759089c7a71714d058a8e3028b547dce891a1cef10",
+        "size_in_bytes": 404224
+      },
+      {
+        "_path": "lib/pkgconfig/lcms2.pc",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/Users/runner/miniforge3/conda-bld/lcms2_1612644364818/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla",
+        "sha256": "7e74798224fa7d6c3aca79bbe1e5233170e69c822ced657fc9fb40983974fe3f",
+        "sha256_in_prefix": "b80137d46eb84225e53ad9ecd0b18795e78a7daa025c2fc81521c80a5a8e61ea",
+        "size_in_bytes": 489
+      },
+      {
+        "_path": "share/man/man1/jpgicc.1",
+        "path_type": "hardlink",
+        "sha256": "cbbc7358d94e765f43b5590d269428087ad84bcd61e04e230fa832b538a50db4",
+        "sha256_in_prefix": "cbbc7358d94e765f43b5590d269428087ad84bcd61e04e230fa832b538a50db4",
+        "size_in_bytes": 2927
+      },
+      {
+        "_path": "share/man/man1/linkicc.1",
+        "path_type": "hardlink",
+        "sha256": "7a8ef262b8bfa64598813ba635dda4d78e4d6baadf2ebc6aee36dd6bfebbc6a5",
+        "sha256_in_prefix": "7a8ef262b8bfa64598813ba635dda4d78e4d6baadf2ebc6aee36dd6bfebbc6a5",
+        "size_in_bytes": 3365
+      },
+      {
+        "_path": "share/man/man1/psicc.1",
+        "path_type": "hardlink",
+        "sha256": "7e05d24b560c8ec5c6ba141b068a664b7939dfcf029042af883332ad7754976c",
+        "sha256_in_prefix": "7e05d24b560c8ec5c6ba141b068a664b7939dfcf029042af883332ad7754976c",
+        "size_in_bytes": 1220
+      },
+      {
+        "_path": "share/man/man1/tificc.1",
+        "path_type": "hardlink",
+        "sha256": "352148346b4553773acacae15e29ea1c197bd954aa320fccae60d7c7fffe9677",
+        "sha256_in_prefix": "352148346b4553773acacae15e29ea1c197bd954aa320fccae60d7c7fffe9677",
+        "size_in_bytes": 2999
+      },
+      {
+        "_path": "share/man/man1/transicc.1",
+        "path_type": "hardlink",
+        "sha256": "59a6b69c843b4a1b663eefbe70b82efc36c41f2dc4b0b69eff1e60897ea748b5",
+        "sha256_in_prefix": "59a6b69c843b4a1b663eefbe70b82efc36c41f2dc4b0b69eff1e60897ea748b5",
+        "size_in_bytes": 2051
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "0e4e03fcd4ace2cbf5dfc2e6ed3b8f4e4fc5689e0399be4c5bbe336d7cd58796",
+  "size": 413893,
+  "subdir": "osx-64",
+  "timestamp": 1612644575000,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/osx-64/lcms2-2.12-h577c468_0.tar.bz2",
+  "version": "2.12"
+}

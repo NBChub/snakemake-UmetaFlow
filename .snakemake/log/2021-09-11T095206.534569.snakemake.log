@@ -1,0 +1,48 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                    count    min threads    max threads
+-------------------  -------  -------------  -------------
+all                        1              1              1
+precursorcorrection        1              1              1
+preprocess                 1              1              1
+total                      3              1              1
+
+Select jobs to execute...
+
+[Sat Sep 11 09:52:06 2021]
+rule precursorcorrection:
+    input: data/mzML/Epemicins.mzML
+    output: results/precursorcorrection/Epemicins.mzML
+    jobid: 2
+    wildcards: samples=Epemicins
+    resources: tmpdir=/var/folders/c_/ysz9v_bd1yb7h3ymmkn6m199jbv7x7/T
+
+File path '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "./envs/pyopenms.yaml"
+        ' ends with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+File path '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "./envs/pyopenms.yaml"
+        ' contains line break. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+[Sat Sep 11 09:52:06 2021]
+Error in rule precursorcorrection:
+    jobid: 2
+    output: results/precursorcorrection/Epemicins.mzML
+
+RuleException:
+URLError in line 11 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/preprocessing.smk:
+<urlopen error [Errno 2] No such file or directory: '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/scripts/1_precursorcorrection.py'>
+  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/preprocessing.smk", line 11, in __rule_precursorcorrection
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/urllib/request.py", line 214, in urlopen
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/urllib/request.py", line 517, in open
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/urllib/request.py", line 534, in _open
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/urllib/request.py", line 494, in _call_chain
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/urllib/request.py", line 1481, in file_open
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/urllib/request.py", line 1520, in open_local_file
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/log/2021-09-11T095206.534569.snakemake.log

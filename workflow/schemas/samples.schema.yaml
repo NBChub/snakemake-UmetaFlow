@@ -1,0 +1,12 @@
+$schema: "http://json-schema.org/draft-04/schema#"
+
+description: snakemake configuration file
+type: object
+properties:
+  sample_name:
+    type: string
+    description: sample name/identifier
+ 
+required:
+  - sample_name
+

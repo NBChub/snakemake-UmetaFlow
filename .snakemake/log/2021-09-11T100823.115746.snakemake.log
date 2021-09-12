@@ -1,0 +1,18 @@
+Building DAG of jobs...
+File path '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "../envs/pyopenms.yaml"
+        ' ends with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+File path '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "../envs/pyopenms.yaml"
+        ' contains line break. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+File path '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "../envs/pyopenms.yaml"
+        ' ends with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+File path '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "../envs/pyopenms.yaml"
+        ' contains line break. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+WorkflowError:
+Failed to open source file /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "../envs/pyopenms.yaml"
+        
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/\n        "../envs/pyopenms.yaml"\n        '

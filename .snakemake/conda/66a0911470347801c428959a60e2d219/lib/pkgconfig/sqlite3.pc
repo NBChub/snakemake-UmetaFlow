@@ -1,0 +1,13 @@
+# Package Information for pkg-config
+
+prefix=/Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/66a0911470347801c428959a60e2d219
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: SQLite
+Description: SQL database engine
+Version: 3.36.0
+Libs: -L${libdir} -lsqlite3
+Libs.private: -lz 
+Cflags: -I${includedir}

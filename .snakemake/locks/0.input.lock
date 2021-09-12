@@ -1,0 +1,10 @@
+results/SIRIUS/Epemicins.mzTab
+results/CSIFingerID/Epemicins.mzTab
+results/dataframes/CSIFingerID_output/csi_Epemicins.csv
+results/dataframes/sirius_output/sirius_Epemicins.csv
+results/preprocessed/Epemicins.featureXML
+results/precursorcorrection/Epemicins.mzML
+./resources/Contents/MacOS/sirius
+data/mzML/Epemicins.mzML
+results/SIRIUS/Epemicins.mzTab
+results/CSIFingerID/Epemicins.mzTab

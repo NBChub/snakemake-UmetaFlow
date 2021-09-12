@@ -1,0 +1,11 @@
+prefix=/Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/66a0911470347801c428959a60e2d219
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libwebp
+Description: Library for the WebP graphics format
+Version: 1.2.1
+Cflags: -I${includedir}
+Libs: -L${libdir} -lwebp
+Libs.private: -lm -D_THREAD_SAFE -pthread 

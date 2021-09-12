@@ -1,0 +1,80 @@
+Building DAG of jobs...
+Creating conda environment workflow/envs/pyopenms.yaml...
+Downloading and installing remote packages.
+CreateCondaEnvironmentException:
+Could not create conda environment from /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/../envs/pyopenms.yaml:
+
+# >>>>>>>>>>>>>>>>>>>>>> ERROR REPORT <<<<<<<<<<<<<<<<<<<<<<
+
+    Traceback (most recent call last):
+      File "/Users/eeko/mambaforge/lib/python3.9/site-packages/conda/exceptions.py", line 1079, in __call__
+        return func(*args, **kwargs)
+      File "/Users/eeko/mambaforge/lib/python3.9/site-packages/conda_env/cli/main.py", line 80, in do_call
+        exit_code = getattr(module, func_name)(args, parser)
+      File "/Users/eeko/mambaforge/lib/python3.9/site-packages/conda_env/cli/main_create.py", line 141, in execute
+        result[installer_type] = installer.install(prefix, pkg_specs, args, env)
+      File "/Users/eeko/mambaforge/lib/python3.9/site-packages/mamba/mamba_env.py", line 42, in mamba_install
+        index = load_channels(pool, channel_urls, repos, prepend=False)
+      File "/Users/eeko/mambaforge/lib/python3.9/site-packages/mamba/utils.py", line 123, in load_channels
+        index = get_index(
+      File "/Users/eeko/mambaforge/lib/python3.9/site-packages/mamba/utils.py", line 104, in get_index
+        is_downloaded = dlist.download(True)
+    RuntimeError: Multi-download failed.
+
+`$ /Users/eeko/mambaforge/condabin/mamba create --quiet --file /Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/d1ca90b6e8ee4462a0453e3e28ae3701.yaml --prefix /Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/conda/d1ca90b6e8ee4462a0453e3e28ae3701`
+
+  environment variables:
+                 CIO_TEST=<not set>
+  CONDA_AUTO_UPDATE_CONDA=false
+        CONDA_DEFAULT_ENV=snakemake
+                CONDA_EXE=/Users/eeko/mambaforge/bin/conda
+             CONDA_PREFIX=/Users/eeko/mambaforge/envs/snakemake
+           CONDA_PREFIX_1=/Users/eeko/mambaforge
+    CONDA_PROMPT_MODIFIER=(snakemake)
+         CONDA_PYTHON_EXE=/Users/eeko/mambaforge/bin/python
+               CONDA_ROOT=/Users/eeko/mambaforge
+              CONDA_SHLVL=2
+           CURL_CA_BUNDLE=<not set>
+                     PATH=/Users/eeko/mambaforge/envs/snakemake/bin:/Users/eeko/mambaforge/conda
+                          bin:/usr/bin:/usr/sbin:/sbin:/usr/local/bin:/Users/eeko/Desktop/softwa
+                          re/Contents/MacOS:/Users/eeko/Desktop/software:/Users/eeko/Desktop/sof
+                          tware/ThermoRawFileParser :/Users/eeko/mambaforge:/Library/Frameworks/
+                          Mono.framework/Versions/Current/Commands:/bin
+       REQUESTS_CA_BUNDLE=<not set>
+            SSL_CERT_FILE=<not set>
+
+     active environment : snakemake
+    active env location : /Users/eeko/mambaforge/envs/snakemake
+            shell level : 2
+       user config file : /Users/eeko/.condarc
+ populated config files : /Users/eeko/mambaforge/.condarc
+                          /Users/eeko/.condarc
+          conda version : 4.10.3
+    conda-build version : not installed
+         python version : 3.9.6.final.0
+       virtual packages : __osx=11.5.2=0
+                          __unix=0=0
+                          __archspec=1=x86_64
+       base environment : /Users/eeko/mambaforge  (writable)
+      conda av data dir : /Users/eeko/mambaforge/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/osx-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/osx-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+                          https://conda.anaconda.org/conda-forge/osx-64
+                          https://conda.anaconda.org/conda-forge/noarch
+          package cache : /Users/eeko/mambaforge/pkgs
+                          /Users/eeko/.conda/pkgs
+       envs directories : /Users/eeko/mambaforge/envs
+                          /Users/eeko/.conda/envs
+               platform : osx-64
+             user-agent : conda/4.10.3 requests/2.26.0 CPython/3.9.6 Darwin/20.6.0 OSX/11.5.2
+                UID:GID : 1656594343:848276677
+             netrc file : None
+           offline mode : False
+
+
+An unexpected error has occurred. Conda has prepared the above report.
+
+

@@ -1,0 +1,6 @@
+/data/mzML
+/data/mgf
+*.gzip
+/results
+*.raw
+

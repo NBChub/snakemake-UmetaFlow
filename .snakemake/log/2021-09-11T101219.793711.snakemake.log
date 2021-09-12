@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                    count    min threads    max threads
+-------------------  -------  -------------  -------------
+all                        1              1              1
+precursorcorrection        1              1              1
+preprocess                 1              1              1
+total                      3              1              1
+
+Select jobs to execute...
+
+[Sat Sep 11 10:12:20 2021]
+rule precursorcorrection:
+    input: data/mzML/Epemicins.mzML
+    output: results/precursorcorrection/Epemicins.mzML
+    jobid: 2
+    wildcards: samples=Epemicins
+    resources: tmpdir=/var/folders/c_/ysz9v_bd1yb7h3ymmkn6m199jbv7x7/T
+
+[Sat Sep 11 10:12:20 2021]
+Error in rule precursorcorrection:
+    jobid: 2
+    output: results/precursorcorrection/Epemicins.mzML
+
+RuleException:
+CalledProcessError in line 9 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/preprocessing.smk:
+Command 'set -euo pipefail;  /Users/eeko/mambaforge/envs/snakemake/bin/python3.9 /Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/scripts/tmpjmpi6h_v.1_precursorcorrection.py' returned non-zero exit status 1.
+  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/preprocessing.smk", line 9, in __rule_precursorcorrection
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/log/2021-09-11T101219.793711.snakemake.log

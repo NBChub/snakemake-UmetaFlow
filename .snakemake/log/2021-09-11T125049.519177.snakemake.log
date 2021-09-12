@@ -1,0 +1,2 @@
+SyntaxError in line 7 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile:
+closing parenthesis ']' does not match opening parenthesis '('

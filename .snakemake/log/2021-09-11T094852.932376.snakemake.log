@@ -1,0 +1,57 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                    count    min threads    max threads
+-------------------  -------  -------------  -------------
+all                        1              1              1
+mgf_conversion             1              1              1
+precursorcorrection        1              1              1
+preprocess                 1              1              1
+total                      4              1              1
+
+Select jobs to execute...
+
+[Sat Sep 11 09:48:53 2021]
+rule precursorcorrection:
+    input: data/mzML/Epemicins.mzML
+    output: results/precursorcorrection/Epemicins.mzML
+    jobid: 4
+    wildcards: samples=Epemicins
+    resources: tmpdir=/var/folders/c_/ysz9v_bd1yb7h3ymmkn6m199jbv7x7/T
+
+[Sat Sep 11 09:48:53 2021]
+rule mgf_conversion:
+    input: data/raw/Epemicins.raw
+    output: data/mgf/Epemicins.mgf
+    jobid: 1
+    wildcards: samples=Epemicins
+    resources: tmpdir=/var/folders/c_/ysz9v_bd1yb7h3ymmkn6m199jbv7x7/T
+
+File path '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "../envs/pyopenms.yaml"
+        ' ends with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+File path '/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/
+        "../envs/pyopenms.yaml"
+        ' contains line break. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+[Sat Sep 11 09:48:53 2021]
+Error in rule precursorcorrection:
+    jobid: 4
+    output: results/precursorcorrection/Epemicins.mzML
+
+RuleException:
+CalledProcessError in line 11 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/preprocessing.smk:
+Command 'set -euo pipefail;  /Users/eeko/mambaforge/envs/snakemake/bin/python3.9 /Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/scripts/tmp5mtaqca3.1_precursorcorrection.py' returned non-zero exit status 1.
+  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/preprocessing.smk", line 11, in __rule_precursorcorrection
+  File "/Users/eeko/mambaforge/envs/snakemake/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+Waiting at most 5 seconds for missing files.
+MissingOutputException in line 1 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/fileconversion.smk:
+Job Missing files after 5 seconds:
+data/mgf/Epemicins.mgf
+This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait.
+Job id: 1 completed successfully, but some output files are missing. 1
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/eeko/Desktop/Metabolomics/Snakemake/.snakemake/log/2021-09-11T094852.932376.snakemake.log
