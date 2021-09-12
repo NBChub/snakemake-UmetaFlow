@@ -107,7 +107,6 @@ On instance:
 * Snakemake dependencies with conda packages is one of the drawbacks and why [Nextflow](https://www.nextflow.io/) might be more preferable. Nevertheless, the pythonic language of snakemake enable newcomers to learn and develop their own pipeline faster.
 
 ### Test Data
-* Current test data are built from real datasets that have been subsampled using [`seqtk`](https://github.com/lh3/seqtk) for speed testing. 
-* Documentation to build the mock dataset in progress...
+* Current test data are built from real runs of known metabolite producer strains or standard samples that have been already alanysed with the GUI Software Freestyle and confirmed the presence of fragmentation patterns for the specific metabolites
 
 
