@@ -6,3 +6,4 @@
 .snakemake/conda
 .snakemake/metadata
 .snakemake/log
+**/.DS_Store
