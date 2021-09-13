@@ -2,7 +2,7 @@ rule mgf_conversion:
     input:
         "data/raw/{samples}.raw"
     output:
-        "data/mgf/{samples}.mgf"
+        "data/mgf/{samples}.mgf.gzip"
     shell:
         """
         mono resources/ThermoRawFileParser/ThermoRawFileParser.exe -i={input} -b={output} -f=0 -g 

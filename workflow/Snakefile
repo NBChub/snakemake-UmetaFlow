@@ -3,7 +3,7 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        expand("data/mgf/{samples}.mgf", samples=SAMPLES),       
+        expand("data/mgf/{samples}.mgf.gzip", samples=SAMPLES),       
         expand("data/mzML/{samples}.mzML", samples=SAMPLES),
         expand("results/preprocessed/{samples}.featureXML", samples=SAMPLES),
         expand("results/dataframes/features_tables/{samples}.csv", samples=SAMPLES),

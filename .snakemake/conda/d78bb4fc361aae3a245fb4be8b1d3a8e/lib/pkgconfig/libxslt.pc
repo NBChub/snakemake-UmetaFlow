@@ -1,0 +1,12 @@
+prefix=/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+
+Name: libxslt
+Version: 1.1.33
+Description: XSLT library version 2.
+Requires: libxml-2.0
+Libs: -L${libdir} -lxslt -L/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e/lib -lxml2 -L/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e/lib -lz -L/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e/lib -llzma -lpthread -L/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e/lib -liconv -L/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e/lib -licui18n -licuuc -licudata -lm  
+Cflags: -I${includedir}

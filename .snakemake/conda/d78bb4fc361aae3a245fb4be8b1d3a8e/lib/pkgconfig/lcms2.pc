@@ -1,0 +1,11 @@
+prefix=/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: lcms2
+Description: LCMS Color Management Library
+Version: 2.12
+Libs: -L${libdir} -llcms2 
+Libs.private: -lm -lpthread
+Cflags: -I${includedir}

@@ -1,0 +1,12 @@
+prefix=/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+enginesdir=${libdir}/engines-1.1
+
+Name: OpenSSL-libcrypto
+Description: OpenSSL cryptography library
+Version: 1.1.1l
+Libs: -L${libdir} -lcrypto
+Libs.private:  
+Cflags: -I${includedir}

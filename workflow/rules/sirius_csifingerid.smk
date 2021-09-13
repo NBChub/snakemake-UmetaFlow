@@ -2,7 +2,7 @@ rule sirius_csifingerid:
     input: 
         "results/preprocessed/{samples}.featureXML",
         "results/precursorcorrection/{samples}.mzML", 
-        "./resources/Contents/MacOS/sirius",
+        "resources/Contents/MacOS/sirius",
         "data/mzML/{samples}.mzML"
     output:
         "results/SIRIUS/{samples}.mzTab",

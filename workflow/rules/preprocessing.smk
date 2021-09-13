@@ -10,7 +10,7 @@ rule precursorcorrection:
 
 rule preprocess:
     input:
-        exp="results/precursorcorrection/{samples}.mzML"
+        "results/precursorcorrection/{samples}.mzML"
     output:
         "results/preprocessed/{samples}.featureXML" 
     conda:
@@ -20,7 +20,7 @@ rule preprocess:
 
 rule df_preprocess:
     input: 
-        featureinfo= "results/preprocessed/{samples}.featureXML",
+        "results/preprocessed/{samples}.featureXML",
     output:
         "results/dataframes/features_tables/{samples}.csv",
     conda:

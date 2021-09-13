@@ -1,0 +1,14 @@
+prefix=/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e
+exec_prefix=/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e
+libdir=/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e/lib
+includedir=/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e/include
+
+Name: FreeType 2
+URL: https://freetype.org
+Description: A free, high-quality, and portable font engine.
+Version: 23.4.17
+Requires:
+Requires.private: 
+Libs: -L${libdir} -lfreetype
+Libs.private: -lz -L/Users/eeko/Desktop/snakemake-metabolomics/.snakemake/conda/d78bb4fc361aae3a245fb4be8b1d3a8e/lib -lpng16 -lz
+Cflags: -I${includedir}/freetype2

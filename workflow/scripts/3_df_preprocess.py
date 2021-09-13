@@ -15,7 +15,7 @@ import numpy as np
 import sys
 from pyteomics import mztab
 
-with featurexml.read({featureinfo}) as f:
+with featurexml.read(snakemake.input[0]) as f:
     features_list = [FXML for FXML in f]
     
 df = pd.DataFrame() 
@@ -43,4 +43,4 @@ for feat in features_list:
 df_tidy = df.rename(columns = {'position_0': 'mz', 'position_1': 'RT'}, inplace = False)
 df_tidy=df_tidy.drop(columns= ["quality_0", "quality_1", "overallquality", "label", "legal_isotope_pattern"])
 df_tidy.reset_index(drop=True, inplace=True) 
-df_tidy.to_csv({output})
+df_tidy.to_csv(snakemake.output[0])
