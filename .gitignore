@@ -3,7 +3,7 @@
 *.gzip
 /results
 *.raw
-.snakemake/conda
-.snakemake/metadata
-.snakemake/log
-**/.DS_Store
+.snakemake
+.DS_Store
+data/raw/.DS_Store
+data/.DS_Store
