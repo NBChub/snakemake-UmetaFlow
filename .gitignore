@@ -3,4 +3,6 @@
 *.gzip
 /results
 *.raw
-
+.snakemake/conda
+.snakemake/metadata
+.snakemake/log
