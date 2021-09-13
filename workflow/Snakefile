@@ -8,11 +8,11 @@ rule all:
         expand("results/preprocessed/{samples}.featureXML", samples=SAMPLES),
         expand("results/dataframes/features_tables/{samples}.csv", samples=SAMPLES),
         expand("results/SIRIUS/{samples}.mzTab", samples=SAMPLES),
-        expand("results/dataframes/sirius_output/sirius_{samples}.csv", samples=SAMPLES),
+        expand("results/dataframes/sirius_output/sirius_{samples}.csv", samples=SAMPLES)
         #expand(["results/SIRIUS/{samples}.mzTab", "results/CSIFingerID/{samples}.mzTab"], samples=["Epemicins"]),
         #expand(["results/dataframes/CSIFingerID_output/csi_{samples}.csv", "results/dataframes/sirius_output/sirius_{samples}.csv"], samples=["Epemicins"])
 
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
-include: "rules/sirius.smk",
+include: "rules/sirius.smk"
 #include: "rules/sirius_csifingerid.smk"
