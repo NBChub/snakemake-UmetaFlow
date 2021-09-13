@@ -22,7 +22,7 @@ rule df_preprocess:
     input: 
         featureinfo= "results/preprocessed/{samples}.featureXML",
     output:
-        "results/dataframes/features_tables/{features}.csv",
+        "results/dataframes/features_tables/{samples}.csv",
     conda:
         "../envs/pyopenms.yaml"
     script:
