@@ -40,7 +40,7 @@ for feat in features_list:
                     df.loc[idx, 'quality_1'] = qual['quality']
         else:
             df.loc[idx, key] = feat[key]
-df_tidy = df.rename(columns = {'position_0': 'mz', 'position_1': 'RT'}, inplace = False)
+df_tidy = df.rename(columns = {'position_0': 'RT', 'position_1': 'mz'}, inplace = False)
 df_tidy=df_tidy.drop(columns= ["quality_0", "quality_1", "overallquality", "label", "legal_isotope_pattern"])
 df_tidy.reset_index(drop=True, inplace=True) 
 df_tidy.to_csv(snakemake.output[0])
