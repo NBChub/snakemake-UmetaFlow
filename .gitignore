@@ -4,6 +4,6 @@
 /results
 *.raw
 .snakemake
-.DS_Store
-data/raw/.DS_Store
-data/.DS_Store
+**.DS_Store
+/noisethr1.0e10-4
+.snakemake/metadata
