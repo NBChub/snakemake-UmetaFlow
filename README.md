@@ -8,12 +8,11 @@ This is a snakemake implementation of the [Metabolomics OpenMS workflow](snakema
 ## Usage
 ### Step 1: Clone the workflow
 
-[Clone](https://help.github.com/en/articles/cloning-a-repository) this repository to your local system, into the place where you want to perform the data analysis.  
-Make sure to have the right access / SSH Key. If **not**, follow the steps:
-
+[Clone](https://help.github.com/en/articles/cloning-a-repository) this repository to your local system, into the place where you want to perform the data analysis.
+_Make sure to have the right access / SSH Key. If **not**, follow the steps:
 Step 1: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+Step 2: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account _
 
-Step 2: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
 
     git clone git@github.com:NBChub/snakemake-metabolomics.git
 
