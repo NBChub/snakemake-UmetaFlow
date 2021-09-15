@@ -9,4 +9,3 @@
 .snakemake/metadata
 *.xlsx
 resources/Sirius/sirius/**
-resources/ThermoRawFileParser/**
