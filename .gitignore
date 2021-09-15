@@ -8,5 +8,5 @@
 .DS_Store
 .snakemake/metadata
 *.xlsx
-resources/Sirius/**
+resources/Sirius/sirius/**
 resources/ThermoRawFileParser/**
