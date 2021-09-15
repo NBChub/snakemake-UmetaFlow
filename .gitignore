@@ -5,10 +5,9 @@
 /results
 *.raw
 .snakemake
-**.DS_Store
-/noisethr1.0e10-4
+*.DS_Store
 .snakemake/metadata
 ~$results summed up.xlsx
-resources/Sirius/Sirius
-resources/ThermoRawFileParser/
+resources/Sirius/**
+resources/ThermoRawFileParser/**
 
