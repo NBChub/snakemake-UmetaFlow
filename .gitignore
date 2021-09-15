@@ -5,9 +5,8 @@
 /results
 *.raw
 .snakemake
-*.DS_Store
+.DS_Store
 .snakemake/metadata
-~$results summed up.xlsx
+*.xlsx
 resources/Sirius/**
 resources/ThermoRawFileParser/**
-
