@@ -9,6 +9,6 @@
 /noisethr1.0e10-4
 .snakemake/metadata
 ~$results summed up.xlsx
-sirius/
-ThermoRawFileParser/
+resources/Sirius/Sirius
+resources/ThermoRawFileParser/
 
