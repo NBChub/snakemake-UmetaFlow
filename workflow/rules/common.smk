@@ -17,12 +17,6 @@ validate(config, schema="../schemas/config.schema.yaml")
 samples = pd.read_csv(config["samples"], sep="\t").set_index("sample_name", drop=False)
 samples.index.names = ["samples"]
 
-## watermark snakemake version to samples
-#for i in samples.index:
-#    samples.loc[i, "sample_name"] = str(samples.loc[i, "sample_name"]) + __version__
-
-validate(samples, schema="../schemas/samples.schema.yaml")
-
 
 ##### Wildcard constraints #####
 wildcard_constraints:
