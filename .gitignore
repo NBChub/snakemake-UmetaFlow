@@ -1,6 +1,7 @@
 /data/mzML
 /data/mgf
 *.gzip
+*.zip
 /results
 *.raw
 .snakemake
@@ -8,3 +9,6 @@
 /noisethr1.0e10-4
 .snakemake/metadata
 ~$results summed up.xlsx
+/resources/Sirius/sirius
+ThermoRawFileParser/
+
