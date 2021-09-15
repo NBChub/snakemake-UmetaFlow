@@ -34,7 +34,7 @@ Further formatting rules will be defined in the `workflow/schemas/` folder.
 Mock raw files reads are provided in the following link: https://drive.google.com/drive/folders/1aTg6lvVKK-UB-ZFotgflrWZZB-vibxw3?usp=sharing and then need to be moved to the `data/raw` folder.
 
 
-### Step 3: Snakemake
+### Step 3: Create a conda environment& install snakemake
 
 Installing Snakemake using [Mamba](https://github.com/mamba-org/mamba) is advised. In case you don’t use [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) you can always install [Mamba](https://github.com/mamba-org/mamba) into any other Conda-based Python distribution with:
 
@@ -52,9 +52,23 @@ Activate the conda environment:
 
     conda activate snakemake
 
-Install mono (for **Linux** only) with sudo (https://www.mono-project.com/download/stable/#download-lin):
+Install mono (for **Linux** only!) with sudo (https://www.mono-project.com/download/stable/#download-lin):
 
     sudo apt install mono-devel
+    
+Install homebrew and wget (for **iOS** only!):
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    **Press enter (RETURN) to continue** 
+    
+    brew install wget
+
+Get the necessary executables (ThermoRawFileParser & sirius):
+    
+    (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
+    
+    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.3/sirius-4.9.3-linux64-headless.zip  && unzip *.zip)
 
 Test your configuration by performing a dry-run via
 
