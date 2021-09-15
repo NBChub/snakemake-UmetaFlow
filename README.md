@@ -12,6 +12,7 @@ This is a snakemake implementation of the [Metabolomics OpenMS workflow](snakema
 
 (Make sure to have the right access / SSH Key. If **not**, follow the steps:
 Step 1: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
 Step 2: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
 
@@ -61,7 +62,7 @@ Install homebrew and wget (for **iOS** only!):
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     
-    **Press enter (RETURN) to continue** 
+Press enter (RETURN) to continue 
     
     brew install wget
 
