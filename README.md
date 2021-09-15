@@ -33,7 +33,8 @@ Further formatting rules will be defined in the `workflow/schemas/` folder.
 ### Input Data 
 Mock raw files reads are provided in the following link: https://drive.google.com/drive/folders/1aTg6lvVKK-UB-ZFotgflrWZZB-vibxw3?usp=sharing and then need to be moved to the `data/raw` folder.
 
-### Step 3: Install Snakemake
+
+### Step 3: Snakemake
 
 Installing Snakemake using [Mamba](https://github.com/mamba-org/mamba) is advised. In case you don’t use [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) you can always install [Mamba](https://github.com/mamba-org/mamba) into any other Conda-based Python distribution with:
 
@@ -50,6 +51,10 @@ For installation details, see the [instructions in the Snakemake documentation](
 Activate the conda environment:
 
     conda activate snakemake
+
+Install mono (for **Linux** only) with sudo (https://www.mono-project.com/download/stable/#download-lin):
+
+    sudo apt install mono-devel
 
 Test your configuration by performing a dry-run via
 
