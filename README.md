@@ -32,9 +32,6 @@ Configure the workflow according to your needs via editing the files in the `con
 
 Further formatting rules will be defined in the `workflow/schemas/` folder.
 
-### Input Data 
-Mock raw files reads are provided in the following link: https://drive.google.com/drive/folders/1aTg6lvVKK-UB-ZFotgflrWZZB-vibxw3?usp=sharing and then need to be moved to the `data/raw` folder.
-
 
 ### Step 3: Create a conda environment& install snakemake
 
@@ -54,10 +51,14 @@ Activate the conda environment:
 
     conda activate snakemake
 
-Install mono (for **Linux** only!) with sudo (https://www.mono-project.com/download/stable/#download-lin):
+#### For Linux only 
+
+Install mono with sudo (https://www.mono-project.com/download/stable/#download-lin):
 
     sudo apt install mono-devel
-    
+
+#### For iOS only 
+
 Install homebrew and wget (for **iOS** only!):
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -66,7 +67,11 @@ Press enter (RETURN) to continue
     
     brew install wget
 
-Get the necessary executables (ThermoRawFileParser & sirius):
+#### Get input data
+
+    (cd data && wget https://zenodo.org/record/5511115/files/raw.zip?download=1 && unzip *.zip)
+
+#### Get the necessary executables (ThermoRawFileParser & sirius):
     
     (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
     
