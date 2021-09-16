@@ -4,7 +4,7 @@
 
 This is a snakemake implementation of the [Metabolomics OpenMS workflow](snakemake-metabolomics/workflow/scripts/OpenMSWF.py) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
 ## Workflow overview
-
+![dag](/images/pyOpenMS_workflow.svg)
 ## Usage
 ### Step 1: Clone the workflow
 
