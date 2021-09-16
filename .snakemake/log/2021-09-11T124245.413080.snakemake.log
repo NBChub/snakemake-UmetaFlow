@@ -1,3 +1,0 @@
-TypeError in line 7 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile:
-'str' object is not callable
-  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile", line 7, in <module>

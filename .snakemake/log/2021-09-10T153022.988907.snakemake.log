@@ -1,4 +1,0 @@
-Building DAG of jobs...
-MissingInputException in line 1 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/fileconversion.smk:
-Missing input files for rule mgf_conversion:
-data/raw/Epemicins.raw.raw

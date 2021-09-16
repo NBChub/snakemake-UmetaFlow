@@ -1,6 +1,0 @@
-The flag 'directory' used in rule mgf_conversion is only valid for outputs, not inputs.
-The flag 'directory' used in rule mzml_conversion is only valid for outputs, not inputs.
-Building DAG of jobs...
-MissingInputException in line 1 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/fileconversion.smk:
-Missing input files for rule mgf_conversion:
-data/raw/Epemicins.raw.mgf
