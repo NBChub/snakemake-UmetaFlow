@@ -68,6 +68,7 @@ resources/ThermoRawFileParser/ThermoRawFileParser.exe.config
 resources/ThermoRawFileParser/ThermoRawFileParser.pdb
 resources/ThermoRawFileParser/zlib.net.dll
 resources/.DS_Store
-data/.DS_Store
+**/.DS_Store
 results summed up.xlsx
+.DS_Store
 .DS_Store
