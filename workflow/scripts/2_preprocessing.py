@@ -13,7 +13,7 @@ def preprocessing(filename):
     mtd = MassTraceDetection()
     mtd_par = mtd.getDefaults()
     mtd_par.setValue("mass_error_ppm", 10.0) 
-    mtd_par.setValue("noise_threshold_int", 1.0e05)
+    mtd_par.setValue("noise_threshold_int", 1.0e04)
     mtd.setParameters(mtd_par)
     mtd.run(exp, mass_traces, 0)  
 
