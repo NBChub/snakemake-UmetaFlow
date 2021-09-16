@@ -7,6 +7,7 @@
 .snakemake/metadata
 *.xlsx
 resources/Sirius/sirius/**
+resources/Sirius/sirius.app/**
 resources/ThermoRawFileParser/AWS.Logger.Core.dll
 resources/ThermoRawFileParser/AWS.Logger.Core.pdb
 resources/ThermoRawFileParser/AWS.Logger.Core.xml
