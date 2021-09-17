@@ -1,12 +1,12 @@
 rule sirius_csifingerid:
     input: 
-        "results/preprocessed/{samples}.featureXML",
-        "results/precursorcorrection/{samples}.mzML", 
+        "results/{samples}/interim/preprocessed_{samples}.featureXML",
+        "results/{samples}/interim/precursorcorrected_{samples}.featureXML", 
         "resources/Sirius/sirius/bin/sirius",
-        "data/mzML/{samples}.mzML"
+        "results/{samples}/interim/{samples}.mzML"
     output:
-        "results/SIRIUS/{samples}.mzTab",
-        "results/CSIFingerID/{samples}.mzTab"
+        "results/{samples}/interim/formulas_{samples}.mzTab",
+        "results/{samples}/interim/structures_{samples}.mzTab"
     conda:
         "../envs/pyopenms.yaml"
     script:
@@ -14,11 +14,11 @@ rule sirius_csifingerid:
         
 rule df_sirius_csifingerid:
     input: 
-        "results/SIRIUS/{samples}.mzTab",
-        "results/CSIFingerID/{samples}.mzTab"
+        "results/{samples}/interim/formulas_{samples}.mzTab",
+        "results/{samples}/interim/structures_{samples}.mzTab"
     output:
-        "results/dataframes/sirius_output/sirius_{samples}.csv",
-        "results/dataframes/CSIFingerID_output/csi_{samples}.csv"
+        "results/{samples}/formulas_{samples}.csv",
+        "results/{samples}/structures_{samples}.csv.csv"
     conda:
         "../envs/pyopenms.yaml"
     script:

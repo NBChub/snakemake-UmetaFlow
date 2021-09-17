@@ -3,12 +3,13 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        expand("data/mgf/{samples}.mgf.gzip", samples=SAMPLES),       
-        expand("data/mzML/{samples}.mzML", samples=SAMPLES),
-        expand("results/preprocessed/{samples}.featureXML", samples=SAMPLES),
-        expand("results/dataframes/features_tables/{samples}.csv", samples=SAMPLES),
-        expand("results/SIRIUS/{samples}.mzTab", samples=SAMPLES),
-        expand("results/dataframes/sirius_output/sirius_{samples}.csv", samples=SAMPLES)
+        expand("results/{samples}/interim/{samples}.mgf.gzip", samples=SAMPLES),       
+        expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES),
+        expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES),
+        expand("results/{samples}/interim/preprocessed_{samples}.featureXML", samples=SAMPLES),
+        expand("results/{samples}/features_{samples}.csv", samples=SAMPLES),
+        expand("results/interim/formulas_{samples}.mzTab", samples=SAMPLES),
+        expand("results/formulas_{samples}.csv", samples=SAMPLES)
         #expand(["results/SIRIUS/{samples}.mzTab", "results/CSIFingerID/{samples}.mzTab"], samples=["Epemicins"]),
         #expand(["results/dataframes/CSIFingerID_output/csi_{samples}.csv", "results/dataframes/sirius_output/sirius_{samples}.csv"], samples=["Epemicins"])
 

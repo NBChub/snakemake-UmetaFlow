@@ -1,11 +1,11 @@
 rule sirius:
     input: 
-        "results/preprocessed/{samples}.featureXML",
-        "results/precursorcorrection/{samples}.mzML", 
+        "results/{samples}/interim/preprocessed_{samples}.featureXML",
+        "results/{samples}/interim/precursorcorrected_{samples}.featureXML", 
         "resources/Sirius/sirius/bin/sirius",
-        "data/mzML/{samples}.mzML"
+        "results/{samples}/interim/{samples}.mzML"
     output:
-        "results/SIRIUS/{samples}.mzTab"
+        "results/{samples}/interim/formulas_{samples}.mzTab"
     conda:
         "../envs/pyopenms.yaml"
     script:
@@ -13,9 +13,9 @@ rule sirius:
 
 rule df_sirius:
     input: 
-        "results/SIRIUS/{samples}.mzTab"
+        "results/{samples}/interim/formulas_{samples}.mzTab"
     output:
-        "results/dataframes/sirius_output/sirius_{samples}.csv"
+        "results/{samples}/formulas_{samples}.csv"
     conda:
         "../envs/pyopenms.yaml"
     script:

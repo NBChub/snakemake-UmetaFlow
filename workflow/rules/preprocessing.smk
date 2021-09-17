@@ -1,8 +1,8 @@
 rule precursorcorrection:
     input:
-        "data/mzML/{samples}.mzML"
+        "results/{samples}/interim/{samples}.mzML"
     output:
-        "results/precursorcorrection/{samples}.mzML" 
+        "results/{samples}/interim/precursorcorrected_{samples}.mzML" 
     conda:
         "../envs/pyopenms.yaml"   
     script:
@@ -10,9 +10,9 @@ rule precursorcorrection:
 
 rule preprocess:
     input:
-        "results/precursorcorrection/{samples}.mzML"
+        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
-        "results/preprocessed/{samples}.featureXML" 
+        "results/{samples}/interim/preprocessed_{samples}.featureXML" 
     conda:
         "../envs/pyopenms.yaml"
     script:
@@ -20,9 +20,9 @@ rule preprocess:
 
 rule df_preprocess:
     input: 
-        "results/preprocessed/{samples}.featureXML",
+        "results/{samples}/interim/preprocessed_{samples}.featureXML"
     output:
-        "results/dataframes/features_tables/{samples}.csv",
+        "results/{samples}/features_{samples}.csv"
     conda:
         "../envs/pyopenms.yaml"
     script:
