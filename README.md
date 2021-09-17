@@ -69,7 +69,7 @@ Press enter (RETURN) to continue
 
 #### Get input data
 
-    (cd data && wget https://zenodo.org/record/5511115/files/raw.zip?download=1 && unzip *.zip)
+    (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip)
 
 #### Get the necessary executables (ThermoRawFileParser & sirius):
     
