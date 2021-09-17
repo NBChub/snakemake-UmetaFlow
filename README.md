@@ -69,7 +69,7 @@ Press enter (RETURN) to continue
 
 #### Get input data
 
-    (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip)
+    (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
 
 #### Get the necessary executables (ThermoRawFileParser & sirius):
     
@@ -81,10 +81,6 @@ Test your configuration by performing a dry-run via
 
     snakemake --use-conda -n
 
-Check you job DAG by executing:
-
-    snakemake --dag | dot -Tsvg > workflow/report/images/dag.svg
-
 Execute the workflow locally via
 
     snakemake --use-conda --cores $N
@@ -93,31 +89,6 @@ See the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/exe
 
 ### Step 5: Investigate results
 All the results are in a csv format and can be opened simply with excel or using pandas dataframes. 
-
-## Current Development & Issues
-* **Test Status:** Issue with the config file validation:
-```
-WorkflowError in line 14 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/common.smk:
-Error validating config file.
-ValidationError: 'sample_name' is a required property
-
-Failed validating 'required' in schema:
-    OrderedDict([('$schema', 'http://json-schema.org/draft-04/schema#'),
-                 ('description', 'snakemake configuration file'),
-                 ('type', 'object'),
-                 ('properties',
-                  OrderedDict([('sample_name',
-                                OrderedDict([('type', 'string'),
-                                             ('description',
-                                              'sample '
-                                              'name/identifier')]))])),
-                 ('required', ['sample_name'])])
-
-On instance:
-    {'samples': 'config/samples.tsv'}
-  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile", line 1, in <module>
-  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/common.smk", line 14, in <module>
-  ```
 
 ## Developer Notes
 ### Config & Schemas
