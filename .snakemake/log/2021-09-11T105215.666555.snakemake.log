@@ -1,3 +1,0 @@
-SyntaxError in line 13 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/preprocessing.smk:
-Multiple run or shell keywords in rule precursorcorrection. (preprocessing.smk, line 13)
-  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile", line 9, in <module>

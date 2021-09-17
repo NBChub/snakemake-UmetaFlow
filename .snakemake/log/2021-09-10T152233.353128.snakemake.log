@@ -1,3 +1,0 @@
-SyntaxError in line 2 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/rules/fileconversion.smk:
-EOF in multi-line statement (fileconversion.smk, line 2)
-  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile", line 6, in <module>

@@ -1,3 +1,0 @@
-WildcardError in line 6 of /Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile:
-No values given for wildcard 'features'.
-  File "/Users/eeko/Desktop/Metabolomics/Snakemake/workflow/Snakefile", line 6, in <module>
