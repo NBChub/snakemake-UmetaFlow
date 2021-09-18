@@ -1,7 +1,7 @@
 rule sirius_csifingerid:
     input: 
         "results/{samples}/interim/preprocessed_{samples}.featureXML",
-        "results/{samples}/interim/precursorcorrected_{samples}.featureXML", 
+        "results/{samples}/interim/precursorcorrected_{samples}.mzML", 
         "resources/Sirius/sirius/bin/sirius",
         "results/{samples}/interim/{samples}.mzML"
     output:

@@ -1,8 +1,8 @@
 rule sirius:
     input: 
         "results/{samples}/interim/preprocessed_{samples}.featureXML",
-        "results/{samples}/interim/precursorcorrected_{samples}.featureXML", 
-        "resources/Sirius/sirius/bin/sirius",
+        "results/{samples}/interim/precursorcorrected_{samples}.mzML", 
+        "resources/Sirius/sirius/Contents/sirius",
         "results/{samples}/interim/{samples}.mzML"
     output:
         "results/{samples}/interim/formulas_{samples}.mzTab"
