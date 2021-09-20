@@ -35,7 +35,7 @@ def preprocessing(filename):
     ffm = FeatureFindingMetabo()
     ffm_par = ffm.getDefaults() 
     ffm_par.setValue("isotope_filtering_model", "none")
-    ffm_par.setValue("remove_single_traces", "true")
+    ffm_par.setValue("remove_single_traces", "false")
     ffm_par.setValue("mz_scoring_by_elements", "false")
     ffm.setParameters(ffm_par)
     ffm.run(mass_traces_final, feature_map_FFM, feat_chrom)
