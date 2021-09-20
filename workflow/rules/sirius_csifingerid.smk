@@ -18,7 +18,7 @@ rule df_sirius_csifingerid:
         "results/{samples}/interim/structures_{samples}.mzTab"
     output:
         "results/{samples}/formulas_{samples}.csv",
-        "results/{samples}/structures_{samples}.csv.csv"
+        "results/{samples}/structures_{samples}.csv"
     conda:
         "../envs/pyopenms.yaml"
     script:
