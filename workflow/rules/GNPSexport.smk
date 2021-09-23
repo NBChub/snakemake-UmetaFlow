@@ -1,12 +1,13 @@
 rule IDMapper:
     input:
         "resources/emptyfile.idXML",
-        "results/{samples}/interim/preprocessed_{samples}.featureXML"
+        "results/{samples}/interim/preprocessed_{samples}.featureXML",
+        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
         "results/GNPSexport/interim/IDMapper_{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/IDMapper -id {input[0]} -in {input[1]} -out {output} 
+        resources/OpenMS-2.7.0/bin/IDMapper -id {input[0]} -in {input[1]}  -spectra:in {input[2]} -out {output} 
         """
 
 rule FeatureLinkerUnlabeledKD:
