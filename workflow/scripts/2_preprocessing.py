@@ -59,6 +59,7 @@ def preprocessing(filename):
     cons_map1 = ConsensusMap()
     mfd.compute(feature_map_FFM, feature_map_DEC, cons_map0, cons_map1)
     fmdec= FeatureXMLFile()
+    consensus= ConsensusXMLFile()
     fmdec.store(snakemake.output[0], feature_map_DEC)
 
 preprocessing(snakemake.input[0])

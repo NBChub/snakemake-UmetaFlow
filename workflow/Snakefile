@@ -3,7 +3,6 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        expand("results/{samples}/interim/{samples}.mgf.gzip", samples=SAMPLES),       
         expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES),
         expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES),
         expand("results/{samples}/interim/preprocessed_{samples}.featureXML", samples=SAMPLES),
@@ -12,9 +11,14 @@ rule all:
         #expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES),
         expand(["results/{samples}/interim/formulas_{samples}.mzTab", "results/{samples}/interim/structures_{samples}.mzTab"], samples=SAMPLES),
         expand(["results/{samples}/formulas_{samples}.csv", "results/{samples}/structures_{samples}.csv"], samples=SAMPLES),
-
+        expand("results/GNPSexport/interim/IDMapper_{samples}.featureXML", samples=SAMPLES),
+        expand("results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"),
+        expand("results/GNPSexport/interim/filtered.consensusXML"),
+        expand("results/GNPSexport/MSMS.mgf"),
+        expand("results/GNPSexport/FeatureQuantificationTable.txt")
 
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
-#include: "rules/sirius.smk"
-include: "rules/sirius_csifingerid.smk"
+#include: "rules/sirius.smk",
+include: "rules/sirius_csifingerid.smk",
+include: "rules/GNPSexport.smk"

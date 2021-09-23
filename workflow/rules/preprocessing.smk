@@ -12,7 +12,7 @@ rule preprocess:
     input:
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
-        "results/{samples}/interim/preprocessed_{samples}.featureXML" 
+        "results/{samples}/interim/preprocessed_{samples}.featureXML"
     conda:
         "../envs/pyopenms.yaml"
     script:
