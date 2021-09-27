@@ -1,7 +1,17 @@
+rule MapAlignerPoseClustering:
+    input:
+        expand("results/{samples}/interim/preprocessed_{samples}.featureXML", samples=SAMPLES)
+    output:
+        expand("results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES)
+    shell:
+        """
+        sed -i 's/,/ /g' {input} && resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -in {input} -out {output} 
+        """ 
+       
 rule IDMapper:
     input:
         "resources/emptyfile.idXML",
-        "results/{samples}/interim/preprocessed_{samples}.featureXML",
+        "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
         "results/GNPSexport/interim/IDMapper_{samples}.featureXML"
@@ -17,7 +27,7 @@ rule FeatureLinkerUnlabeledKD:
         "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
+        sed -i 's/,/ /g' {input} && resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
 rule FileFilter:
@@ -39,7 +49,7 @@ rule GNPS_export:
         "results/GNPSexport/MSMS.mgf" 
     shell:
         """
-        resources/OpenMS-2.7.0/bin/GNPSExport -ini {input[0]} -in_cm {input[1]} -in_mzml {input[2]} -out {output} 
+        sed -i 's/,/ /g' {input[2]} && resources/OpenMS-2.7.0/bin/GNPSExport -ini {input[0]} -in_cm {input[1]} -in_mzml {input[2]} -out {output} 
         """
 
 
