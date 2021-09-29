@@ -1,6 +1,6 @@
 rule sirius:
     input: 
-        "results/{samples}/interim/preprocessed_{samples}.featureXML",
+        "results/{samples}/interim/MFD_{samples}.featureXML",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML", 
         "resources/Sirius/sirius.app/Contents/MacOS/sirius",
         "results/{samples}/interim/{samples}.mzML"

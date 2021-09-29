@@ -1,6 +1,6 @@
 rule MapAlignerPoseClustering:
     input:
-        lambda w: expand("results/{samples}/interim/preprocessed_{samples}.featureXML", samples=SAMPLES)
+        lambda w: expand("results/{samples}/interim/MFD_{samples}.featureXML", samples=SAMPLES)
     output:
         expand("results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES)
     shell:

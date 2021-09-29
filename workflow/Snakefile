@@ -5,7 +5,7 @@ rule all:
     input:
         expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES),
         expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES),
-        expand("results/{samples}/interim/preprocessed_{samples}.featureXML", samples=SAMPLES),
+        expand(["results/{samples}/interim/FFM_{samples}.featureXML", "results/{samples}/interim/MFD_{samples}.featureXML"], samples=SAMPLES),
         expand("results/{samples}/features_{samples}.csv", samples=SAMPLES),
         #expand("results/{samples}/interim/formulas_{samples}.mzTab",samples=SAMPLES),
         #expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES),

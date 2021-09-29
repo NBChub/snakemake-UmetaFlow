@@ -40,9 +40,9 @@ def preprocessing(filename):
     ffm.setParameters(ffm_par)
     ffm.run(mass_traces_final, feature_map_FFM, feat_chrom)
     
-    fillFeatureMap(filename, feature_map_FFM)
     feature_map_FFM.setUniqueIds()
     feature_map_FFM.setPrimaryMSRunPath([filename.encode()])
+    FeatureXMLFile().store(snakemake.output[0], feature_map_FFM)
     print("Found", feature_map_FFM.size(), "features")
 
     mfd = MetaboliteFeatureDeconvolution()
@@ -60,6 +60,6 @@ def preprocessing(filename):
     cons_map1 = ConsensusMap()
     mfd.compute(feature_map_FFM, feature_map_DEC, cons_map0, cons_map1)
     fmdec= FeatureXMLFile()
-    fmdec.store(snakemake.output[0], feature_map_DEC)
+    fmdec.store(snakemake.output[1], feature_map_DEC)
 
 preprocessing(snakemake.input[0])

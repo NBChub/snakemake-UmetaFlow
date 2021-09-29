@@ -12,7 +12,8 @@ rule preprocess:
     input:
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
-        "results/{samples}/interim/preprocessed_{samples}.featureXML"
+        "results/{samples}/interim/FFM_{samples}.featureXML",
+        "results/{samples}/interim/MFD_{samples}.featureXML"
     conda:
         "../envs/pyopenms.yaml"
     script:
@@ -20,7 +21,7 @@ rule preprocess:
 
 rule df_preprocess:
     input: 
-        "results/{samples}/interim/preprocessed_{samples}.featureXML"
+        "results/{samples}/interim/MFD_{samples}.featureXML"
     output:
         "results/{samples}/features_{samples}.csv"
     conda:
