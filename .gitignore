@@ -13,3 +13,4 @@ resources/*
 !results/.gitkeep
 !resources/ThermoRawFileParser/README.md
 !resources/Sirius/README.md
+manualCLI/*
