@@ -1,7 +1,13 @@
 """
-#convert files from ThermoRawFileParser 
-cd 
-mono ThermoRawFileParser.exe -d=/Users/eeko/Desktop/py4e/rawdata/mgf/ -f=0 -g 
+Convert files from Thermo
+
+For Mac or Linux users (also windows):
+
+Download ThermoRawFileParser https://github.com/compomics/ThermoRawFileParser
+Linux: download mono https://www.mono-project.com/download/stable/#download-lin
+
+Run the command:
+
 mono ThermoRawFileParser.exe -d=/Users/eeko/Desktop/py4e/rawdata/mzML/ 
 
 this command will automatically convert the files to centroid mzML
