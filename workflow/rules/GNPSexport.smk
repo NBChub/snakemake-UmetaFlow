@@ -37,7 +37,7 @@ rule FeatureLinkerUnlabeledKD:
         "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
     shell:
         """
-        in_files= cat {input} && resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
+        resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
 #Filter out the features that do not have an MS2 pattern
@@ -54,13 +54,14 @@ rule FileFilter:
 #GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 rule GNPS_export:
     input:
-        expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES),
-        "results/GNPSexport/interim/filtered.consensusXML"
+        "results/GNPSexport/interim/filtered.consensusXML",
+        expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES)
+        
     output:
         "results/GNPSexport/MSMS.mgf" 
     shell:
         """
-        resources/OpenMS-2.7.0/bin/GNPSExport -in_cm {input[1]} -in_mzml {input[0]} -out {output} 
+        resources/OpenMS-2.7.0/bin/GNPSExport -in_cm {input[0]} -in_mzml {input[1]} -out {output} 
         """
 
 #export the consensusXML file to a txt file for GNPS
