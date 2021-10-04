@@ -54,14 +54,13 @@ rule FileFilter:
 #GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 rule GNPS_export:
     input:
-        "results/GNPSexport/interim/filtered.consensusXML",
-        expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES)
-        
+        var1= "results/GNPSexport/interim/filtered.consensusXML",
+        var2= expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES)
     output:
         "results/GNPSexport/MSMS.mgf" 
     shell:
         """
-        resources/OpenMS-2.7.0/bin/GNPSExport -in_cm {input[0]} -in_mzml {input[1]} -out {output} 
+        resources/OpenMS-2.7.0/bin/GNPSExport -in_cm {input.var1} -in_mzml {input.var2} -out {output} 
         """
 
 #export the consensusXML file to a txt file for GNPS
