@@ -2,8 +2,19 @@
 import pandas
 df= pandas.read_csv("config/samples.tsv", sep= "\t", header= 0)
 metadata= df.rename(columns= {"sample_name": "filename", "comment": "ATTRIBUTE_comment"})
-metadata["filename"]= "precursorcorrected_" + metadata["filename"].astype(str) +".mzml"
+metadata["filename"]= metadata["filename"].astype(str) +".mzml"
 metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
+
+#copy all the original mzml files (precursor corrected ones) in the GNPSExport folder for easier used
+rule FileCopy:
+    input:
+        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
+    output:
+        "results/GNPSexport/{samples}.mzML"
+    shell:
+        """
+        cp {input} {output}
+        """ 
 
 #MapAlignerPoseClustering is used to perform a linear retention time alignment, basically correct for linear shifts in retention time.
 rule MapAlignerPoseClustering:
