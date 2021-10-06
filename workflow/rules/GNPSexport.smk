@@ -1,9 +1,14 @@
 #Create a metadata csv file for GNPS from the samples.tsv file 
-import pandas
-df= pandas.read_csv("config/samples.tsv", sep= "\t", header= 0)
-metadata= df.rename(columns= {"sample_name": "filename", "comment": "ATTRIBUTE_comment"})
+import pandas as pd
+import numpy as np 
+df= pd.read_csv("config/samples.tsv", sep= "\t", header= 0)
+metadata= df.rename(columns= {"sample_name": "filename", "comment": "ATTRIBUTE_comment", "MAPnumber": "ATTRIBUTE_MAPnumber"})
 metadata["filename"]= metadata["filename"].astype(str) +".mzml"
+metadata['ATTRIBUTE_MAPnumber'] = np.arange(len(metadata))
+metadata["ATTRIBUTE_comment"]= metadata["ATTRIBUTE_comment"].astype(str) + "_MAP" + metadata["ATTRIBUTE_MAPnumber"].astype(str)
+metadata= metadata.drop(columns= "ATTRIBUTE_MAPnumber")
 metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
+metadata
 
 #copy all the original mzml files (precursor corrected ones) in the GNPSExport folder for easier used
 rule FileCopy:
