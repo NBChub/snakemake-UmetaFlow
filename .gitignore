@@ -14,3 +14,4 @@ resources/*
 !resources/Sirius/README.md
 manualCLI/*
 !results/GNPSexport/.gitkeep
+!results/.gitkeep
