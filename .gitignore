@@ -10,7 +10,6 @@ results/*
 resources/*
 !GNPSExport.ini
 !data/.gitkeep
-!results/.gitkeep
 !resources/ThermoRawFileParser/README.md
 !resources/Sirius/README.md
 manualCLI/*
