@@ -15,27 +15,23 @@ def preprocessing(filename):
     mtd_par.setValue("mass_error_ppm", 10.0) 
     mtd_par.setValue("noise_threshold_int", 1.0e04)
     mtd_par.setValue("chrom_peak_snr", 3.0)
-    mtd_par.setValue("chrom_fwhm", 1.5)
+    mtd_par.setValue("common:chrom_fwhm", 1.5)
     mtd_par.setValue("min_trace_length", 3.0)
     mtd_par.setValue("max_trace_length", 60.0)
     mtd.setParameters(mtd_par)
-    mtd.run(exp, mass_traces, 0) 
+    mtd.run(exp, mass_traces, 0)
 
     mass_traces_split = []
     mass_traces_final = []
     epd = ElutionPeakDetection()
     epd_par = epd.getDefaults()
-    epd_par.setValue("width_filtering", "auto")
+    epd_par.setValue("width_filtering", "fixed")
+    epd_par.setValue("chrom_fwhm", 1.5)
     epd_par.setValue("min_fwhm", 1.0)
     epd_par.setValue("max_fwhm", 30.0)
     epd.setParameters(epd_par)
     epd.detectPeaks(mass_traces, mass_traces_split)
-        
-    if (epd.getParameters().getValue("width_filtering") == "fixed"):
-        epd.filterByPeakWidth(mass_traces_split, mass_traces_final)
-    else:
-        mass_traces_final = mass_traces_split
-
+    epd.filterByPeakWidth(mass_traces_split, mass_traces_final)
 
     feature_map_FFM = FeatureMap()
     feat_chrom = []
@@ -47,27 +43,24 @@ def preprocessing(filename):
     ffm_par.setValue("report_convex_hulls", "true")
     ffm.setParameters(ffm_par)
     ffm.run(mass_traces_final, feature_map_FFM, feat_chrom)
-    
     feature_map_FFM.setUniqueIds()
+    fh = FeatureXMLFile()
     feature_map_FFM.setPrimaryMSRunPath([filename.encode()])
-    FeatureXMLFile().store(snakemake.output[0], feature_map_FFM)
-    print("Found", feature_map_FFM.size(), "features")
+    fh.store(snakemake.output[0], feature_map_FFM)
 
     mfd = MetaboliteFeatureDeconvolution()
     mdf_par = mfd.getDefaults()
-
     mdf_par.setValue("potential_adducts",  [b"H:+:0.6",b"Na:+:0.2",b"NH4:+:0.1", b"H2O:-:0.1"])
     mdf_par.setValue("charge_min", 1, "Minimal possible charge")
     mdf_par.setValue("charge_max", 1, "Maximal possible charge")
     mdf_par.setValue("charge_span_max", 1)
     mdf_par.setValue("max_neutrals", 1)
     mfd.setParameters(mdf_par)
-
     feature_map_DEC = FeatureMap()
     cons_map0 = ConsensusMap()
     cons_map1 = ConsensusMap()
     mfd.compute(feature_map_FFM, feature_map_DEC, cons_map0, cons_map1)
-    fmdec= FeatureXMLFile()
+    fmdec = FeatureXMLFile()
     fmdec.store(snakemake.output[1], feature_map_DEC)
 
 preprocessing(snakemake.input[0])

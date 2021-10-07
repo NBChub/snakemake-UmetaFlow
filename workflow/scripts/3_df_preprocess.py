@@ -7,13 +7,9 @@
 #isotope_distances = distance in mz between the isotopes (jumps of app. 1 is important to confirm that this is a real feature)
 
 from pyopenms import *
-from pandas import DataFrame
 import pandas as pd
-import pyteomics
 from pyteomics.openms import featurexml
-import numpy as np
-import sys
-from pyteomics import mztab
+
 
 with featurexml.read(snakemake.input[0]) as f:
     features_list = [FXML for FXML in f]
@@ -28,19 +24,38 @@ for feat in features_list:
             pos_list = feat['position']
             for pos in pos_list:
                 if pos['dim'] == '0':
-                    df.loc[idx, 'position_0'] = pos['position']
+                    df.loc[idx, 'RT'] = pos['position']
                 elif pos['dim'] == '1':
-                    df.loc[idx, 'position_1'] = pos['position']
-        elif key == 'quality':
-            qual_list = feat['quality']
-            for qual in qual_list:
-                if qual['dim'] == '0':
-                    df.loc[idx, 'quality_0'] = qual['quality']
-                elif qual['dim'] == '1':
-                    df.loc[idx, 'quality_1'] = qual['quality']
-        else:
-            df.loc[idx, key] = feat[key]
-df_tidy = df.rename(columns = {'position_0': 'RT', 'position_1': 'mz'}, inplace = False)
-df_tidy=df_tidy.drop(columns= ["quality_0", "quality_1", "overallquality", "label", "legal_isotope_pattern"])
-df_tidy.reset_index(drop=True, inplace=True) 
-df_tidy.to_csv(snakemake.output[0])
+                    df.loc[idx, 'mz'] = pos['position']
+        elif key == 'intensity':
+            int_list = feat['intensity']
+            df.loc[idx, 'intensity'] = feat['intensity']
+        elif key == 'charge':
+            charge_list = feat['charge']
+            df.loc[idx, 'charge'] = feat['charge']
+        elif key == 'FWHM':
+            FWHM_list = feat['FWHM']
+            df.loc[idx, 'FWHM'] = feat['FWHM']
+        elif key == 'max_height':
+            max_height_list = feat['max_height']
+            df.loc[idx, 'max_height'] = feat['max_height']
+        elif key == 'num_of_masstraces':
+            num_of_masstraces_list = feat['num_of_masstraces']
+            df.loc[idx, 'num_of_masstraces'] = feat['num_of_masstraces']
+        elif key == 'masstrace_intesity':
+            masstrace_intesity_list = feat['masstrace_intesity']
+            df.loc[idx, 'masstrace_intesity'] = feat['masstrace_intesity']
+        elif key == 'masstrace_centroid_rt':
+            masstrace_intesity_list = feat['masstrace_centroid_rt']
+            df.loc[idx, 'masstrace_centroid_rt'] = feat['masstrace_centroid_rt']
+        elif key == 'masstrace_centroid_mz':
+            masstrace_intesity_list = feat['masstrace_centroid_mz']
+            df.loc[idx, 'masstrace_centroid_mz'] = feat['masstrace_centroid_mz']
+        elif key == 'isotope_distances':
+            masstrace_intesity_list = feat['isotope_distances']
+            df.loc[idx, 'isotope_distances'] = feat['isotope_distances']
+        elif key == 'dc_charge_adducts':
+            dc_charge_adducts_list = feat['dc_charge_adducts']
+            df.loc[idx, 'dc_charge_adducts'] = feat['dc_charge_adducts']
+
+df.to_csv(snakemake.output[0])

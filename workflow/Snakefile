@@ -7,8 +7,8 @@ rule all:
         expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES),
         expand(["results/{samples}/interim/FFM_{samples}.featureXML", "results/{samples}/interim/MFD_{samples}.featureXML"], samples=SAMPLES),
         expand("results/{samples}/features_{samples}.csv", samples=SAMPLES),
-        #expand("results/{samples}/interim/formulas_{samples}.mzTab",samples=SAMPLES),
-        #expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES),
+        expand("results/{samples}/interim/formulas_{samples}.mzTab",samples=SAMPLES),
+        expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES),
         #expand(["results/{samples}/interim/formulas_{samples}.mzTab", "results/{samples}/interim/structures_{samples}.mzTab"], samples=SAMPLES),
         #expand(["results/{samples}/formulas_{samples}.csv", "results/{samples}/structures_{samples}.csv"], samples=SAMPLES)
         expand("results/GNPSexport/{samples}.mzML", samples=SAMPLES),
@@ -21,4 +21,5 @@ rule all:
 
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
+include: "rules/sirius.smk",
 include: "rules/GNPSexport.smk"
