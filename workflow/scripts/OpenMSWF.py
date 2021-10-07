@@ -23,6 +23,10 @@ mtd = MassTraceDetection()
 mtd_par = mtd.getDefaults()
 mtd_par.setValue("mass_error_ppm", 10.0) 
 mtd_par.setValue("noise_threshold_int", 1.0e04)
+mtd_par.setValue("chrom_peak_snr", 3.0)
+mtd_par.setValue("chrom_fwhm", 1.5)
+mtd_par.setValue("min_trace_length", 3.0)
+mtd_par.setValue("max_trace_length", 60.0)
 mtd.setParameters(mtd_par)
 mtd.run(exp, mass_traces, 0)
 # Run elution peak detection
@@ -30,11 +34,13 @@ mass_traces_split = []
 mass_traces_final = []
 epd = ElutionPeakDetection()
 epd_par = epd.getDefaults()
-epd_par.setValue("width_filtering", "fixed")
+epd_par.setValue("width_filtering", "auto")
+epd_par.setValue("min_fwhm", 1.0)
+epd_par.setValue("max_fwhm", 30.0)
 epd.setParameters(epd_par)
 epd.detectPeaks(mass_traces, mass_traces_split)
     
-if (epd.getParameters().getValue("width_filtering") == "auto"):
+if (epd.getParameters().getValue("width_filtering") == "fixed"):
      epd.filterByPeakWidth(mass_traces_split, mass_traces_final)
 else:
     mass_traces_final = mass_traces_split
@@ -45,8 +51,9 @@ feat_chrom = []
 ffm = FeatureFindingMetabo()
 ffm_par = ffm.getDefaults() 
 ffm_par.setValue("isotope_filtering_model", "none")
-ffm_par.setValue("remove_single_traces", "true")
-ffm_par.setValue("mz_scoring_by_elements", "true")
+ffm_par.setValue("remove_single_traces", "false")
+ffm_par.setValue("mz_scoring_by_elements", "false")
+ffm_par.setValue("report_convex_hulls", "true")
 ffm.setParameters(ffm_par)
 ffm.run(mass_traces_final, feature_map_FFM, feat_chrom)
 feature_map_FFM.setUniqueIds()
