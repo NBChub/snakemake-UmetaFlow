@@ -16,7 +16,7 @@ def preprocessing(filename):
     mtd_par.setValue("noise_threshold_int", 1.0e04)
     mtd_par.setValue("chrom_peak_snr", 3.0)
     mtd_par.setValue("common:chrom_fwhm", 1.5)
-    mtd_par.setValue("min_trace_length", 3.0)
+    mtd_par.setValue("min_trace_length", 1.0)
     mtd_par.setValue("max_trace_length", 60.0)
     mtd.setParameters(mtd_par)
     mtd.run(exp, mass_traces, 0)
@@ -28,7 +28,7 @@ def preprocessing(filename):
     epd_par.setValue("width_filtering", "fixed")
     epd_par.setValue("chrom_fwhm", 1.5)
     epd_par.setValue("min_fwhm", 1.0)
-    epd_par.setValue("max_fwhm", 30.0)
+#    epd_par.setValue("max_fwhm", 30.0) DO not use that
     epd.setParameters(epd_par)
     epd.detectPeaks(mass_traces, mass_traces_split)
     epd.filterByPeakWidth(mass_traces_split, mass_traces_final)
