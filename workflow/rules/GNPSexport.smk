@@ -1,7 +1,9 @@
 #Create a metadata csv file for GNPS from the samples.tsv file 
 import pandas as pd
 import numpy as np 
+import os
 
+os.mkdir("results/GNPSexport/")
 df= pd.read_csv("config/samples.tsv", sep= "\t", header= 0)
 metadata= df.rename(columns= {"sample_name": "filename", "comment": "ATTRIBUTE_comment", "MAPnumber": "ATTRIBUTE_MAPnumber"})
 metadata["filename"]= metadata["filename"].astype(str) +".mzml"
@@ -38,7 +40,7 @@ rule MapAlignerPoseClustering:
         resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -in {input} -out {output}
         """ 
 
-#Introduce the features to a protein identification file (idXML)       
+#Introduce the features to a protein identification file (idXML)- the only way to create a ConsensusXML file currently (run FeatureLinkerUnlabeledKD)       
 rule IDMapper:
     input:
         "resources/emptyfile.idXML",
