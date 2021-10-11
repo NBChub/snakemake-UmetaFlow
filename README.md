@@ -4,7 +4,10 @@
 
 This is a snakemake implementation of the [Metabolomics OpenMS workflow](snakemake-metabolomics/workflow/scripts/OpenMSWF.py) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
 ## Workflow overview
-![dag](/images/pyOpenMS_workflow.svg)
+![dag]![pyOpenMS_workflow](https://user-images.githubusercontent.com/54527247/136806110-6b438497-bc48-4867-974b-269e36a2ba66.jpeg)
+
+_View the workflow with interactive comments in lucid: https://lucid.app/lucidchart/4dc81d37-bca3-4b2d-8253-33341ac79ab4/edit?viewport_loc=-71%2C53%2C2422%2C1416%2C0_0&invitationId=inv_5c1c0383-052a-4905-8146-dd842ee528fb _
+
 ## Usage
 ### Step 1: Clone the workflow
 
@@ -20,14 +23,16 @@ Step 2: https://docs.github.com/en/github/authenticating-to-github/connecting-to
 
 ### Step 2: Configure workflow
 
-Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution, and `samples.tsv` to specify the samples (files) that will be processed + analyse. 
+Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution, and `samples.tsv` to specify the samples (files) that will be processed + analysed. 
+
+**Suggestion: Always add the genome ID in the filename for easier connection later to BGC_analytics.**
 
 `samples.tsv` example:
 
 |  sample_name |       comment                |
 |-------------:|-----------------------------:|
-| GermicidinA  | standard sample              |
-| Epemicins    | epemicins-producer Kutzneria |
+| NBC_00162    | pyracrimicin                 |
+| MDNA_WGS_14  | epemicins_A_B                |
 
 
 Further formatting rules will be defined in the `workflow/schemas/` folder.
@@ -57,7 +62,7 @@ Install mono with sudo (https://www.mono-project.com/download/stable/#download-l
 
     sudo apt install mono-devel
 
-#### For iOS only 
+#### For iOS only (only for testing the workflow with the example dataset)
 
 Install homebrew and wget (for **iOS** only!):
 
@@ -67,15 +72,21 @@ Press enter (RETURN) to continue
     
     brew install wget
 
-#### Get input data
+#### Get input data (only for testing the workflow with the example dataset)
 
     (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
 
 #### Get the necessary executables (ThermoRawFileParser & sirius):
     
     (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
+
+For Linux:
     
     (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.3/sirius-4.9.3-linux64-headless.zip  && unzip *.zip)
+
+For iOS:
+
+    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.5/sirius-4.9.5-osx64-headless.zip  && unzip *.zip)
 
 Test your configuration by performing a dry-run via
 
@@ -106,7 +117,7 @@ All the results are in a csv format and can be opened simply with excel or using
 * Custom dependencies and databases are stored in the `resources/` folder.
 * Snakemake dependencies with conda packages is one of the drawbacks and why [Nextflow](https://www.nextflow.io/) might be more preferable. Nevertheless, the pythonic language of snakemake enable newcomers to learn and develop their own pipeline faster.
 
-### Test Data
+### Test Data (only for testing the workflow with the example dataset)
 * Current test data are built from real runs of known metabolite producer strains or standard samples that have been already alanysed with the GUI Software Freestyle and confirmed the presence of fragmentation patterns for the specific metabolites
 
 
