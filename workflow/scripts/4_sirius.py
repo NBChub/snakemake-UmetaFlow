@@ -79,7 +79,7 @@ def sirius(filename):
     sirius_result = MzTab()
     siriusfile = MzTabFile()
     SiriusMzTabWriter.read(subdirs,
-                            snakemake.input[3],
+                            snakemake.input[1],
                             candidates,
                             sirius_result)
     siriusfile.store(snakemake.output[0], sirius_result)

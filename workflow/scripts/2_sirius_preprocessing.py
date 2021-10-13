@@ -37,13 +37,10 @@ def preprocessing(filename):
     ffm_par.setValue("isotope_filtering_model", "none")
     ffm_par.setValue("remove_single_traces", "false")
     ffm_par.setValue("mz_scoring_by_elements", "false")
-    ffm_par.setValue("report_convex_hulls", "true")
     ffm.setParameters(ffm_par)
     ffm.run(mass_traces_final, feature_map_FFM, feat_chrom)
     feature_map_FFM.setUniqueIds()
-    fh = FeatureXMLFile()
     feature_map_FFM.setPrimaryMSRunPath([filename.encode()])
-    fh.store(snakemake.output[0], feature_map_FFM)
 
     mfd = MetaboliteFeatureDeconvolution()
     mdf_par = mfd.getDefaults()
@@ -58,6 +55,6 @@ def preprocessing(filename):
     cons_map1 = ConsensusMap()
     mfd.compute(feature_map_FFM, feature_map_DEC, cons_map0, cons_map1)
     fmdec = FeatureXMLFile()
-    fmdec.store(snakemake.output[1], feature_map_DEC)
+    fmdec.store(snakemake.output[0], feature_map_DEC)
 
 preprocessing(snakemake.input[0])

@@ -7,19 +7,20 @@ rule all:
         expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES),
         expand(["results/{samples}/interim/FFM_{samples}.featureXML", "results/{samples}/interim/MFD_{samples}.featureXML"], samples=SAMPLES),
         expand("results/{samples}/features_{samples}.csv", samples=SAMPLES),
-        expand("results/{samples}/interim/formulas_{samples}.mzTab",samples=SAMPLES),
-        expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES),
-        #expand(["results/{samples}/interim/formulas_{samples}.mzTab", "results/{samples}/interim/structures_{samples}.mzTab"], samples=SAMPLES),
-        #expand(["results/{samples}/formulas_{samples}.csv", "results/{samples}/structures_{samples}.csv"], samples=SAMPLES)
-        expand("results/Consensus/interim/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES),
-  #      expand("results/Consensus/interim/IDMapper_{samples}.featureXML", samples=SAMPLES),
-  #      expand("results/Consensus/interim/FeatureLinkerUnlabeledKD.consensusXML"),
-  #      expand("results/Consensus/filtered.consensusXML"),
-  #      expand("results/GNPSexport/{samples}.mzML", samples=SAMPLES),
-  #      expand("results/GNPSexport/MSMS.mgf"),
-  #      expand("results/GNPSexport/FeatureQuantificationTable.txt")
+        #expand(["results/{samples}/interim/no_convex_hulls{samples}.featureXML", "results/{samples}/interim/formulas_{samples}.mzTab"],samples=SAMPLES),
+        #expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES),
+        expand("results/{samples}/interim/MFD_no_convex_hulls_{samples}.featureXML", samples=SAMPLES),
+        expand(["results/{samples}/interim/formulas_{samples}.mzTab", "results/{samples}/interim/structures_{samples}.mzTab"], samples=SAMPLES),
+        expand(["results/{samples}/formulas_{samples}.csv", "results/{samples}/structures_{samples}.csv"], samples=SAMPLES),
+        expand(["results/Consensus/interim/MapAlignerPoseClustering_{samples}.featureXML", "results/Consensus/interim/MapAlignerPoseClustering_{samples}.trafoXML"], samples=SAMPLES),
+        expand("results/Consensus/interim/IDMapper_{samples}.featureXML", samples=SAMPLES),
+        expand("results/Consensus/interim/FeatureLinkerUnlabeledKD.consensusXML"),
+        expand("results/Consensus/filtered.consensusXML"),
+        expand("results/GNPSexport/{samples}.mzML", samples=SAMPLES),
+        expand("results/GNPSexport/MSMS.mgf"),
+        expand("results/GNPSexport/FeatureQuantificationTable.txt")
 
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
-include: "rules/sirius.smk",
-include: "rules/consensusxml.smk"
+include: "rules/sirius_csifingerid.smk",
+include: "rules/GNPSexport.smk"

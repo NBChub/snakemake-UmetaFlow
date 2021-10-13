@@ -3,7 +3,10 @@ import pandas as pd
 import numpy as np 
 import os
 
-os.mkdir("results/GNPSexport/")
+path= "results/GNPSexport/"
+isExist= os.path.exists(path)
+if not isExist:
+    os.mkdir("results/GNPSexport/")
 df= pd.read_csv("config/samples.tsv", sep= "\t", header= 0)
 metadata= df.rename(columns= {"sample_name": "filename", "comment": "ATTRIBUTE_comment", "MAPnumber": "ATTRIBUTE_MAPnumber"})
 metadata["filename"]= metadata["filename"].astype(str) +".mzml"
@@ -30,24 +33,27 @@ rule FileCopy:
         """ 
 
 #MapAlignerPoseClustering is used to perform a linear retention time alignment, basically correct for linear shifts in retention time.
+#add trafoXML files as an output also (TransformationXMLFile()) for transforming also the MS2 spectra later on
+
 rule MapAlignerPoseClustering:
     input:
         expand("results/{samples}/interim/MFD_{samples}.featureXML", samples=SAMPLES)
     output:
-        expand("results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES)
+        var1= expand("results/Consensus/interim/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES),
+        var2= expand("results/Consensus/interim/MapAlignerPoseClustering_{samples}.trafoXML", samples=SAMPLES)
     shell:
         """
-        resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -in {input} -out {output}
+        resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
 #Introduce the features to a protein identification file (idXML)- the only way to create a ConsensusXML file currently (run FeatureLinkerUnlabeledKD)       
 rule IDMapper:
     input:
         "resources/emptyfile.idXML",
-        "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML",
+        "results/Consensus/interim/MapAlignerPoseClustering_{samples}.featureXML",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
-        "results/GNPSexport/interim/IDMapper_{samples}.featureXML"
+        "results/Consensus/interim/IDMapper_{samples}.featureXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/IDMapper -id {input[0]} -in {input[1]}  -spectra:in {input[2]} -out {output} 
@@ -56,9 +62,9 @@ rule IDMapper:
 #The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (no MS2 data).
 rule FeatureLinkerUnlabeledKD:
     input:
-        expand("results/GNPSexport/interim/IDMapper_{samples}.featureXML", samples=SAMPLES)
+        expand("results/Consensus/interim/IDMapper_{samples}.featureXML", samples=SAMPLES)
     output:
-        "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/Consensus/interim/FeatureLinkerUnlabeledKD.consensusXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
@@ -67,9 +73,9 @@ rule FeatureLinkerUnlabeledKD:
 #Filter out the features that do not have an MS2 pattern
 rule FileFilter:
     input:
-        "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/Consensus/interim/FeatureLinkerUnlabeledKD.consensusXML"
     output:
-        "results/GNPSexport/interim/filtered.consensusXML"
+        "results/Consensus/filtered.consensusXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FileFilter -id:remove_unannotated_features -in {input} -out {output} 
@@ -78,7 +84,7 @@ rule FileFilter:
 #GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 rule GNPS_export:
     input:
-        var1= "results/GNPSexport/interim/filtered.consensusXML",
+        var1= "results/Consensus/filtered.consensusXML",
         var2= expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES)
     output:
         "results/GNPSexport/MSMS.mgf" 
@@ -90,7 +96,7 @@ rule GNPS_export:
 #export the consensusXML file to a txt file for GNPS
 rule txt_export:
     input:
-        "results/GNPSexport/interim/filtered.consensusXML"
+        "results/Consensus/filtered.consensusXML"
     output:
         "results/GNPSexport/FeatureQuantificationTable.txt" 
     shell:
