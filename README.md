@@ -1,10 +1,13 @@
-# Metabolomics-Snakemake workflow
+# Metabolomics workflow for Linux systems
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.7.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 [![Build Status](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics.svg?branch=master)](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics)
 
 This is a snakemake implementation of the [Metabolomics OpenMS workflow](snakemake-metabolomics/workflow/scripts/OpenMSWF.py) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
 ## Workflow overview
 ![dag](/images/pyOpenMS_workflow.svg)
+
+View the workflow with interactive comments in lucid: https://lucid.app/lucidchart/4dc81d37-bca3-4b2d-8253-33341ac79ab4/edit?viewport_loc=-71%2C53%2C2422%2C1416%2C0_0&invitationId=inv_5c1c0383-052a-4905-8146-dd842ee528fb 
+
 ## Usage
 ### Step 1: Clone the workflow
 
@@ -20,14 +23,16 @@ Step 2: https://docs.github.com/en/github/authenticating-to-github/connecting-to
 
 ### Step 2: Configure workflow
 
-Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution, and `samples.tsv` to specify the samples (files) that will be processed + analyse. 
+Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution, and `samples.tsv` to specify the samples (files) that will be processed + analysed. 
+
+**Suggestion: Always add the genome ID in the filename for easier connection later to BGC_analytics.**
 
 `samples.tsv` example:
 
 |  sample_name |       comment                |
 |-------------:|-----------------------------:|
-| GermicidinA  | standard sample              |
-| Epemicins    | epemicins-producer Kutzneria |
+| NBC_00162    | pyracrimicin                 |
+| MDNA_WGS_14  | epemicins_A_B                |
 
 
 Further formatting rules will be defined in the `workflow/schemas/` folder.
@@ -51,23 +56,15 @@ Activate the conda environment:
 
     conda activate snakemake
 
-#### For Linux only 
-
 Install mono with sudo (https://www.mono-project.com/download/stable/#download-lin):
 
     sudo apt install mono-devel
-
-#### For iOS only 
-
-Install homebrew and wget (for **iOS** only!):
-
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    
+  
 Press enter (RETURN) to continue 
     
     brew install wget
 
-#### Get input data
+#### Get input data (only for testing the workflow with the example dataset)
 
     (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
 
@@ -100,13 +97,13 @@ All the results are in a csv format and can be opened simply with excel or using
 * [The main rules (*.smk)](workflow/rules/): is the bash code that has been chopped into modular units, with defined input & output. Snakemake then chain this rules together to generate required jobs. This should be intuitive and makes things easier for adding / changing steps in the pipeline.
 
 ### Environments
-* Conda environment are defined as .yaml file in `workflow/envs`
+* Conda environments are defined as .yaml file in `workflow/envs`
 * Note that not all dependencies are compatible/available as conda libraries. Once installed, the virtual environment are stored in `.snakemake/conda` with unique hashes. The ALE and pilon are example where environment needs to be modified / dependencies need to be installed.
 * It might be better to utilise containers / dockers and cloud execution for "hard to install" dependencies
 * Custom dependencies and databases are stored in the `resources/` folder.
 * Snakemake dependencies with conda packages is one of the drawbacks and why [Nextflow](https://www.nextflow.io/) might be more preferable. Nevertheless, the pythonic language of snakemake enable newcomers to learn and develop their own pipeline faster.
 
-### Test Data
+### Test Data (only for testing the workflow with the example dataset)
 * Current test data are built from real runs of known metabolite producer strains or standard samples that have been already alanysed with the GUI Software Freestyle and confirmed the presence of fragmentation patterns for the specific metabolites
 
 
