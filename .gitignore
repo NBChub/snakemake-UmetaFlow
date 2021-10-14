@@ -16,3 +16,4 @@ manualCLI/*
 !results/GNPSexport/.gitkeep
 !results/.gitkeep
 metadatanotebook.ipynb
+READMEsnakemakeMacOSandLinux.md
