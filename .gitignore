@@ -17,3 +17,5 @@ manualCLI/*
 !results/.gitkeep
 metadatanotebook.ipynb
 READMEsnakemakeMacOSandLinux.md
+__pycache__/*
+.ipynb_checkpoints/*
