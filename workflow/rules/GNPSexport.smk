@@ -21,7 +21,6 @@ metadata=metadata.drop(columns="ATTRIBUTE_genomeIDMDNA")
 #metadata['ATTRIBUTE_genomeID']= metadata['ATTRIBUTE_genomeID'].replace(to_replace= r'MDNAWGS', value= 'MDNA_WGS_', regex= True)
 metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
 
-
 #copy all the original mzml files (precursor corrected ones) in the GNPSExport folder for easier used
 rule FileCopy:
     input:
