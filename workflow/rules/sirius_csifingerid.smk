@@ -1,6 +1,17 @@
+rule preprocess_noconvexhulls:
+    input:
+        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
+    output:
+        "results/{samples}/interim/FFM_noconvexhulls_{samples}.featureXML",
+        "results/{samples}/interim/MFD_noconvexhulls_{samples}.featureXML"
+    conda:
+        "../envs/pyopenms.yaml"
+    script:
+        "../scripts/2_noconvexhulls_preprocessing.py"
+
 rule sirius_csifingerid:
     input: 
-        "results/{samples}/interim/MFD_{samples}.featureXML",
+        "results/{samples}/interim/MFD_noconvexhulls_{samples}.featureXML",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML", 
         "resources/Sirius/sirius.app/Contents/MacOS/sirius"
     output:

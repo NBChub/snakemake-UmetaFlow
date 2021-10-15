@@ -3,16 +3,15 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES),
+ #       expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES),
         expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES),
         expand(["results/{samples}/interim/FFM_{samples}.featureXML", "results/{samples}/interim/MFD_{samples}.featureXML"], samples= SAMPLES),
         expand("results/{samples}/features_{samples}.csv", samples=SAMPLES),
+        expand(["results/{samples}/interim/FFM_noconvexhulls_{samples}.featureXML", "results/{samples}/interim/MFD_noconvexhulls_{samples}.featureXML"], samples= SAMPLES),
         expand("results/{samples}/interim/formulas_{samples}.mzTab" ,samples=SAMPLES),
-        expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES),
-        #expand("results/{samples}/interim/MFD_{samples}.featureXML", samples=SAMPLES),
+        expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES)
         #expand(["results/{samples}/interim/formulas_{samples}.mzTab", "results/{samples}/interim/structures_{samples}.mzTab"], samples=SAMPLES),
         #expand(["results/{samples}/formulas_{samples}.csv", "results/{samples}/structures_{samples}.csv"], samples=SAMPLES),
-        #expand(["results/{samples}/interim/FFM_convexhulls_{samples}.featureXML", "results/{samples}/interim/MFD_convexhulls_{samples}.featureXML"], samples= SAMPLES),
         #expand(["results/Consensus/interim/MapAlignerPoseClustering_{samples}.featureXML", "results/Consensus/interim/MapAlignerPoseClustering_{samples}.trafoXML"], samples=SAMPLES),
         #expand("results/Consensus/interim/IDMapper_{samples}.featureXML", samples=SAMPLES),
         #expand("results/Consensus/interim/FeatureLinkerUnlabeledKD.consensusXML"),
@@ -21,6 +20,5 @@ rule all:
         #expand("results/GNPSexport/MSMS.mgf"),
         #expand("results/GNPSexport/FeatureQuantificationTable.txt")
 
-include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
 include: "rules/sirius.smk"

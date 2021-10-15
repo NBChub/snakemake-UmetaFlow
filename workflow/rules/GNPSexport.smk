@@ -21,16 +21,6 @@ metadata=metadata.drop(columns="ATTRIBUTE_genomeIDMDNA")
 #metadata['ATTRIBUTE_genomeID']= metadata['ATTRIBUTE_genomeID'].replace(to_replace= r'MDNAWGS', value= 'MDNA_WGS_', regex= True)
 metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
 
-rule preprocess_convexhulls:
-    input:
-        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
-    output:
-        "results/{samples}/interim/FFM_convexhulls_{samples}.featureXML",
-        "results/{samples}/interim/MFD_convexhulls_{samples}.featureXML"
-    conda:
-        "../envs/pyopenms.yaml"
-    script:
-        "../scripts/2_consensus_preprocessing.py"
 
 #copy all the original mzml files (precursor corrected ones) in the GNPSExport folder for easier used
 rule FileCopy:
