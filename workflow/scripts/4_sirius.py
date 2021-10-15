@@ -32,7 +32,7 @@ def sirius(filename):
     sirius_algo_par.setValue("sirius:db", "none")
     sirius_algo_par.setValue("sirius:ions_considered", "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+")
     sirius_algo_par.setValue("sirius:candidates", 5)
-    sirius_algo_par.setValue("sirius:elements_enforced", "CHNOS") 
+    sirius_algo_par.setValue("sirius:elements_enforced", "CHN[15]OS") 
     sirius_algo_par.setValue("project:processors", 2)
     sirius_algo_par.setValue("fingerid:db", "BIO")
     sirius_algo.setParameters(sirius_algo_par)
