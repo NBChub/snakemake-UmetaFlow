@@ -9,7 +9,8 @@ def df_sirius(filename):
     sirius.metadata
     df= sirius.small_molecule_table
     SIRIUS_DF= df.drop(columns= ["identifier", "smiles", "inchi_key", "description", "database","calc_mass_to_charge", "charge", "taxid", "species", "database_version", "spectra_ref", "search_engine", "modifications"])
-#    SIRIUS_DF=SIRIUS_DF[SIRIUS_DF["opt_global_explainedIntensity"] >= 0.7]
+    SIRIUS_DF=SIRIUS_DF[SIRIUS_DF["opt_global_explainedIntensity"] >= 0.6]
+    SIRIUS_DF= SIRIUS_DF.sort_values(by= "exp_mass_to_charge")
     SIRIUS_DF.to_csv(snakemake.output[0])
 
 
