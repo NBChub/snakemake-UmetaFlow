@@ -1,6 +1,5 @@
 include: "rules/common.smk"
 
-
 rule all:
     input:
         expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES),
