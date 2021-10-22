@@ -22,17 +22,13 @@ def sirius(filename):
     sirius_algo = SiriusAdapterAlgorithm()
 
     sirius_algo_par = sirius_algo.getDefaults()
-
-    sirius_algo_par.setValue("preprocessing:filter_by_num_masstraces", 2) 
-    sirius_algo_par.setValue("preprocessing:precursor_mz_tolerance", 10.0) #default
-    sirius_algo_par.setValue("preprocessing:precursor_mz_tolerance_unit", "ppm")
-    sirius_algo_par.setValue("preprocessing:precursor_rt_tolerance", 5.0) #default
-    sirius_algo_par.setValue("preprocessing:feature_only", "true")
+   
+    sirius_algo_par.setValue("preprocessing:filter_by_num_masstraces", 2) #Number of mass traces each feature has to have to be included
+    sirius_algo_par.setValue("preprocessing:feature_only", "true") #Uses the feature information from in_featureinfo to reduce the search space to MS2
     sirius_algo_par.setValue("sirius:profile", "orbitrap")
     sirius_algo_par.setValue("sirius:db", "none")
     sirius_algo_par.setValue("sirius:ions_considered", "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+")
-    sirius_algo_par.setValue("sirius:candidates", 5)
-    sirius_algo_par.setValue("sirius:elements_enforced", "CHN[15]OS") 
+    sirius_algo_par.setValue("sirius:elements_enforced", "CHN[15]OS[4]") 
     sirius_algo_par.setValue("project:processors", 2)
     sirius_algo_par.setValue("fingerid:db", "BIO")
     sirius_algo.setParameters(sirius_algo_par)
