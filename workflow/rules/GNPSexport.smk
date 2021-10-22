@@ -43,7 +43,7 @@ rule MapAlignerPoseClustering:
         var2= expand("results/Consensus/interim/MapAlignerPoseClustering_{samples}.trafoXML", samples=SAMPLES)
     shell:
         """
-        resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -in {input} -out {output.var1} -trafo_out {output.var2}
+        resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
 #Introduce the features to a protein identification file (idXML)- the only way to create a ConsensusXML file currently (run FeatureLinkerUnlabeledKD)       
