@@ -2,8 +2,8 @@ rule preprocess_noconvexhulls:
     input:
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
-        "results/{samples}/interim/FFM_noconvexhulls_{samples}.featureXML",
-        "results/{samples}/interim/MFD_noconvexhulls_{samples}.featureXML"
+        "results/{samples}/interim/sirius/FFM_noconvexhulls_{samples}.featureXML",
+        "results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML"
     conda:
         "../envs/pyopenms.yaml"
     script:
@@ -11,11 +11,11 @@ rule preprocess_noconvexhulls:
         
 rule sirius:
     input: 
-        "results/{samples}/interim/MFD_noconvexhulls_{samples}.featureXML",
+        "results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML", 
         "resources/Sirius/sirius.app/Contents/MacOS/sirius",
     output:
-        "results/{samples}/interim/formulas_{samples}.mzTab"
+        "results/{samples}/interim/sirius/formulas_{samples}.mzTab"
     conda:
         "../envs/pyopenms.yaml"
     script:
@@ -23,7 +23,7 @@ rule sirius:
 
 rule df_sirius:
     input: 
-        "results/{samples}/interim/formulas_{samples}.mzTab"
+        "results/{samples}/interim/sirius/formulas_{samples}.mzTab"
     output:
         "results/{samples}/formulas_{samples}.csv"
     conda:

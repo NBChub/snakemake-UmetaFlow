@@ -7,7 +7,7 @@ rule metaboident:
         "results/MetaboIdentification/FFMID_{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input[0]} -in {input[1]} -out -in {output}
+        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input[0]} -in {input[1]} -out {output}
         """
 
 rule df_metaboident:
@@ -18,4 +18,4 @@ rule df_metaboident:
     conda:
         "../envs/pyopenms.yaml"   
     script:
-        "../scripts/8_df_FFMI.py"
+        "../scripts/8_df_metaboident.py"

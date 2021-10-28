@@ -58,11 +58,10 @@ class FeatureMapDF(FeatureMap):
         return df
 
 
-def FFMIdataframe(filename)
+def FFMIdataframe(filename):
     fmap = FeatureMapDF()
     FeatureXMLFile().load(filename, fmap)
     DF= fmap.get_fmi_df()
-    feature_csv= './results/Epemicins/FFMI_Epemicins.csv'
     DF.to_csv(snakemake.output[0])
 
 FFMIdataframe(snakemake.input[0])

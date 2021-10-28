@@ -37,10 +37,10 @@ rule FileCopy:
 
 rule MapAlignerPoseClustering:
     input:
-        expand("results/{samples}/interim/MFD_{samples}.featureXML", samples=SAMPLES)
+        expand("results/{samples}/interim/preprocessed/MFD_{samples}.featureXML", samples=SAMPLES)
     output:
-        var1= expand("results/Consensus/interim/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES),
-        var2= expand("results/Consensus/interim/MapAlignerPoseClustering_{samples}.trafoXML", samples=SAMPLES)
+        var1= expand("results/interim/consensus/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES),
+        var2= expand("results/interim/consensus/MapAlignerPoseClustering_{samples}.trafoXML", samples=SAMPLES)
     shell:
         """
         resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -in {input} -out {output.var1} -trafo_out {output.var2}
@@ -50,10 +50,10 @@ rule MapAlignerPoseClustering:
 rule IDMapper:
     input:
         "resources/emptyfile.idXML",
-        "results/Consensus/interim/MapAlignerPoseClustering_{samples}.featureXML",
+        "results/interim/consensus/MapAlignerPoseClustering_{samples}.featureXML",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
-        "results/Consensus/interim/IDMapper_{samples}.featureXML"
+        "results/interim/consensus/IDMapper_{samples}.featureXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/IDMapper -id {input[0]} -in {input[1]}  -spectra:in {input[2]} -out {output} 
@@ -62,9 +62,9 @@ rule IDMapper:
 #The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (no MS2 data).
 rule FeatureLinkerUnlabeledKD:
     input:
-        expand("results/Consensus/interim/IDMapper_{samples}.featureXML", samples=SAMPLES)
+        expand("results/interim/consensus/IDMapper_{samples}.featureXML", samples=SAMPLES)
     output:
-        "results/Consensus/interim/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/interim/consensus/FeatureLinkerUnlabeledKD.consensusXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
@@ -73,9 +73,9 @@ rule FeatureLinkerUnlabeledKD:
 #Filter out the features that do not have an MS2 pattern
 rule FileFilter:
     input:
-        "results/Consensus/interim/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/interim/consensus/FeatureLinkerUnlabeledKD.consensusXML"
     output:
-        "results/Consensus/filtered.consensusXML"
+        "results/interim/consensus/filtered.consensusXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FileFilter -id:remove_unannotated_features -in {input} -out {output} 
@@ -84,7 +84,7 @@ rule FileFilter:
 #GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 rule GNPS_export:
     input:
-        var1= "results/Consensus/filtered.consensusXML",
+        var1= "results/interim/consensus/filtered.consensusXML",
         var2= expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES)
     output:
         "results/GNPSexport/MSMS.mgf" 
@@ -96,7 +96,7 @@ rule GNPS_export:
 #export the consensusXML file to a txt file for GNPS
 rule txt_export:
     input:
-        "results/Consensus/filtered.consensusXML"
+        "results/interim/consensus/filtered.consensusXML"
     output:
         "results/GNPSexport/FeatureQuantificationTable.txt" 
     shell:
