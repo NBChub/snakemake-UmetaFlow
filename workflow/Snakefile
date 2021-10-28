@@ -12,15 +12,15 @@ rule all:
         #expand(["results/{samples}/interim/sirius_csifingerid/FFM_noconvexhulls_{samples}.featureXML", "results/{samples}/interim/sirius_csifingerid/MFD_noconvexhulls_{samples}.featureXML"], samples= SAMPLES),
         #expand(["results/{samples}/interim/sirius_csifingerid/formulas_{samples}.mzTab", "results/{samples}/interim/sirius_csifingerid/structures_{samples}.mzTab"], samples=SAMPLES),
         #expand(["results/{samples}/sirius_csi_formulas_{samples}.csv", "results/{samples}/sirius_csi_structures_{samples}.csv"], samples=SAMPLES),
-        expand(["results/interim/consensus/MapAlignerPoseClustering_{samples}.featureXML", "results/interim/consensus/MapAlignerPoseClustering_{samples}.trafoXML"], samples=SAMPLES),
-        expand("results/interim/consensus/IDMapper_{samples}.featureXML", samples=SAMPLES),
-        expand("results/interim/consensus/FeatureLinkerUnlabeledKD.consensusXML"),
-        expand("results/interim/consensus/filtered.consensusXML"),
+        expand(["results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML", "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.trafoXML"], samples=SAMPLES),
+        expand("results/GNPSexport/interim/IDMapper_{samples}.featureXML", samples=SAMPLES),
+        expand("results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"),
+        expand("results/GNPSexport/interim/filtered.consensusXML"),
         expand("results/GNPSexport/{samples}.mzML", samples=SAMPLES),
         expand("results/GNPSexport/MSMS.mgf"),
         expand("results/GNPSexport/FeatureQuantificationTable.txt"),
-        expand("results/MetaboIdentification/FFMID_{samples}.featureXML", samples=SAMPLES),
-        expand("results/MetaboIdentification/FFMID_{samples}.csv", samples=SAMPLES)
+        expand("results/MetaboliteAnnotation/interim/FFMID_{samples}.featureXML", samples=SAMPLES),
+        expand("results/MetaboliteAnnotation/FFMID_{samples}.csv", samples=SAMPLES)
 
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
