@@ -18,11 +18,8 @@ rule all:
         expand("results/GNPSexport/interim/filtered.consensusXML"),
         expand("results/GNPSexport/{samples}.mzML", samples=SAMPLES),
         expand("results/GNPSexport/MSMS.mgf"),
-        expand("results/GNPSexport/FeatureQuantificationTable.txt"),
-        expand("results/MetaboliteAnnotation/interim/FFMID_{samples}.featureXML", samples=SAMPLES),
-        expand("results/MetaboliteAnnotation/FFMID_{samples}.csv", samples=SAMPLES)
+        expand("results/GNPSexport/FeatureQuantificationTable.txt")
 
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
-include: "rules/GNPSexport.smk",
-include: "rules/metaboident.smk"
+include: "rules/GNPSexport.smk"
