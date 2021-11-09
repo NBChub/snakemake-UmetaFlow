@@ -1,12 +1,14 @@
 #Create a metadata csv file for GNPS from the samples.tsv file 
 
 import pandas as pd
+import numpy as np 
+
 path= "results/GNPSexport/interim"
 isExist= os.path.exists(path)
 if not isExist:
     os.mkdir(path)
 
-df= pd.read_csv("data/raw/samples.tsv", sep= "\t", index_col= "Unnamed: 0")
+df= pd.read_csv("config/samples.tsv", sep= "\t", index_col= "Unnamed: 0")
 metadata= df.rename(columns= {"sample_name": "filename", "comment": "ATTRIBUTE_comment", "MAPnumber": "ATTRIBUTE_MAPnumber"})
 metadata["filename"]= metadata["filename"].astype(str) +".mzml"
 metadata['ATTRIBUTE_MAPnumber'] = np.arange(len(metadata))

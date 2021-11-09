@@ -19,6 +19,6 @@ metadatanotebook.ipynb
 READMEsnakemakeMacOSandLinux.md
 __pycache__/*
 .ipynb_checkpoints/*
-old runs/*
+old_results/*
 CreateFeatureMetaboidentcsv.ipynb
 workflow/scripts/OpenMSWF.py
