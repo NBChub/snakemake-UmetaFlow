@@ -2,7 +2,7 @@
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.7.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 [![Build Status](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics.svg?branch=master)](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics)
 
-This is a snakemake implementation of the [Metabolomics OpenMS workflow](snakemake-metabolomics/workflow/scripts/OpenMSWF.py) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
+This is a snakemake implementation of the [Metabolomics OpenMS workflow](snakemake-metabolomics/OpenMS_workflow.ipynb) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
 ## Workflow overview
 ![dag](/images/pyOpenMS_workflow.svg)
 
