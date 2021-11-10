@@ -11,6 +11,8 @@ resources/*
 !GNPSExport.ini
 !data/.gitkeep
 !resources/ThermoRawFileParser/README.md
+!resources/emptyfile.idXML
+!resources/MetaboliteIdentification.tsv
 !resources/Sirius/README.md
 manualCLI/*
 metadatanotebook.ipynb
