@@ -13,8 +13,6 @@ resources/*
 !resources/ThermoRawFileParser/README.md
 !resources/Sirius/README.md
 manualCLI/*
-!results/GNPSexport/.gitkeep
-!results/.gitkeep
 metadatanotebook.ipynb
 READMEsnakemakeMacOSandLinux.md
 __pycache__/*
