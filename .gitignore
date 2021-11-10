@@ -10,6 +10,7 @@ results/*
 resources/*
 !GNPSExport.ini
 !data/.gitkeep
+!results/.gitkeep
 !resources/ThermoRawFileParser/README.md
 !resources/emptyfile.idXML
 !resources/MetaboliteIdentification.tsv
