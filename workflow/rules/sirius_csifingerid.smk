@@ -1,3 +1,5 @@
+# 1) Correction of wrong assignment of the mono-isotopic mass for precursors (MS2 level)
+
 rule preprocess_noconvexhulls:
     input:
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
@@ -8,6 +10,9 @@ rule preprocess_noconvexhulls:
         "../envs/pyopenms.yaml"
     script:
         "../scripts/2_noconvexhulls_preprocessing.py"
+
+# 2) SIRIUS generates formula prediction from scores calculated from 1) MS2 fragmentation scores (ppm error + intensity) and 2) MS1 isotopic pattern scores.        
+#    The CSI_fingerID function is another algorithm from the Boecher lab, just like SIRIUS adapter and is using the formula predictions from SIRIUS, to search in structural libraries and predict the structure of each formula.
 
 rule sirius_csifingerid:
     input: 

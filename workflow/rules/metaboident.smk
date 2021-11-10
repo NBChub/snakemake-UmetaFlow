@@ -1,7 +1,9 @@
+# Re-quantify the features in all data (missing value correction)
+# This rule is currently not used - in progress
 
 rule metaboident:
     input:
-        "MetaboliteIdentification.tsv",
+        "resources/MetaboliteIdentification.tsv",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
         "results/MetaboliteAnnotation/interim/FFMID_{samples}.featureXML"

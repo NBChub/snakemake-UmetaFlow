@@ -1,3 +1,6 @@
+# Convert files from Thermo
+# Convert profile MS1 data from Thermo raw files to centroid (MS1 and MS2) mzml
+
 rule mzml_conversion:
     input:
         "data/raw/{samples}.raw"

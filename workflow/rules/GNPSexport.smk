@@ -1,4 +1,6 @@
-#Create a metadata csv file for GNPS from the samples.tsv file 
+# Create a directory with all files necessary for FBMN
+
+# 1) Create a metadata csv file for GNPS from the samples.tsv file 
 
 import pandas as pd
 import numpy as np 
@@ -24,7 +26,7 @@ metadata=metadata.drop(columns="ATTRIBUTE_genomeIDMDNA")
 #metadata['ATTRIBUTE_genomeID']= metadata['ATTRIBUTE_genomeID'].replace(to_replace= r'MDNAWGS', value= 'MDNA_WGS_', regex= True)
 metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
 
-#copy all the original mzml files (precursor corrected ones) in the GNPSExport folder for easier used
+# 2) copy all the original mzml files (precursor corrected ones) in the GNPSExport folder for easier used
 rule FileCopy:
     input:
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
@@ -35,8 +37,7 @@ rule FileCopy:
         cp {input} {output}
         """ 
 
-#MapAlignerPoseClustering is used to perform a linear retention time alignment, basically correct for linear shifts in retention time.
-#add trafoXML files as an output also (TransformationXMLFile()) for transforming also the MS2 spectra later on
+# 3) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
 
 rule MapAlignerPoseClustering:
     input:
@@ -49,7 +50,7 @@ rule MapAlignerPoseClustering:
         resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
-#Introduce the features to a protein identification file (idXML)- the only way to create a ConsensusXML file currently (run FeatureLinkerUnlabeledKD)       
+# 4) Introduce the features to a protein identification file (idXML)- the only way to create an aggregated ConsensusXML file currently (run FeatureLinkerUnlabeledKD)       
 rule IDMapper:
     input:
         "resources/emptyfile.idXML",
@@ -62,7 +63,7 @@ rule IDMapper:
         resources/OpenMS-2.7.0/bin/IDMapper -id {input[0]} -in {input[1]}  -spectra:in {input[2]} -out {output} 
         """
 
-#The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (no MS2 data).
+# 5) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
 rule FeatureLinkerUnlabeledKD:
     input:
         expand("results/GNPSexport/interim/IDMapper_{samples}.featureXML", samples=SAMPLES)
@@ -73,7 +74,7 @@ rule FeatureLinkerUnlabeledKD:
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
-#Filter out the features that do not have an MS2 pattern
+# 6) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
 rule FileFilter:
     input:
         "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
@@ -84,7 +85,7 @@ rule FileFilter:
         resources/OpenMS-2.7.0/bin/FileFilter -id:remove_unannotated_features -in {input} -out {output} 
         """
 
-#GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
+# 7) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 rule GNPS_export:
     input:
         var1= "results/GNPSexport/interim/filtered.consensusXML",
@@ -96,7 +97,7 @@ rule GNPS_export:
         resources/OpenMS-2.7.0/bin/GNPSExport -ini resources/GNPSExport.ini -in_cm {input.var1} -in_mzml {input.var2} -out {output} 
         """
 
-#export the consensusXML file to a txt file for GNPS
+# 8) export the consensusXML file to a txt file for GNPS
 rule txt_export:
     input:
         "results/GNPSexport/interim/filtered.consensusXML"

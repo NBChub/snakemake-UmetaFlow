@@ -1,3 +1,5 @@
+#1) PrecursorCorrection (To the "highest intensity MS1 peak")
+
 rule precursorcorrection:
     input:
         "results/{samples}/interim/{samples}.mzML"
@@ -8,6 +10,8 @@ rule precursorcorrection:
     script:
         "../scripts/1_precursorcorrection.py"
 
+# 2) Preprocessing: Feature finding algorithm that detects peaks 
+    
 rule preprocess:
     input:
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
