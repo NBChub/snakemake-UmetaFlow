@@ -17,7 +17,7 @@ rule sirius:
     input: 
         "results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML", 
-        "resources/Sirius/sirius.app/Contents/MacOS/sirius",
+        "resources/Sirius/sirius/bin/sirius",
     output:
         "results/{samples}/interim/sirius/formulas_{samples}.mzTab"
     conda:

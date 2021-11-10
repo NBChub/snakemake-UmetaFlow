@@ -18,7 +18,7 @@ rule sirius_csifingerid:
     input: 
         "results/{samples}/interim/sirius_csifingerid/MFD_noconvexhulls_{samples}.featureXML",
         "results/{samples}/interim/precursorcorrected_{samples}.mzML", 
-        "resources/Sirius/sirius.app/Contents/MacOS/sirius"
+        "resources/Sirius/sirius/bin/sirius"
     output:
         "results/{samples}/interim/sirius_csifingerid/formulas_{samples}.mzTab",
         "results/{samples}/interim/sirius_csifingerid/structures_{samples}.mzTab"
