@@ -4,8 +4,7 @@ rule preprocess_noconvexhulls:
     input:
         "results/{samples}/interim/precursorcorrected_{samples}.mzML"
     output:
-        "results/{samples}/interim/sirius/FFM_noconvexhulls_{samples}.featureXML",
-        "results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML"
+        "results/{samples}/interim/sirius/FFM_noconvexhulls_{samples}.featureXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true"

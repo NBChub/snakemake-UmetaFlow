@@ -50,4 +50,40 @@ rule FFMI_df:
         resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
         """
 
-#TODO merge csv files to a FeatureQuantTable
+# 5) Introduce the features to a protein identification file (idXML)- the only way to create an aggregated ConsensusXML file currently (run FeatureLinkerUnlabeledKD)  
+
+rule IDMapper_FFMID:
+    input:
+        "resources/emptyfile.idXML",
+        "results/Requant/interim/FFMID_{samples}.featureXML",
+        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
+    output:
+        "results/Requant/interim/IDMapper_FFMID{samples}.featureXML"
+    shell:
+        """
+        resources/OpenMS-2.7.0/bin/IDMapper -id {input[0]} -in {input[1]}  -spectra:in {input[2]} -out {output} 
+        """
+
+# 6) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
+
+rule FeatureLinkerUnlabeledKD_requant:
+    input:
+        expand("results/Requant/interim/IDMapper_FFMID{samples}.featureXML", samples=SAMPLES)
+    output:
+        "results/Requant/interim/FeatureLinkerUnlabeledKD.consensusXML"
+    shell:
+        """
+        resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
+        """
+
+# 7) export the consensusXML file to a csv file to produce a single matrix for PCA
+
+rule matrix:
+    input:
+        "results/Requant/interim/FeatureLinkerUnlabeledKD.consensusXML"
+    output:
+        "results/Requant/consensus.tsv" 
+    shell:
+        """
+        resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
+        """
