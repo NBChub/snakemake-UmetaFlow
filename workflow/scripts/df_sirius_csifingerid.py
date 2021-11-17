@@ -1,10 +1,6 @@
-from pyopenms import *
-from pandas import DataFrame
-import pandas as pd
+import pandas
 import pyteomics
 from pyteomics.openms import featurexml
-import numpy as np
-import sys
 from pyteomics import mztab
 
 def df_sirius_csi(filename):

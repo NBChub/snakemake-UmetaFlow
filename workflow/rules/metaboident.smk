@@ -21,9 +21,9 @@ rule build_library:
     output:
         "resources/MetaboliteIdentification.tsv"
     conda:
-        "../envs/pyopenms.yaml"   
+        "../envs/file_convertion.yaml"   
     script:
-        "../scripts/8_metaboliteidentidication.py"
+        "../scripts/metaboliteidentidication.py"
 
 # 3) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
 

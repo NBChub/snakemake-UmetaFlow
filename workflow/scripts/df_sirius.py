@@ -1,5 +1,3 @@
-from pyopenms import *
-from pandas import DataFrame
 import pandas as pd
 import pyteomics
 from pyteomics import mztab
