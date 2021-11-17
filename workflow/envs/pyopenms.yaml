@@ -6,7 +6,7 @@ dependencies:
   - python=3.9
   - pip
   - pip:
-    - pyopenms==2.7.0
+    - pyopenms
     - ipython
   - python-dateutil
   - pandas=1.2.4

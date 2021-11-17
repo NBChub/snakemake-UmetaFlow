@@ -6,8 +6,9 @@ rule all:
         expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES),
         expand(["results/{samples}/interim/preprocessed/FFM_{samples}.featureXML", "results/{samples}/interim/preprocessed/MFD_{samples}.featureXML"], samples= SAMPLES),
         expand("results/{samples}/features_{samples}.csv", samples=SAMPLES),
-        expand(["results/{samples}/interim/sirius/FFM_noconvexhulls_{samples}.featureXML", "results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML"], samples= SAMPLES),
-        expand("results/{samples}/interim/sirius/formulas_{samples}.mzTab" ,samples=SAMPLES),
+        expand("results/{samples}/interim/sirius/FFM_noconvexhulls_{samples}.featureXML", samples= SAMPLES),
+        expand("results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML", samples= SAMPLES),
+        expand("results/{samples}/interim/sirius/formulas_{samples}.mzTab", samples=SAMPLES),
         expand("results/{samples}/formulas_{samples}.csv",samples=SAMPLES),
         #expand(["results/{samples}/interim/sirius_csifingerid/FFM_noconvexhulls_{samples}.featureXML", "results/{samples}/interim/sirius_csifingerid/MFD_noconvexhulls_{samples}.featureXML"], samples= SAMPLES),
         #expand(["results/{samples}/interim/sirius_csifingerid/formulas_{samples}.mzTab", "results/{samples}/interim/sirius_csifingerid/structures_{samples}.mzTab"], samples=SAMPLES),
@@ -15,12 +16,18 @@ rule all:
         expand(["results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML", "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.trafoXML"], samples=SAMPLES),
         expand("results/GNPSexport/interim/IDMapper_{samples}.featureXML", samples=SAMPLES),
         expand("results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"),
+        expand("results/GNPSexport/interim/consensus.tsv"),
         expand("results/GNPSexport/interim/filtered.consensusXML"),
         expand("results/GNPSexport/{samples}.mzML", samples=SAMPLES),
         expand("results/GNPSexport/MSMS.mgf"),
-        expand("results/GNPSexport/FeatureQuantificationTable.txt")
+        expand("results/GNPSexport/FeatureQuantificationTable.txt"),
+        expand("results/GNPSexport/interim/consensus.csv"),
+        expand("resources/MetaboliteIdentification.tsv"),
+        expand("results/Requant/interim/FFMID_{samples}.featureXML", samples=SAMPLES),
+        expand("results/Requant/FFMID_{samples}.csv", samples=SAMPLES)
 
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
 include: "rules/GNPSexport.smk",
-include: "rules/sirius.smk"
+include: "rules/sirius.smk",
+include: "rules/metaboident.smk"
