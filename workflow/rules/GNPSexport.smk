@@ -50,7 +50,8 @@ rule MapAlignerPoseClustering:
         resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
-# 4) Introduce the features to a protein identification file (idXML)- the only way to create an aggregated ConsensusXML file currently (run FeatureLinkerUnlabeledKD)       
+# 4) Introduce the features to a protein identification file (idXML)- the only way to create an aggregated ConsensusXML file currently (run FeatureLinkerUnlabeledKD)  
+
 rule IDMapper:
     input:
         "resources/emptyfile.idXML",
@@ -64,6 +65,7 @@ rule IDMapper:
         """
 
 # 5) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
+
 rule FeatureLinkerUnlabeledKD:
     input:
         expand("results/GNPSexport/interim/IDMapper_{samples}.featureXML", samples=SAMPLES)
@@ -75,6 +77,7 @@ rule FeatureLinkerUnlabeledKD:
         """
 
 # 6) export the consensusXML file to a csv file for FFMI (later)
+
 rule csv_export:
     input:
         "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
@@ -86,6 +89,7 @@ rule csv_export:
         """
 
 # 7) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
+
 rule FileFilter:
     input:
         "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
@@ -97,6 +101,7 @@ rule FileFilter:
         """
 
 # 8) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
+
 rule GNPS_export:
     input:
         var1= "results/GNPSexport/interim/filtered.consensusXML",
@@ -109,6 +114,7 @@ rule GNPS_export:
         """
 
 # 9) export the consensusXML file to a txt file for GNPS
+
 rule txt_export:
     input:
         "results/GNPSexport/interim/filtered.consensusXML"
