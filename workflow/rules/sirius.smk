@@ -2,7 +2,7 @@
 
 rule preprocess_noconvexhulls:
     input:
-        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
+        "results/{samples}/interim/{samples}.mzML"
     output:
         "results/{samples}/interim/sirius/FFM_noconvexhulls_{samples}.featureXML"
     shell:
@@ -26,7 +26,7 @@ rule sirius_decharge:
 
 rule precursorcorrection_feature:
     input:
-        "results/{samples}/interim/precursorcorrected_{samples}.mzML",
+        "results/{samples}/interim/{samples}.mzML",
         "results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML"
     output:
         "results/{samples}/interim/sirius/PrecursorMassCorrector_{samples}.mzML"
@@ -57,7 +57,7 @@ rule df_sirius:
     output:
         "results/{samples}/formulas_{samples}.csv"
     conda:
-        "../envs/file_convertion.yaml"
+        "../envs/file_conversion.yaml"
     script:
         "../scripts/df_sirius.py"
 

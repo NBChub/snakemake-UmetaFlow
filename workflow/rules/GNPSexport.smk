@@ -29,7 +29,7 @@ metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
 # 2) copy all the original mzml files (precursor corrected ones) in the GNPSExport folder for easier used
 rule FileCopy:
     input:
-        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
+        "results/{samples}/interim/{samples}.mzML"
     output:
         "results/GNPSexport/{samples}.mzML"
     shell:
@@ -56,7 +56,7 @@ rule IDMapper:
     input:
         "resources/emptyfile.idXML",
         "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML",
-        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
+        "results/{samples}/interim/{samples}.mzML"
     output:
         "results/GNPSexport/interim/IDMapper_{samples}.featureXML"
     shell:
@@ -105,7 +105,7 @@ rule FileFilter:
 rule GNPS_export:
     input:
         var1= "results/GNPSexport/interim/filtered.consensusXML",
-        var2= expand("results/{samples}/interim/precursorcorrected_{samples}.mzML", samples=SAMPLES)
+        var2= expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES)
     output:
         "results/GNPSexport/MSMS.mgf" 
     shell:

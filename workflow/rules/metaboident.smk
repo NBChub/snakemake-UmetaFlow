@@ -30,7 +30,7 @@ rule build_library:
 rule metaboident:
     input:
         "resources/MetaboliteIdentification.tsv",
-        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
+        "results/{samples}/interim/{samples}.mzML"
     output:
         "results/Requant/interim/FFMID_{samples}.featureXML"
     shell:
@@ -56,7 +56,7 @@ rule IDMapper_FFMID:
     input:
         "resources/emptyfile.idXML",
         "results/Requant/interim/FFMID_{samples}.featureXML",
-        "results/{samples}/interim/precursorcorrected_{samples}.mzML"
+        "results/{samples}/interim/{samples}.mzML"
     output:
         "results/Requant/interim/IDMapper_FFMID{samples}.featureXML"
     shell:
