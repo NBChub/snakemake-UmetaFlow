@@ -3,7 +3,8 @@ include: "rules/common.smk"
 rule all:
     input:
         expand("results/{samples}/interim/{samples}.mzML", samples= SAMPLES),
-        expand(["results/{samples}/interim/preprocessed/FFM_{samples}.featureXML", "results/{samples}/interim/preprocessed/MFD_{samples}.featureXML"], samples= SAMPLES),
+        expand("results/{samples}/interim/preprocessed/FFM_{samples}.featureXML", samples= SAMPLES),
+        expand("results/{samples}/interim/preprocessed/MFD_{samples}.featureXML", samples= SAMPLES),
         expand("results/{samples}/features_{samples}.csv", samples=SAMPLES),
         expand("results/{samples}/interim/sirius/FFM_noconvexhulls_{samples}.featureXML", samples= SAMPLES),
         expand("results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML", samples= SAMPLES),
