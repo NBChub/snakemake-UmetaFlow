@@ -29,13 +29,13 @@ rule build_library:
 
 rule metaboident:
     input:
-        "resources/MetaboliteIdentification.tsv",
-        "results/{samples}/interim/{samples}.mzML"
+        var1= "resources/MetaboliteIdentification.tsv",
+        var2= "results/{samples}/interim/{samples}.mzML"
     output:
         "results/Requant/interim/FFMID_{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input[0]} -extract:mz_window 5.0 -in {input[1]} -out {output}
+        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -extract:mz_window 5.0 -in {input.var2} -out {output}
         """
 
 # 4) Export the consensusXML file to a csv file 
@@ -54,14 +54,14 @@ rule FFMI_df:
 
 rule IDMapper_FFMID:
     input:
-        "resources/emptyfile.idXML",
-        "results/Requant/interim/FFMID_{samples}.featureXML",
-        "results/{samples}/interim/{samples}.mzML"
+        var1= "resources/emptyfile.idXML",
+        var2= "results/Requant/interim/FFMID_{samples}.featureXML",
+        var3= "results/{samples}/interim/{samples}.mzML"
     output:
         "results/Requant/interim/IDMapper_FFMID{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/IDMapper -id {input[0]} -in {input[1]}  -spectra:in {input[2]} -out {output} 
+        resources/OpenMS-2.7.0/bin/IDMapper -id {input.var1} -in {input.var2} -spectra:in {input.var3} -out {output} 
         """
 
 # 6) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).

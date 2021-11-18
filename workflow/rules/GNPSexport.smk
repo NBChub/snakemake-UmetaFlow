@@ -54,14 +54,14 @@ rule MapAlignerPoseClustering:
 
 rule IDMapper:
     input:
-        "resources/emptyfile.idXML",
-        "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML",
-        "results/{samples}/interim/{samples}.mzML"
+        var1= "resources/emptyfile.idXML",
+        var2= "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML",
+        var3= "results/{samples}/interim/{samples}.mzML"
     output:
         "results/GNPSexport/interim/IDMapper_{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/IDMapper -id {input[0]} -in {input[1]}  -spectra:in {input[2]} -out {output} 
+        resources/OpenMS-2.7.0/bin/IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
         """
 
 # 5) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
