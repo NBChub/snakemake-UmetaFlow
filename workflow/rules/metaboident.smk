@@ -25,20 +25,32 @@ rule build_library:
     script:
         "../scripts/metaboliteidentidication.py"
 
-# 3) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
+# 3) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
+
+rule aligner:
+    input:
+        expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES)
+    output:
+        expand("results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML", samples=SAMPLES),
+    shell:
+        """
+        resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -in {input} -out {output}
+        """ 
+
+# 4) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
 
 rule metaboident:
     input:
         var1= "resources/MetaboliteIdentification.tsv",
-        var2= "results/{samples}/interim/{samples}.mzML"
+        var2= "results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML"
     output:
         "results/Requant/interim/FFMID_{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -extract:mz_window 5.0 -in {input.var2} -out {output}
+        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 
         """
 
-# 4) Export the consensusXML file to a csv file 
+# 5) Export the consensusXML file to a csv file 
 
 rule FFMI_df:
     input:
@@ -50,7 +62,7 @@ rule FFMI_df:
         resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
         """
 
-# 5) Introduce the features to a protein identification file (idXML)- the only way to create an aggregated ConsensusXML file currently (run FeatureLinkerUnlabeledKD)  
+# 6) Introduce the features to a protein identification file (idXML)- the only way to create an aggregated ConsensusXML file currently (run FeatureLinkerUnlabeledKD)  
 
 rule IDMapper_FFMID:
     input:
@@ -64,7 +76,7 @@ rule IDMapper_FFMID:
         resources/OpenMS-2.7.0/bin/IDMapper -id {input.var1} -in {input.var2} -spectra:in {input.var3} -out {output} 
         """
 
-# 6) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
+# 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
 
 rule FeatureLinkerUnlabeledKD_requant:
     input:
@@ -76,7 +88,7 @@ rule FeatureLinkerUnlabeledKD_requant:
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
-# 7) export the consensusXML file to a csv file to produce a single matrix for PCA
+# 8) export the consensusXML file to a csv file to produce a single matrix for PCA
 
 rule matrix:
     input:

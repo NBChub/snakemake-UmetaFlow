@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from snakemake.utils import validate
 from snakemake.utils import min_version
