@@ -21,7 +21,7 @@ rule build_library:
     output:
         "resources/MetaboliteIdentification.tsv"
     conda:
-        "../envs/file_convertion.yaml"   
+        "../envs/file_conversion.yaml"   
     script:
         "../scripts/metaboliteidentidication.py"
 
@@ -31,10 +31,10 @@ rule aligner:
     input:
         expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES)
     output:
-        expand("results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML", samples=SAMPLES),
+        expand("results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML", samples=SAMPLES)
     shell:
         """
-        resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -in {input} -out {output}
+        resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -in {input} -out {output} -algorithm:max_num_peaks_considered 3000 
         """ 
 
 # 4) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
@@ -70,7 +70,7 @@ rule IDMapper_FFMID:
         var2= "results/Requant/interim/FFMID_{samples}.featureXML",
         var3= "results/{samples}/interim/{samples}.mzML"
     output:
-        "results/Requant/interim/IDMapper_FFMID{samples}.featureXML"
+        "results/Requant/interim/IDMapper_FFMID_{samples}.featureXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/IDMapper -id {input.var1} -in {input.var2} -spectra:in {input.var3} -out {output} 
@@ -78,11 +78,11 @@ rule IDMapper_FFMID:
 
 # 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
 
-rule FeatureLinkerUnlabeledKD_requant:
+rule FeatureLinker:
     input:
-        expand("results/Requant/interim/IDMapper_FFMID{samples}.featureXML", samples=SAMPLES)
+        expand("results/Requant/interim/IDMapper_FFMID_{samples}.featureXML", samples=SAMPLES)
     output:
-        "results/Requant/interim/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/Requant/interim/Requant.consensusXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
@@ -92,7 +92,7 @@ rule FeatureLinkerUnlabeledKD_requant:
 
 rule matrix:
     input:
-        "results/Requant/interim/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/Requant/interim/Requant.consensusXML"
     output:
         "results/Requant/consensus.tsv" 
     shell:
