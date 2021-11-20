@@ -34,7 +34,20 @@ rule decharge:
         resources/OpenMS-2.7.0/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.2" "NH4:+:0.1" "H2O:-:0.1"  -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
         """
 
-# 4) Convert the featureXML to a csv file
+# 4) Correct the MS2 precursor in a feature level (for GNPS FBMN).        
+
+rule precursorcorrection_feature:
+    input:
+        var1= "results/{samples}/interim/PCpeak_{samples}.mzML",
+        var2= "results/{samples}/interim/preprocessed/MFD_{samples}.featureXML"
+    output:
+        "results/{samples}/interim/PCfeature_{samples}.mzML"
+    shell:
+        """
+        resources/OpenMS-2.7.0/bin/HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
+        """ 
+
+# 5) Convert the featureXML to a csv file
 
 rule df_preprocess:
     input: 
