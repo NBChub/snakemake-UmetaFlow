@@ -29,7 +29,7 @@ rule build_library:
 
 rule aligner:
     input:
-        expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES)
+        expand("results/{samples}/interim/PCpeak_{samples}.mzML", samples=SAMPLES)
     output:
         expand("results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML", samples=SAMPLES)
     shell:
@@ -68,7 +68,7 @@ rule IDMapper_FFMID:
     input:
         var1= "resources/emptyfile.idXML",
         var2= "results/Requant/interim/FFMID_{samples}.featureXML",
-        var3= "results/{samples}/interim/{samples}.mzML"
+        var3= "results/{samples}/interim/PCpeak_{samples}.mzML"
     output:
         "results/Requant/interim/IDMapper_FFMID_{samples}.featureXML"
     shell:

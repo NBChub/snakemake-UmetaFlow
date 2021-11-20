@@ -1,8 +1,8 @@
 # 1) Correction of wrong assignment of the mono-isotopic mass for precursors (MS2 level)
 
-rule preprocess_noconvexhulls:
+rule preprocess_noconvexhulls_csi:
     input:
-        "results/{samples}/interim/{samples}.mzML"
+        "results/{samples}/interim/PCpeak_{samples}.mzML"
     output:
         "results/{samples}/interim/sirius_csifingerid/FFM_noconvexhulls_{samples}.featureXML"
     shell:
@@ -12,7 +12,7 @@ rule preprocess_noconvexhulls:
 
 # 2) Decharger: Decharging algorithm for adduct assignment
 
-rule sirius_decharge:
+rule sirius_csi_decharge:
     input:
         "results/{samples}/interim/sirius_csifingerid/FFM_noconvexhulls_{samples}.featureXML"
     output:
@@ -24,12 +24,12 @@ rule sirius_decharge:
 
 # 3) Correct the MS2 precursor in a feature level.        
 
-rule precursorcorrection_feature:
+rule precursorcorrection_feature_csi:
     input:
-        var1= "results/{samples}/interim/{samples}.mzML",
+        var1= "results/{samples}/interim/PCpeak_{samples}.mzML",
         var2= "results/{samples}/interim/sirius_csifingerid/MFD_noconvexhulls_{samples}.featureXML"
     output:
-        "results/{samples}/interim/sirius_csifingerid/PrecursorMassCorrector_{samples}.mzML"
+        "results/{samples}/interim/sirius_csifingerid/PCfeature_{samples}.mzML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output} -nearest_peak:mz_tolerance "100.0"
@@ -41,7 +41,7 @@ rule precursorcorrection_feature:
 rule sirius_csifingerid:
     input: 
         var1= "resources/Sirius/sirius.app/Contents/MacOS/sirius",
-        var2= "results/{samples}/interim/sirius_csifingerid/PrecursorMassCorrector_{samples}.mzML", 
+        var2= "results/{samples}/interim/sirius_csifingerid/PCfeature_{samples}.mzML", 
         var3= "results/{samples}/interim/sirius_csifingerid/MFD_noconvexhulls_{samples}.featureXML" 
     output:
         "results/{samples}/interim/sirius_csifingerid/formulas_{samples}.mzTab",

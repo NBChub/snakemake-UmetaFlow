@@ -26,10 +26,10 @@ metadata=metadata.drop(columns="ATTRIBUTE_genomeIDMDNA")
 #metadata['ATTRIBUTE_genomeID']= metadata['ATTRIBUTE_genomeID'].replace(to_replace= r'MDNAWGS', value= 'MDNA_WGS_', regex= True)
 metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
 
-# 2) copy all the original mzml files (precursor corrected ones) in the GNPSExport folder for easier used
+# 2) copy all the original mzml files (precursor-corrected ones) in the GNPSExport folder for easier use
 rule FileCopy:
     input:
-        "results/{samples}/interim/{samples}.mzML"
+        "results/{samples}/interim/PCfeature_{samples}.mzML"
     output:
         "results/GNPSexport/{samples}.mzML"
     shell:
@@ -56,7 +56,7 @@ rule IDMapper:
     input:
         var1= "resources/emptyfile.idXML",
         var2= "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML",
-        var3= "results/{samples}/interim/{samples}.mzML"
+        var3= "results/{samples}/interim/PCfeature_{samples}.mzML"
     output:
         "results/GNPSexport/interim/IDMapper_{samples}.featureXML"
     shell:
@@ -105,7 +105,7 @@ rule FileFilter:
 rule GNPS_export:
     input:
         var1= "results/GNPSexport/interim/filtered.consensusXML",
-        var2= expand("results/{samples}/interim/{samples}.mzML", samples=SAMPLES)
+        var2= expand("results/{samples}/interim/PCfeature_{samples}.mzML", samples=SAMPLES)
     output:
         "results/GNPSexport/MSMS.mgf" 
     shell:

@@ -2,7 +2,7 @@
 
 rule preprocess_noconvexhulls:
     input:
-        "results/{samples}/interim/{samples}.mzML"
+        "results/{samples}/interim/PCpeak_{samples}.mzML"
     output:
         "results/{samples}/interim/sirius/FFM_noconvexhulls_{samples}.featureXML"
     shell:
@@ -26,10 +26,10 @@ rule sirius_decharge:
 
 rule precursorcorrection_feature:
     input:
-        var1= "results/{samples}/interim/{samples}.mzML",
+        var1= "results/{samples}/interim/PCpeak_{samples}.mzML",
         var2= "results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML"
     output:
-        "results/{samples}/interim/sirius/PrecursorMassCorrector_{samples}.mzML"
+        "results/{samples}/interim/sirius/PCfeature_{samples}.mzML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
@@ -40,7 +40,7 @@ rule precursorcorrection_feature:
 rule sirius:
     input: 
         var1= "resources/Sirius/sirius.app/Contents/MacOS/sirius",
-        var2= "results/{samples}/interim/sirius/PrecursorMassCorrector_{samples}.mzML", 
+        var2= "results/{samples}/interim/sirius/PCfeature_{samples}.mzML", 
         var3= "results/{samples}/interim/sirius/MFD_noconvexhulls_{samples}.featureXML"        
     output:
         "results/{samples}/interim/sirius/formulas_{samples}.mzTab"
