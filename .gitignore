@@ -5,11 +5,10 @@
 *.xlsx
 .snakemake/
 .vscode/
-data/*
+*.raw
 results/*
 resources/*
 !GNPSExport.ini
-!data/.gitkeep
 !results/.gitkeep
 !resources/ThermoRawFileParser/README.md
 !resources/emptyfile.idXML

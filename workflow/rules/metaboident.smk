@@ -47,7 +47,7 @@ rule metaboident:
         "results/Requant/interim/FFMID_{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 
+        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
         """
 
 # 5) Export the consensusXML file to a csv file 
@@ -62,25 +62,11 @@ rule FFMI_df:
         resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
         """
 
-# 6) Introduce the features to a protein identification file (idXML)- the only way to create an aggregated ConsensusXML file currently (run FeatureLinkerUnlabeledKD)  
-
-rule IDMapper_FFMID:
-    input:
-        var1= "resources/emptyfile.idXML",
-        var2= "results/Requant/interim/FFMID_{samples}.featureXML",
-        var3= "results/{samples}/interim/PCpeak_{samples}.mzML"
-    output:
-        "results/Requant/interim/IDMapper_FFMID_{samples}.featureXML"
-    shell:
-        """
-        resources/OpenMS-2.7.0/bin/IDMapper -id {input.var1} -in {input.var2} -spectra:in {input.var3} -out {output} 
-        """
-
-# 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
+# 6) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
 
 rule FeatureLinker:
     input:
-        expand("results/Requant/interim/IDMapper_FFMID_{samples}.featureXML", samples=SAMPLES)
+        expand("results/Requant/interim/FFMID_{samples}.featureXML", samples=SAMPLES)
     output:
         "results/Requant/interim/Requant.consensusXML"
     shell:
@@ -88,7 +74,7 @@ rule FeatureLinker:
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
-# 8) export the consensusXML file to a csv file to produce a single matrix for PCA
+# 7) export the consensusXML file to a csv file to produce a single matrix for PCA
 
 rule matrix:
     input:
