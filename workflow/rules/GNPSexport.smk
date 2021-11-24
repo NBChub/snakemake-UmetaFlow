@@ -4,7 +4,6 @@
 
 import pandas as pd
 import numpy as np 
-
 path= "results/GNPSexport/interim"
 isExist= os.path.exists(path)
 if not isExist:
@@ -25,6 +24,7 @@ metadata=metadata.drop(columns="ATTRIBUTE_genomeIDMDNA")
 #metadata['ATTRIBUTE_genomeID']= metadata['ATTRIBUTE_genomeID'].replace(to_replace= r'NBC', value= 'NBC_', regex= True)
 #metadata['ATTRIBUTE_genomeID']= metadata['ATTRIBUTE_genomeID'].replace(to_replace= r'MDNAWGS', value= 'MDNA_WGS_', regex= True)
 metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
+
 
 # 2) copy all the original mzml files (precursor-corrected ones) in the GNPSExport folder for easier use
 rule FileCopy:
