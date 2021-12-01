@@ -42,7 +42,7 @@ rule precursorcorrection_feature_csi:
 
 rule sirius_csifingerid:
     input: 
-        var1= "resources/Sirius/sirius/bin/sirius",
+        var1= "resources/Sirius/sirius.app/Contents/MacOS/sirius",
         var2= "results/{samples}/interim/sirius_csifingerid/PCfeature_nch_{samples}.mzML", 
         var3= "results/{samples}/interim/sirius_csifingerid/MFD_nch_{samples}.featureXML" 
     output:
@@ -50,7 +50,7 @@ rule sirius_csifingerid:
         "results/{samples}/interim/sirius_csifingerid/structures_{samples}.mzTab"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/SiriusAdapter -executable {input.var1} -in {input.var2} -in_featureinfo {input.var3} -out_sirius {output[0]} -out_fingerid {output[1]} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4] -fingerid:db BIO -project:processors 2 -debug 3 -fingerid:candidates 10
+        resources/OpenMS-2.7.0/bin/SiriusAdapter -executable {input.var1} -in {input.var2} -in_featureinfo {input.var3} -out_sirius {output[0]} -out_fingerid {output[1]} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4] -fingerid:db BIO -project:processors 2 -debug 3 -fingerid:candidates 5
         """
 
 # 5) Convert the mzTab to a csv file
