@@ -74,7 +74,7 @@ Press enter (RETURN) to continue
     
     (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
     
-    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.3/sirius-4.9.3-linux64-headless.zip  && unzip *.zip)
+    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.9/sirius-4.9.9-linux64-headless.zip  && unzip *.zip)
 
 Test your configuration by performing a dry-run via
 
