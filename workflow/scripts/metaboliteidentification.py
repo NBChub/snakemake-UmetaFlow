@@ -1,5 +1,22 @@
 import pandas as pd
-DF_features = pd.read_csv("results/GNPSexport/interim/consensus.csv", sep="\t", skiprows=([i for i in range(0, 5)] + [j for j in range (6, 15)]))
+consensus = "results/GNPSexport/interim/consensus.csv"
+with open(consensus, 'r') as file:
+    lines = []
+    for line in file:
+        if '#CONSENSUS' in line:
+            header = line
+        if '#' in line:
+            continue
+        if 'MAP' in line:
+            continue
+        if 'RUN' in line:
+            continue
+        row = line.split('\t')
+        lines.append(row)
+
+header = header.split('\t')
+
+DF_features = pd.DataFrame(lines, columns=header)
 DF_features = DF_features[['rt_cf','mz_cf', "charge_cf"]]
 DF_features["charge_cf"] = pd.to_numeric(DF_features["charge_cf"], downcast="integer")
 DF_features["mz_cf"] = pd.to_numeric(DF_features["mz_cf"], downcast="float")
