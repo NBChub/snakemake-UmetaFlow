@@ -69,6 +69,8 @@ Press enter (RETURN) to continue
     (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
 
 #### Get the necessary executables (ThermoRawFileParser & sirius):
+
+    (cd resources && wget https://abibuilder.informatik.uni-tuebingen.de/archive/openms/OpenMSInstaller/release/latest/OpenMS-2.7.0-Debian-Linux-x86_64.deb && sudo apt-get install ./OpenMS-2.7.0-Debian-Linux-x86_64.deb)
     
     (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
     
