@@ -16,7 +16,6 @@ def df_sirius_csi(filename):
     SIRIUS_DF=SIRIUS_DF[SIRIUS_DF["IsotopeScore"] > 0.0] #Isotope scores that are equal to zero are very low quality and filtered out
     SIRIUS_DF.to_csv(snakemake.output[0])
 
-    
     CSI=  pyteomics.mztab.MzTab(snakemake.input[1], encoding='UTF8', table_format='df')
     CSI.metadata
     df= CSI.small_molecule_table
