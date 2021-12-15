@@ -37,6 +37,17 @@ Configure the workflow according to your needs via editing the files in the `con
 
 Further formatting rules will be defined in the `workflow/schemas/` folder.
 
+To create a sample.tsv table simply using your terminal:
+    (cd data/raw && ls *.raw > filelist.txt)
+and then run the python script:
+    import pandas as pd
+    header_list = ["sample_name"]
+    df=pd.read_csv("data/raw/filelist.txt", names=header_list, index_col= None)
+    df["sample_name"]=df["sample_name"].replace(".raw*", value="", regex=True)
+    df["sample_name"]=df["sample_name"].replace(to_replace= r'MDNAWGS', value= 'MDNA_WGS_', regex= True)
+    df["comment"] = " "
+    df["MAPnumber"] = " "
+    df.to_csv("config/samples.tsv", sep="\t")
 
 ### Step 3: Create a conda environment& install snakemake
 
@@ -59,8 +70,10 @@ Activate the conda environment:
 Install mono with sudo (https://www.mono-project.com/download/stable/#download-lin):
 
     sudo apt install mono-devel
-  
-Press enter (RETURN) to continue 
+
+If sudo cannot find the package, then follow the directions in the above link for the Ubuntu version that you work with.
+
+Press enter (RETURN) to continue and install wget if it is not already installed in your Linux machine:
     
     brew install wget
 
