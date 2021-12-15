@@ -39,7 +39,9 @@ Further formatting rules will be defined in the `workflow/schemas/` folder.
 
 To create a sample.tsv table simply using your terminal:
     (cd data/raw && ls *.raw > filelist.txt)
+
 and then run the python script:
+
     import pandas as pd
     header_list = ["sample_name"]
     df=pd.read_csv("data/raw/filelist.txt", names=header_list, index_col= None)
