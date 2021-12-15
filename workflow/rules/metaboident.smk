@@ -23,7 +23,7 @@ rule build_library:
     conda:
         "../envs/file_conversion.yaml"   
     script:
-        "../scripts/metaboliteidentidication.py"
+        "../scripts/metaboliteidentification.py"
 
 # 3) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
 

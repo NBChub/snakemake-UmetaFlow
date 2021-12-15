@@ -59,5 +59,5 @@ rule df_sirius:
     conda:
         "../envs/file_conversion.yaml"
     script:
-        "../scripts/df_sirius.py"
+        "/datadrive/snakemake/snakemake-metabolomics/workflow/scripts/df_sirius.py"
 
