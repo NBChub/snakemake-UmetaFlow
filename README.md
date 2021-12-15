@@ -38,6 +38,7 @@ Configure the workflow according to your needs via editing the files in the `con
 Further formatting rules will be defined in the `workflow/schemas/` folder.
 
 To create a sample.tsv table simply using your terminal:
+    
     (cd data/raw && ls *.raw > filelist.txt)
 
 and then run the python script:
