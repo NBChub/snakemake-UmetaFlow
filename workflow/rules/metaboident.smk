@@ -34,7 +34,7 @@ rule aligner:
         expand("results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML", samples=SAMPLES)
     shell:
         """
-        MapAlignerPoseClustering -in {input} -out {output} -algorithm:max_num_peaks_considered 3000 
+        OpenMS/OpenMS-build/bin/MapAlignerPoseClustering -in {input} -out {output} -algorithm:max_num_peaks_considered 3000
         """ 
 
 # 4) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
@@ -47,7 +47,7 @@ rule metaboident:
         "results/Requant/interim/FFMID_{samples}.featureXML"
     shell:
         """
-        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
+        OpenMS/OpenMS-build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
         """
 
 # 5) Export the consensusXML file to a csv file 
@@ -59,7 +59,7 @@ rule FFMI_df:
         "results/Requant/FFMID_{samples}.csv" 
     shell:
         """
-        TextExporter -in {input} -out {output}
+        OpenMS/OpenMS-build/bin/TextExporter -in {input} -out {output}
         """
 
 # 6) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
@@ -71,7 +71,7 @@ rule FeatureLinker:
         "results/Requant/interim/Requant.consensusXML"
     shell:
         """
-        FeatureLinkerUnlabeledKD -in {input} -out {output} 
+        OpenMS/OpenMS-build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
 # 7) export the consensusXML file to a csv file to produce a single matrix for PCA
@@ -83,5 +83,5 @@ rule matrix:
         "results/Requant/consensus.tsv" 
     shell:
         """
-        TextExporter -in {input} -out {output}
+        OpenMS/OpenMS-build/bin/TextExporter -in {input} -out {output}
         """

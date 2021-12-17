@@ -1,22 +1,31 @@
 import pandas as pd
 consensus = "results/GNPSexport/interim/consensus.csv"
+
 with open(consensus, 'r') as file:
-    lines = []
-    for line in file:
+    for i,line in enumerate(file):
         if '#CONSENSUS' in line:
-            header = line
-        if '#' in line:
-            continue
-        if 'MAP' in line:
-            continue
-        if 'RUN' in line:
-            continue
-        row = line.split('\t')
-        lines.append(row)
+            header = line.split('\t')
+            break
 
-header = header.split('\t')
+HEADERS = ["charge_cf", "mz_cf", "rt_cf"]
+positions = [i for i,col in enumerate(header) if col in HEADERS]
 
-DF_features = pd.DataFrame(lines, columns=header)
+def thin():
+    with open(consensus, 'r') as file:
+        for i,line in enumerate(file):
+            if '#CONSENSUS' in line:
+                header = line
+            if '#' in line:
+                continue
+            if 'MAP' in line:
+                continue
+            if 'RUN' in line:
+                continue
+            row = line.split('\t')
+            row = [row[i] for i in positions]
+            yield row #a generator that won't keep the data matrix (lines) in memory but will provide them when needed
+
+DF_features = pd.DataFrame(thin(), columns=HEADERS)
 DF_features = DF_features[['rt_cf','mz_cf', "charge_cf"]]
 DF_features["charge_cf"] = pd.to_numeric(DF_features["charge_cf"], downcast="integer")
 DF_features["mz_cf"] = pd.to_numeric(DF_features["mz_cf"], downcast="float")
