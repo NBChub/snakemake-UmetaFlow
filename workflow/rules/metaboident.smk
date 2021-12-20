@@ -34,7 +34,7 @@ rule aligner:
         expand("results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML", samples=SAMPLES)
     shell:
         """
-        /resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -in {input} -out {output} -algorithm:max_num_peaks_considered 3000 
+        /resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output}
         """ 
 
 # 4) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
