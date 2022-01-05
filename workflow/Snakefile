@@ -27,12 +27,13 @@ rule all:
         expand("results/GNPSexport/FeatureQuantificationTable.txt"),
         expand("results/GNPSexport/interim/consensus.csv"),
         expand("resources/MetaboliteIdentification.tsv"),
-        expand("results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML", samples=SAMPLES),
+        expand("results/Requant/interim/Aligned_{samples}.mzML", samples=SAMPLES),
         expand("results/Requant/interim/FFMID_{samples}.featureXML", samples=SAMPLES),
         expand("results/Requant/FFMID_{samples}.csv", samples=SAMPLES),
         expand("results/Requant/interim/Requant.consensusXML"),
         expand("results/Requant/consensus.tsv")
 
+include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
 include: "rules/GNPSexport.smk",
 include: "rules/metaboident.smk"

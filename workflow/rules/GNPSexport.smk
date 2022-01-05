@@ -10,13 +10,14 @@ if not isExist:
     os.mkdir(path)
 
 df= pd.read_csv("config/samples.tsv", sep= "\t", index_col= "Unnamed: 0")
+df["sample_name"]=df["sample_name"].replace(to_replace= r'MDNAWGS', value= 'MDNA_WGS_', regex= True)
 metadata= df.rename(columns= {"sample_name": "filename", "comment": "ATTRIBUTE_comment", "MAPnumber": "ATTRIBUTE_MAPnumber"})
 metadata["filename"]= metadata["filename"].astype(str) +".mzml"
 metadata['ATTRIBUTE_MAPnumber'] = np.arange(len(metadata))
 metadata["ATTRIBUTE_MAP_ID"]= "MAP" + metadata["ATTRIBUTE_MAPnumber"].astype(str)
 metadata= metadata.drop(columns= "ATTRIBUTE_MAPnumber")
 metadata['ATTRIBUTE_genomeID']=metadata['filename'].str.extract(r'(NBC_?\d*)')
-metadata['ATTRIBUTE_genomeIDMDNA']=metadata['filename'].str.extract(r'(MDNA_WGS_?\d*)')
+metadata['ATTRIBUTE_genomeIDMDNA']=metadata['filename'].str.extract(r'(MDNAWGS?\d*|MDNA_WGS_?\d*)')
 metadata['ATTRIBUTE_genomeID']=metadata['ATTRIBUTE_genomeID'].fillna(metadata['ATTRIBUTE_genomeIDMDNA'])
 metadata["ATTRIBUTE_media"]= metadata['filename'].str.extract(r'(ISP2|DNPM|FPY12\d*)')
 metadata["ATTRIBUTE_comment"]= metadata['ATTRIBUTE_genomeID'].astype(str) +"_" + metadata["ATTRIBUTE_media"].astype(str)
@@ -47,7 +48,7 @@ rule MapAlignerPoseClustering:
         var2= expand("results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.trafoXML", samples=SAMPLES)
     shell:
         """
-        OpenMS/OpenMS-build/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered 3000 -in {input} -out {output.var1} -trafo_out {output.var2}
+        OpenMS/OpenMS-build/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
 # 4) Introduce the features to a protein identification file (idXML)- the only way to create an aggregated ConsensusXML file currently (run FeatureLinkerUnlabeledKD)  

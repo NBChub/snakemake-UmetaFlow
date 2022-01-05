@@ -29,12 +29,13 @@ rule build_library:
 
 rule aligner:
     input:
-        expand("results/{samples}/interim/PCpeak_{samples}.mzML", samples=SAMPLES)
+        var1= "results/{samples}/interim/PCpeak_{samples}.mzML",
+        var2= "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.trafoXML"
     output:
-        expand("results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML", samples=SAMPLES)
+        "results/Requant/interim/Aligned_{samples}.mzML"
     shell:
         """
-        OpenMS/OpenMS-build/bin/MapAlignerPoseClustering -in {input} -out {output} -algorithm:max_num_peaks_considered 3000
+        OpenMS/OpenMS-build/bin/MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
         """ 
 
 # 4) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
@@ -42,12 +43,12 @@ rule aligner:
 rule metaboident:
     input:
         var1= "resources/MetaboliteIdentification.tsv",
-        var2= "results/Requant/interim/MapAlignerPoseClustering_{samples}.mzML"
+        var2= "results/Requant/interim/Aligned_{samples}.mzML"
     output:
         "results/Requant/interim/FFMID_{samples}.featureXML"
     shell:
         """
-        OpenMS/OpenMS-build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
+        OpenMS/OpenMS-build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0 -no_progress
         """
 
 # 5) Export the consensusXML file to a csv file 
