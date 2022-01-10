@@ -46,9 +46,11 @@ rule metaboident:
         var2= "results/Requant/interim/Aligned_{samples}.mzML"
     output:
         "results/Requant/interim/FFMID_{samples}.featureXML"
+    log: 
+        ".snakemake/log/FFMident_{samples}.log"
     shell:
         """
-        OpenMS/OpenMS-build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0 -no_progress
+        OpenMS/OpenMS-build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0 -no_progress 
         """
 
 # 5) Export the consensusXML file to a csv file 
