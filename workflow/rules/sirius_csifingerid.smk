@@ -19,7 +19,7 @@ rule sirius_csi_decharge:
         "results/{samples}/interim/sirius_csifingerid/MFD_nch_{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.2" "NH4:+:0.1" "H2O:-:0.1"  -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        resources/OpenMS-2.7.0/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.2" "NH4:+:0.2" "H-2O-1:0:0.05"  -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
         """
 
 # 3) Correct the MS2 precursor in a feature level.        
@@ -42,7 +42,7 @@ rule precursorcorrection_feature_csi:
 
 rule sirius_csifingerid:
     input: 
-        var1= "resources/Sirius/sirius/bin/sirius",
+        var1= "resources/Sirius/sirius.app/Contents/MacOS/sirius",
         var2= "results/{samples}/interim/sirius_csifingerid/PCfeature_nch_{samples}.mzML", 
         var3= "results/{samples}/interim/sirius_csifingerid/MFD_nch_{samples}.featureXML" 
     output:
