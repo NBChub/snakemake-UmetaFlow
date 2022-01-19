@@ -39,14 +39,14 @@ rule precursorcorrection_feature_sirius:
 
 rule sirius:
     input: 
-        var1= "resources/Sirius/sirius.app/Contents/MacOS/sirius",
+        var1= "resources/Sirius/sirius/bin/sirius",
         var2= "results/{samples}/interim/sirius/PCfeature_nch_{samples}.mzML", 
         var3= "results/{samples}/interim/sirius/MFD_nch_{samples}.featureXML"        
     output:
         "results/{samples}/interim/sirius/formulas_{samples}.mzTab"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/SiriusAdapter -executable {input.var1} -in {input.var2} -in_featureinfo {input.var3} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]O[57]S[4] -project:processors 2 -debug 3 
+        resources/OpenMS-2.7.0/bin/SiriusAdapter -executable {input.var1} -in {input.var2} -in_featureinfo {input.var3} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]O[40]S[4] -project:processors 2 -debug 3 
         """
 
 # 5) Convert the mzTab to a csv file
