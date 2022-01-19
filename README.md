@@ -6,8 +6,6 @@ This is a snakemake implementation of the [Metabolomics OpenMS workflow](./OpenM
 ## Workflow overview
 ![dag](/images/pyOpenMS_workflow.svg)
 
-View the workflow with interactive comments in lucid: https://lucid.app/lucidchart/4dc81d37-bca3-4b2d-8253-33341ac79ab4/edit?viewport_loc=-71%2C53%2C2422%2C1416%2C0_0&invitationId=inv_5c1c0383-052a-4905-8146-dd842ee528fb 
-
 ## Usage
 ### Step 1: Clone the workflow
 
@@ -122,6 +120,6 @@ All the results are in a csv format and can be opened simply with excel or using
 * Snakemake dependencies with conda packages is one of the drawbacks and why [Nextflow](https://www.nextflow.io/) might be more preferable. Nevertheless, the pythonic language of snakemake enable newcomers to learn and develop their own pipeline faster.
 
 ### Test Data (only for testing the workflow with the example dataset)
-* Current test data are built from real runs of known metabolite producer strains or standard samples that have been already alanysed with the GUI Software Freestyle and confirmed the presence of fragmentation patterns for the specific metabolites
+* Current test data are built from known metabolite producer strains or standard samples that have been analysed with a Thermo IDX mass spectrometer. The presence of the metabolites and their fragmentation patterns has been manually confirmed using TOPPView.
 
 
