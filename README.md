@@ -4,9 +4,18 @@
 
 This is a snakemake implementation of the [Metabolomics OpenMS workflow](./OpenMS_workflow.ipynb) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
 ## Workflow overview
-![dag](/images/pyOpenMS_workflow.svg)
 
-View the workflow with interactive comments in lucid: https://lucid.app/lucidchart/4dc81d37-bca3-4b2d-8253-33341ac79ab4/edit?viewport_loc=-71%2C53%2C2422%2C1416%2C0_0&invitationId=inv_5c1c0383-052a-4905-8146-dd842ee528fb 
+The pipeline consists of three separate workflows that are interconnected, and one data analysis guide:
+
+1) Pre-processing: converting raw data to a feature table with a series of algorithms 
+
+2) GNPSexport: generate all the files necessary to create a FBMN job at GNPS. (see https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/) 
+
+3) Re-quantification: missing value imputation resulted by the pre-processing workflow.
+
+4) Data analysis: Annotate the FeatureMatrix with GNPS metabolites, formula and structural predictions, and perform outlier analysis to find features detected less frequently in the matrix.
+
+![dag](/images/MetabolomicsFlow.svg)
 
 ## Usage
 ### Step 1: Clone the workflow

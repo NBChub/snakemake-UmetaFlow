@@ -58,18 +58,3 @@ DF_features["RetentionTimeRange"]= "0"
 DF_features["IsoDistribution"]= "0"
 DF_features= DF_features[["CompoundName","SumFormula", "Mass","Charge","RetentionTime","RetentionTimeRange", "IsoDistribution"]]
 DF_features.to_csv("resources/MetaboliteIdentification.tsv", sep="\t", index= None)
-
-#Use the following to merge features with an already existing MetaboliteIdentification.tsv:
-"""
-import pandas as pd
-MetaboIdent= pd.read_csv("resources/MetaboliteIdentification.tsv", sep="\t")
-MetaboIdent["RetentionTime"]=MetaboIdent["RetentionTime"].astype(float)
-MetaboIdent["Mass"]=MetaboIdent["Mass"].astype(float)
-MetaboIdent["SumFormula"]=MetaboIdent["SumFormula"].astype(str)
-MetaboIdent["RetentionTimeRange"]=MetaboIdent["RetentionTimeRange"].astype(str)
-MetaboIdent["IsoDistribution"]=MetaboIdent["IsoDistribution"].astype(str)
-DF= MetaboIdent.merge(DF_features, how= "outer")
-DF= DF.round(2)
-DF= DF[["CompoundName","SumFormula", "Mass","Charge","RetentionTime","RetentionTimeRange", "IsoDistribution"]]
-DF.to_csv("resources/MetaboliteIdentification.tsv", sep="\t", index= None)
-"""

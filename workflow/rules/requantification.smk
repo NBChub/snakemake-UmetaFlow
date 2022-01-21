@@ -21,7 +21,7 @@ rule build_library:
     output:
         "resources/MetaboliteIdentification.tsv"
     conda:
-        "../envs/file_conversion.yaml"   
+        "../envs/python.yaml"   
     script:
         "../scripts/metaboliteidentification.py"
 
@@ -81,8 +81,20 @@ rule matrix:
     input:
         "results/Requant/interim/Requant.consensusXML"
     output:
-        "results/Requant/consensus.tsv" 
+        "results/Requant/interim/consensus.tsv" 
     shell:
         """
         resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
         """
+        
+# 8) Clean up consensus.tsv to a proper FeatureMatrix table:
+
+rule cleanup:
+    input:
+        "results/Requant/interim/consensus.tsv" 
+    output:
+        "results/Requant/FeatureMatrix.tsv"
+    conda:
+        "../envs/python.yaml"   
+    script:
+        "../scripts/cleanup.py"
