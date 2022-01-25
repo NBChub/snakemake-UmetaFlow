@@ -42,7 +42,7 @@ rule precursorcorrection_feature_csi:
 
 rule sirius_csifingerid:
     input: 
-        var1= "resources/Sirius/sirius.app/Contents/MacOS/sirius",
+        var1= "resources/Sirius/sirius/bin/sirius",
         var2= "results/{samples}/interim/sirius_csifingerid/PCfeature_nch_{samples}.mzML", 
         var3= "results/{samples}/interim/sirius_csifingerid/MFD_nch_{samples}.featureXML" 
     output:
