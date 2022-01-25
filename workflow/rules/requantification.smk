@@ -51,19 +51,8 @@ rule metaboident:
         resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
         """
 
-# 5) Export the consensusXML file to a csv file 
 
-rule FFMI_df:
-    input:
-        "results/Requant/interim/FFMID_{samples}.featureXML"
-    output:
-        "results/Requant/FFMID_{samples}.csv" 
-    shell:
-        """
-        resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
-        """
-
-# 6) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
+# 5) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a smiliar m/z and rt (MS1 level).
 
 rule FeatureLinker:
     input:
@@ -75,7 +64,7 @@ rule FeatureLinker:
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
-# 7) export the consensusXML file to a csv file to produce a single matrix for PCA
+# 6) export the consensusXML file to a csv file to produce a single matrix for PCA
 
 rule matrix:
     input:
@@ -87,7 +76,7 @@ rule matrix:
         resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
         """
         
-# 8) Clean up consensus.tsv to a proper FeatureMatrix table:
+# 7) Clean up consensus.tsv to a proper FeatureMatrix table:
 
 rule cleanup:
     input:

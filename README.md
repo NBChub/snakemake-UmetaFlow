@@ -63,6 +63,12 @@ and then run the python script:
 
 ### Step 3: Create a conda environment& install snakemake
 
+Installing conda
+Get the latest version of conda with the following command:
+
+    wget -O - https://www.anaconda.com/distribution/ 2>/dev/null | sed -ne 's@.*\(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3-.*-Linux-x86_64\.sh\)\">64-Bit (x86) Installer.*@\1@p' | xargs wget
+
+
 Installing Snakemake using [Mamba](https://github.com/mamba-org/mamba) is advised. In case you don’t use [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) you can always install [Mamba](https://github.com/mamba-org/mamba) into any other Conda-based Python distribution with:
 
     conda install -n base -c conda-forge mamba
@@ -93,9 +99,12 @@ Press enter (RETURN) to continue and install wget if it is not already installed
 
     (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
 
-#### Get the necessary executables (ThermoRawFileParser & sirius):
+#### Get the necessary executables (OpenMS binaries, ThermoRawFileParser & sirius executables):
 
-    (cd resources && wget https://abibuilder.informatik.uni-tuebingen.de/archive/openms/OpenMSInstaller/release/latest/OpenMS-2.7.0-Debian-Linux-x86_64.deb && sudo apt-get install ./OpenMS-2.7.0-Debian-Linux-x86_64.deb)
+    (cd resources && wget https://abibuilder.informatik.uni-tuebingen.de/archive/openms/OpenMSInstaller/release/latest/OpenMS-2.7.0-Debian-Linux-x86_64.deb && sudo apt-get install sudo apt-get install gdebi
+    && sudo gdebi OpenMS-2.7.0-Debian-Linux-x86_64.deb)
+
+If you encounter errors, follow the steps indicated here: https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_linux_bin.html
     
     (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
     
