@@ -5,7 +5,6 @@
 This is a snakemake implementation of the [Metabolomics OpenMS workflow](./OpenMS_workflow.ipynb) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
 ## Workflow overview
 
-<<<<<<< HEAD
 The pipeline consists of three separate workflows that are interconnected, and one data analysis guide:
 
 1) Pre-processing: converting raw data to a feature table with a series of algorithms 
@@ -18,8 +17,7 @@ The pipeline consists of three separate workflows that are interconnected, and o
 
 ![dag](/images/MetabolomicsFlow.svg)
 
-=======
->>>>>>> 51fe6b2a7d14654eff0f937180da487d02bdb6d3
+
 ## Usage
 ### Step 1: Clone the workflow
 
