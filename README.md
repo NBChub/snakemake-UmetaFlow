@@ -5,6 +5,7 @@
 This is a snakemake implementation of the [Metabolomics OpenMS workflow](./OpenMS_workflow.ipynb) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
 ## Workflow overview
 
+<<<<<<< HEAD
 The pipeline consists of three separate workflows that are interconnected, and one data analysis guide:
 
 1) Pre-processing: converting raw data to a feature table with a series of algorithms 
@@ -17,6 +18,8 @@ The pipeline consists of three separate workflows that are interconnected, and o
 
 ![dag](/images/MetabolomicsFlow.svg)
 
+=======
+>>>>>>> 51fe6b2a7d14654eff0f937180da487d02bdb6d3
 ## Usage
 ### Step 1: Clone the workflow
 
@@ -140,6 +143,6 @@ All the results are in a csv format and can be opened simply with excel or using
 * Snakemake dependencies with conda packages is one of the drawbacks and why [Nextflow](https://www.nextflow.io/) might be more preferable. Nevertheless, the pythonic language of snakemake enable newcomers to learn and develop their own pipeline faster.
 
 ### Test Data (only for testing the workflow with the example dataset)
-* Current test data are built from real runs of known metabolite producer strains or standard samples that have been already alanysed with the GUI Software Freestyle and confirmed the presence of fragmentation patterns for the specific metabolites
+* Current test data are built from known metabolite producer strains or standard samples that have been analysed with a Thermo IDX mass spectrometer. The presence of the metabolites and their fragmentation patterns has been manually confirmed using TOPPView.
 
 
