@@ -72,7 +72,7 @@ rule FeatureLinker:
         "results/Requant/interim/Requant.consensusXML"
     shell:
         """
-        FeatureLinkerUnlabeledKD -in {input} -out {output} -debug 10
+        FeatureLinkerUnlabeledKD -in {input} -out {output} -algorithm:warp:enabled false
         """
 
 # 7) export the consensusXML file to a csv file to produce a single matrix for PCA
