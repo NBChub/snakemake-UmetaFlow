@@ -61,7 +61,7 @@ rule FeatureLinker:
         "results/Requant/interim/Requant.consensusXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
+        resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} -algorithm:warp:enabled false
         """
 
 # 6) export the consensusXML file to a csv file to produce a single matrix for PCA
