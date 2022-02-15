@@ -28,7 +28,7 @@ rule all:
         #expand("results/Requant/FFMID_{samples}.csv", samples=SAMPLES),
         #expand("results/Requant/interim/Requant.consensusXML"),
         #expand("results/Requant/interim/consensus.tsv"),
-        #expand("results/Requant/FeatureMatrix.tsv")
+        #expand("results/Requant/FeatureMatrix.tsv"),
 
 
 include: "rules/sirius.smk"
