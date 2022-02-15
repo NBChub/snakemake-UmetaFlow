@@ -17,6 +17,10 @@ The pipeline consists of three separate workflows that are interconnected, and o
 
 ![dag](/images/MetabolomicsFlow.svg)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3ea702df5d1ce3fc28ea40541f4e8ece46711ee5
 ## Usage
 
 ### Step 1: Clone the workflow
