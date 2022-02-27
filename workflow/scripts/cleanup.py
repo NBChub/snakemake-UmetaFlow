@@ -1,6 +1,6 @@
 import pandas as pd
 
-consensus = "results/Requant/interim/consensus.tsv"
+consensus = snakemake.input[0]
 with open(consensus, 'r') as file:
     for i,line in enumerate(file):
         if '#CONSENSUS' in line:
@@ -46,4 +46,4 @@ DF_features=DF_features.drop(columns=cols_charge)
 DF_features=DF_features.drop(columns=cols_mz)
 DF_features=DF_features.rename(columns={"rt_cf": "RT", "mz_cf": "mz", "charge_cf": "charge"})
 
-DF_features.to_csv("results/Requant/FeatureMatrix.tsv", sep="\t", index= None)
+DF_features.to_csv(snakemake.output[0], sep="\t", index= None)

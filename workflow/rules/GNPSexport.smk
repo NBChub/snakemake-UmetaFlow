@@ -4,7 +4,7 @@
 
 import pandas as pd
 import numpy as np 
-path= "results/GNPSexport/interim"
+path= "results/GNPSexport/"
 isExist= os.path.exists(path)
 if not isExist:
     os.mkdir(path)
@@ -30,7 +30,7 @@ metadata.to_csv("results/GNPSexport/metadata.tsv", sep='\t')
 # 2) copy all the original mzml files (precursor-corrected ones) in the GNPSExport folder for easier use
 rule FileCopy:
     input:
-        "results/{samples}/interim/PCfeature_{samples}.mzML"
+        "results/Interim/mzML/PCfeature_{samples}.mzML"
     output:
         "results/GNPSexport/{samples}.mzML"
     shell:
@@ -38,75 +38,37 @@ rule FileCopy:
         cp {input} {output}
         """ 
 
-# 3) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
 
-rule MapAlignerPoseClustering:
-    input:
-        expand("results/{samples}/interim/preprocessed/MFD_{samples}.featureXML", samples=SAMPLES)
-    output:
-        var1= expand("results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES),
-        var2= expand("results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.trafoXML", samples=SAMPLES)
-    shell:
-        """
-        resources/OpenMS-2.7.0/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
-        """ 
-
-# 4) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
-
-rule IDMapper:
-    input:
-        var1= "resources/emptyfile.idXML",
-        var2= "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.featureXML",
-        var3= "results/{samples}/interim/PCfeature_{samples}.mzML"
-    output:
-        "results/GNPSexport/interim/IDMapper_{samples}.featureXML"
-    shell:
-        """
-        resources/OpenMS-2.7.0/bin/IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
-        """
-
-# 5) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
-
-rule FeatureLinkerUnlabeledKD:
-    input:
-        expand("results/GNPSexport/interim/IDMapper_{samples}.featureXML", samples=SAMPLES)
-    output:
-        "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
-    shell:
-        """
-        resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
-        """
-
-# 6) export the consensusXML file to a csv file for FFMI (later)
+# 3) export the consensusXML file to a csv file for FFMI (later)
 
 rule csv_export:
     input:
-        "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"
     output:
-        "results/GNPSexport/interim/consensus.tsv" 
+        "results/Interim/GNPSexport/consensus.tsv" 
     shell:
         """
         resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
         """
 
-# 7) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
+# 4) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
 
 rule FileFilter:
     input:
-        "results/GNPSexport/interim/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"
     output:
-        "results/GNPSexport/interim/filtered.consensusXML"
+        "results/Interim/GNPSexport/filtered.consensusXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FileFilter -id:remove_unannotated_features -in {input} -out {output} 
         """
 
-# 8) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
+# 5) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 
 rule GNPS_export:
     input:
-        var1= "results/GNPSexport/interim/filtered.consensusXML",
-        var2= expand("results/{samples}/interim/PCfeature_{samples}.mzML", samples=SAMPLES)
+        var1= "results/Interim/GNPSexport/filtered.consensusXML",
+        var2= expand("results/Interim/mzML/PCfeature_{samples}.mzML", samples=SAMPLES)
     output:
         "results/GNPSexport/MSMS.mgf" 
     shell:
@@ -114,11 +76,11 @@ rule GNPS_export:
         resources/OpenMS-2.7.0/bin/GNPSExport -ini resources/GNPSExport.ini -in_cm {input.var1} -in_mzml {input.var2} -out {output} 
         """
 
-# 9) export the consensusXML file to a txt file for GNPS
+# 6) export the consensusXML file to a txt file for GNPS
 
-rule txt_export:
+rule GNPS_txt_export:
     input:
-        "results/GNPSexport/interim/filtered.consensusXML"
+        "results/Interim/GNPSexport/filtered.consensusXML"
     output:
         "results/GNPSexport/FeatureQuantificationTable.txt" 
     shell:

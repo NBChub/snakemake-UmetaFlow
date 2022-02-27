@@ -2,9 +2,9 @@
 
 rule preprocess_noconvexhulls_sirius:
     input:
-        "results/{samples}/interim/PCpeak_{samples}.mzML"
+        "results/Interim/mzML/PCpeak_{samples}.mzML"
     output:
-        "results/{samples}/interim/sirius/FFM_nch_{samples}.featureXML"
+        "results/Interim/sirius/FFM_nch_{samples}.featureXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true"
@@ -14,9 +14,9 @@ rule preprocess_noconvexhulls_sirius:
 
 rule sirius_decharge:
     input:
-        "results/{samples}/interim/sirius/FFM_nch_{samples}.featureXML"
+        "results/Interim/sirius/FFM_nch_{samples}.featureXML"
     output:
-        "results/{samples}/interim/sirius/MFD_nch_{samples}.featureXML"
+        "results/Interim/sirius/MFD_nch_{samples}.featureXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.4" "Na:+:0.2" "NH4:+:0.2" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
@@ -26,10 +26,10 @@ rule sirius_decharge:
 
 rule precursorcorrection_feature_sirius:
     input:
-        var1= "results/{samples}/interim/PCpeak_{samples}.mzML",
-        var2= "results/{samples}/interim/sirius/MFD_nch_{samples}.featureXML"
+        var1= "results/Interim/mzML/PCpeak_{samples}.mzML",
+        var2= "results/Interim/sirius/MFD_nch_{samples}.featureXML"
     output:
-        "results/{samples}/interim/sirius/PCfeature_nch_{samples}.mzML"
+        "results/Interim/sirius/PCfeature_nch_{samples}.mzML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
@@ -43,11 +43,11 @@ rule precursorcorrection_feature_sirius:
 rule sirius:
     input: 
         var1= "resources/Sirius/sirius/bin/sirius",
-        var2= "results/{samples}/interim/sirius/PCfeature_nch_{samples}.mzML", 
-        var3= "results/{samples}/interim/sirius/MFD_nch_{samples}.featureXML"        
+        var2= "results/Interim/sirius/PCfeature_nch_{samples}.mzML", 
+        var3= "results/Interim/sirius/MFD_nch_{samples}.featureXML"        
     output:
-        "results/{samples}/interim/sirius/formulas_{samples}.mzTab",
-        "results/{samples}/interim/sirius/structures_{samples}.mzTab"
+        "results/Interim/sirius/formulas_{samples}.mzTab",
+        "results/Interim/sirius/structures_{samples}.mzTab"
     threads: 2
     shell:
         """
@@ -58,11 +58,11 @@ rule sirius:
 
 rule df_sirius:
     input: 
-        "results/{samples}/interim/sirius/formulas_{samples}.mzTab",
-        "results/{samples}/interim/sirius/structures_{samples}.mzTab"
+        "results/Interim/sirius/formulas_{samples}.mzTab",
+        "results/Interim/sirius/structures_{samples}.mzTab"
     output:
-        "results/{samples}/formulas_{samples}.csv",
-        "results/{samples}/structures_{samples}.csv"
+        "results/SIRIUS/formulas_{samples}.csv",
+        "results/CSI/structures_{samples}.csv"
     conda:
         "../envs/python.yaml"
     script:

@@ -1,5 +1,5 @@
 import pandas as pd
-consensus = "results/GNPSexport/interim/consensus.csv"
+consensus = snakemake.input[0]
 with open(consensus, 'r') as file:
     for i,line in enumerate(file):
         if '#CONSENSUS' in line:
@@ -57,4 +57,4 @@ DF_features["SumFormula"] = " "
 DF_features["RetentionTimeRange"]= "0"
 DF_features["IsoDistribution"]= "0"
 DF_features= DF_features[["CompoundName","SumFormula", "Mass","Charge","RetentionTime","RetentionTimeRange", "IsoDistribution"]]
-DF_features.to_csv("resources/MetaboliteIdentification.tsv", sep="\t", index= None)
+DF_features.to_csv(snakemake.output[0], sep="\t", index= None)

@@ -5,9 +5,9 @@
 
 rule rename:
     input:
-        "results/GNPSexport/interim/consensus.tsv"
+        "results/Interim/GNPSexport/consensus.tsv"
     output:
-        "results/GNPSexport/interim/consensus.csv"
+        "results/Interim/Requantified/consensus.csv"
     shell:
         """
         mv {input} {output}
@@ -17,9 +17,9 @@ rule rename:
 
 rule build_library:
     input:
-        "results/GNPSexport/interim/consensus.csv"
+        "results/Interim/Requantified/consensus.csv"
     output:
-        "resources/MetaboliteIdentification.tsv"
+        "results/Interim/Requantified/MetaboliteIdentification.tsv"
     conda:
         "../envs/python.yaml"   
     script:
@@ -29,10 +29,10 @@ rule build_library:
 
 rule aligner:
     input:
-        var1= "results/{samples}/interim/PCpeak_{samples}.mzML",
-        var2= "results/GNPSexport/interim/MapAlignerPoseClustering_{samples}.trafoXML"
+        var1= "results/Interim/mzML/PCpeak_{samples}.mzML",
+        var2= "results/Interim/preprocessed/MapAlignerPoseClustering_{samples}.trafoXML"
     output:
-        "results/Requant/interim/Aligned_{samples}.mzML"
+        "results/Interim/Requantified/Aligned_{samples}.mzML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
@@ -42,13 +42,13 @@ rule aligner:
 
 rule metaboident:
     input:
-        var1= "resources/MetaboliteIdentification.tsv",
-        var2= "results/Requant/interim/Aligned_{samples}.mzML"
+        var1= "results/Interim/Requantified/MetaboliteIdentification.tsv",
+        var2= "results/Interim/Requantified/Aligned_{samples}.mzML"
     output:
-        "results/Requant/interim/FFMID_{samples}.featureXML"
+        "results/Interim/Requantified/FFMID_{samples}.featureXML"
     shell:
         """
-        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
+        resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0 -no_progress
         """
 
 
@@ -56,9 +56,9 @@ rule metaboident:
 
 rule FeatureLinker:
     input:
-        expand("results/Requant/interim/FFMID_{samples}.featureXML", samples=SAMPLES)
+        expand("results/Interim/Requantified/FFMID_{samples}.featureXML", samples=SAMPLES)
     output:
-        "results/Requant/interim/Requant.consensusXML"
+        "results/Interim/Requantified/Requantified.consensusXML"
     shell:
         """
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} -algorithm:warp:enabled false
@@ -68,9 +68,9 @@ rule FeatureLinker:
 
 rule matrix:
     input:
-        "results/Requant/interim/Requant.consensusXML"
+        "results/Interim/Requantified/Requantified.consensusXML"
     output:
-        "results/Requant/interim/consensus.tsv" 
+        "results/Interim/Requantified/consensus.tsv" 
     shell:
         """
         resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
@@ -80,9 +80,9 @@ rule matrix:
 
 rule cleanup:
     input:
-        "results/Requant/interim/consensus.tsv" 
+        "results/Interim/Requantified/consensus.tsv" 
     output:
-        "results/Requant/FeatureMatrix.tsv"
+        "results/Requantified/FeatureMatrix.tsv"
     conda:
         "../envs/python.yaml"   
     script:

@@ -1,4 +1,5 @@
 *.gzip
+*.mzML
 *.raw
 *.DS_Store
 *.xlsx
