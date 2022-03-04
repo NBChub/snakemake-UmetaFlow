@@ -3,3 +3,15 @@
 # one row per sample. It can be parsed easily via pandas.
 samples: config/samples.tsv
 
+
+
+#### RULE CONFIGURATION ####
+# rules: set value to TRUE if you want to run the analysis or FALSE if you don't
+rules:
+  fileconversion: TRUE
+  preprocessing: TRUE
+  sirius: FALSE
+  GNPSexport: TRUE
+  requantification: TRUE
+  annotate: TRUE
+ 

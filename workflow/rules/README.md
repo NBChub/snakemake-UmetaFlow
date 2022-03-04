@@ -4,14 +4,21 @@ The pipeline consists of three separate workflows that are interconnected, and o
 
 ### `1) File conversion:`
 
-Convert raw files from Thermo to open community-driven format mzML centroid (see documentation [here](https://github.com/compomics/ThermoRawFileParser))
+Conversion of raw files from Thermo to open community-driven format mzML centroid (see documentation [here](https://github.com/compomics/ThermoRawFileParser)).
+
+If you have Agilent or Bruker files, skip that step (write "FALSE" for rule fileconversion in the [config.yaml](config/config.yaml) file, convert the files independently using proteowizard (see https://proteowizard.sourceforge.io/) and add them to the data/mzML/ directory.
 
 ### `2) Pre-processing:`
 
-Converting raw data to a feature table with a series of OpenMS algorithms (see documentation [here](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/index.html)). Additinaly, the feature table is introduced to SIRIUS and CSI:FingerID for formula and structural predictions (see documentation [here](https://boecker-lab.github.io/docs.sirius.github.io/)).
+Converting raw data to a feature table with a series of OpenMS algorithms (see documentation [here](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/index.html)). 
+
+### `3) SIRIUS and CSI:FingerID:`
+
+The pre-processed feature tables are then introduced to SIRIUS and CSI:FingerID for formula and structural predictions (see documentation [here](https://boecker-lab.github.io/docs.sirius.github.io/)).
+
 CSI:FingerID is using external Web servers (from the Boecher lab in Jena) for the structural library seach and all computations for the structural predictions. The disadvantage in this case is that the workflow is dependent on the functionality of their servers, queued jobs, etc. 
 
-CSI_FingeID can be easily removed from the workflow by replacing rule sirius and df_ sirius with the following script:
+CSI_FingeID can be easily removed from the workflow by replacing #4) rule sirius and #5) df_ sirius from [sirius.smk](workflow/rules/sirius.smk) with the following script:
 
 ```
 # 4) SIRIUS 
@@ -42,17 +49,16 @@ rule df_sirius:
 
 ```
 
-and removing the output files also from [Snakefile](workflow/Snakefile) by replacing lines 14 and 15 with the following:
+and also removing the output files also from [Snakefile](workflow/Snakefile) by replacing lines 19 and 20 with the following:
+
 ```
         expand("results/{samples}/interim/sirius/formulas_{samples}.mzTab", samples=SAMPLES),
         expand("results/{samples}/formulas_{samples}.csv", samples=SAMPLES),
 ```
 
-
-
 ![dag](/images/Preprocessing+SIRIUS_CSI_FingerID.svg)
 
-### `3) GNPSexport:` 
+### `4) GNPSexport:` 
 
 Generate all the files necessary to create a FBMN job at GNPS (see documentation [here](https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/)). 
 
@@ -60,6 +66,6 @@ Generate all the files necessary to create a FBMN job at GNPS (see documentation
 
 ### `4) Re-quantification:` 
 
-Re-quantify all raw files to avoid missing values resulted by the pre-processing workflow for statistical analysis and data exploration. Generate a FeatureMatrix for further statistical analysis.
+Re-quantify all raw files to avoid missing values resulted by the pre-processing steps for statistical analysis and data exploration. Generate a FeatureMatrix for further statistical analysis.
 
 ![dag](/images/Re-quantification.svg) 

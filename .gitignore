@@ -12,7 +12,7 @@ resources/*
 !results/.gitkeep
 !resources/ThermoRawFileParser/README.md
 !resources/emptyfile.idXML
-!resources/MetaboliteIdentification.tsv
+resources/MetaboliteIdentification.tsv
 !resources/Sirius/README.md
 *.zip
 manualCLI/*

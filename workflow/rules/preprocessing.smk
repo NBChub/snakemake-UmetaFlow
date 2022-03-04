@@ -34,6 +34,19 @@ rule decharge:
         resources/OpenMS-2.7.0/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.4" "Na:+:0.2" "NH4:+:0.2" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
         """
 
+# 4) Tables of features (individual)
+
+rule individual_feature_tables:
+    input:
+        "results/Interim/preprocessed/MFD_{samples}.featureXML"
+    output:
+        "results/Interim/feature_tables/features_{samples}.csv"
+    shell:
+        """
+        resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
+        """
+
+
 # 4) Correct the MS2 precursor in a feature level (for GNPS FBMN).        
 
 rule precursorcorrection_feature:
@@ -86,14 +99,27 @@ rule FeatureLinkerUnlabeledKD:
         resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
-# 8) export the consensusXML file to a txt file for GNPS
+# 8) export the consensusXML file to a txt file
 
 rule txt_export:
     input:
         "results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"
     output:
-        "results/Preprocessed/FeatureQuantificationTable.txt" 
+        "results/Interim/preprocessed/FeatureQuantificationTable.txt" 
     shell:
         """
         resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
         """
+
+# 9) Convert the table to an easily readable format
+
+rule feature_table:
+    input:
+        "results/Interim/preprocessed/FeatureQuantificationTable.txt" 
+    output:
+        "results/Preprocessed/FeatureQuantificationTable.csv"
+    threads: 4
+    conda:
+        "../envs/python.yaml"
+    script:
+        "../scripts/cleanup.py"    

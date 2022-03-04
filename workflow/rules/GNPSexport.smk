@@ -39,19 +39,7 @@ rule FileCopy:
         """ 
 
 
-# 3) export the consensusXML file to a csv file for FFMI (later)
-
-rule csv_export:
-    input:
-        "results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"
-    output:
-        "results/Interim/GNPSexport/consensus.tsv" 
-    shell:
-        """
-        resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
-        """
-
-# 4) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
+# 3) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
 
 rule FileFilter:
     input:
@@ -63,7 +51,7 @@ rule FileFilter:
         resources/OpenMS-2.7.0/bin/FileFilter -id:remove_unannotated_features -in {input} -out {output} 
         """
 
-# 5) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
+# 4) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 
 rule GNPS_export:
     input:
@@ -76,7 +64,7 @@ rule GNPS_export:
         resources/OpenMS-2.7.0/bin/GNPSExport -ini resources/GNPSExport.ini -in_cm {input.var1} -in_mzml {input.var2} -out {output} 
         """
 
-# 6) export the consensusXML file to a txt file for GNPS
+# 5) export the consensusXML file to a txt file for GNPS
 
 rule GNPS_txt_export:
     input:

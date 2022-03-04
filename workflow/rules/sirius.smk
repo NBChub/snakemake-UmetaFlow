@@ -42,7 +42,7 @@ rule precursorcorrection_feature_sirius:
 
 rule sirius:
     input: 
-        var1= "resources/Sirius/sirius/bin/sirius",
+        var1= "resources/Sirius/sirius.app/Contents/MacOS/sirius",
         var2= "results/Interim/sirius/PCfeature_nch_{samples}.mzML", 
         var3= "results/Interim/sirius/MFD_nch_{samples}.featureXML"        
     output:
@@ -66,5 +66,5 @@ rule df_sirius:
     conda:
         "../envs/python.yaml"
     script:
-        "../scripts/df_sirius_csifingerid.py"
+        "../scripts/df_SIRIUS_CSI.py"
 
