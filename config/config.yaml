@@ -10,7 +10,7 @@ samples: config/samples.tsv
 rules:
   fileconversion: TRUE
   preprocessing: TRUE
-  sirius: FALSE
+  sirius: TRUE
   GNPSexport: TRUE
   requantification: TRUE
   annotate: TRUE
