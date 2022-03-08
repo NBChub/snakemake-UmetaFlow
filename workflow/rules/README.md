@@ -62,6 +62,10 @@ and also removing the output files also from [Snakefile](workflow/Snakefile) by 
 
 Generate all the files necessary to create a FBMN job at GNPS (see documentation [here](https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/)). 
 
+Create a metadata csv file for GNPS from the samples.tsv file using the Jupyter notebook [file](Create_sampletsv_file.ipynb)
+
+
+
 ![dag](/images/GNPSExport.svg) 
 
 ### `4) Re-quantification:` 
