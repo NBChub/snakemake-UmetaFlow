@@ -27,7 +27,7 @@ rule FileFilter:
 rule GNPS_export:
     input:
         var1= "results/Interim/GNPSexport/filtered.consensusXML",
-        var2= expand("results/GNPSexport/{samples}.mzML", samples=SAMPLES)
+        var2= expand("results/Interim/mzML/PCfeature_{samples}.mzML", samples=SAMPLES)
     output:
         "results/GNPSexport/MSMS.mgf" 
     shell:

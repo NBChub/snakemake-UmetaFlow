@@ -24,3 +24,4 @@ old_results/*
 CreateFeatureMetaboidentcsv.ipynb
 workflow/scripts/OpenMSWF.py
 *.sh
+*.txt
