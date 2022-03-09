@@ -24,7 +24,7 @@ rule aligner:
         "results/Interim/Requantified/Aligned_{samples}.mzML"
     shell:
         """
-        ./resources/OpenMS-2.7.0/bin/MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
+        /Users/eeko/openms-develop/openms_build/bin/MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
         """ 
 
 # 3) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
@@ -37,7 +37,7 @@ rule metaboident:
         "results/Interim/Requantified/FFMID_{samples}.featureXML"
     shell:
         """
-        ./resources/OpenMS-2.7.0/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
+        /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
         """
 
 
@@ -50,7 +50,7 @@ rule FeatureLinker:
         "results/Interim/Requantified/Requantified.consensusXML"
     shell:
         """
-        ./resources/OpenMS-2.7.0/bin/FeatureLinkerUnlabeledKD -in {input} -out {output}
+        /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output}
         """
 
 # 5) export the consensusXML file to a csv file to produce a single matrix for PCA
@@ -62,7 +62,7 @@ rule matrix:
         "results/Interim/Requantified/consensus.tsv" 
     shell:
         """
-        ./resources/OpenMS-2.7.0/bin/TextExporter -in {input} -out {output}
+        /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
         """
         
 # 6) Convert the table to an easily readable format:

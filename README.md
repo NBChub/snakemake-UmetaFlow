@@ -102,7 +102,7 @@ If you encounter errors installing OpenMS, follow the steps indicated here: http
     
     (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
     
-    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.9/sirius-4.9.9-linux64-headless.zip  && unzip *.zip)
+    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.12/sirius-4.9.12-linux64-headless.zip && unzip *.zip)
 
 Test your configuration by performing a dry-run via
 
