@@ -2,20 +2,15 @@ import glob
 import pandas as pd
 import numpy as np
 
-input_structures= glob.glob(snakemake.input[0])
+input_structures= glob.glob("results/CSI/structures_*.csv")
 DF_CSI= []
 for i, formulas in enumerate(input_structures):
     df= pd.read_csv(formulas, index_col="Unnamed: 0")
     df= df.loc[df["opt_global_rank"]==1]
-    df_rank= df.filter(regex=fr"opt_global_rank")
     df_score=df.filter(regex=fr"best_search_engine_score")
     df_opt=df.filter(regex=fr"opt")
     cols_score= df_score.columns
     cols_opt= df_opt.columns
-    for i, row in df_rank.iterrows():
-        if row.sum()>=2:
-            df.loc[[i],row.index] = np.nan
-    df= df.dropna()
     df= df.drop(columns=cols_score)
     df= df.drop(columns= cols_opt)
     df= df.drop(columns= "identifier")
@@ -28,7 +23,6 @@ df_structures= pd.concat(DF_CSI, axis=0).sort_values("chemical_formula")
 df_structures = df_structures.drop_duplicates(subset=['inchi_key'], keep='first')
 df_structures= df_structures.drop(columns=["inchi_key"]) #leave smiles for visualisationdf_structures= df_structures.rename(columns={"chemical_formula": "formulas", "exp_mass_to_charge": "mz", "retention_time": "RT"})
 df_structures= df_structures.rename(columns={"chemical_formula":"formulas"})
-df_structures_helper= df_structures.copy(deep=True)
 df_structures= df_structures.set_index("formulas")
 df_singletons=df_structures.reset_index().drop_duplicates(subset="formulas", keep=False)
 df_singletons= df_singletons.set_index("formulas")
