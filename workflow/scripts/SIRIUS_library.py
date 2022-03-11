@@ -2,7 +2,7 @@ import glob
 import pandas as pd
 import numpy as np
 
-input_formulas= glob.glob(snakemake.input[0])
+input_formulas= glob.glob("results/SIRIUS/formulas_*.csv")
 DF_SIRIUS = pd.DataFrame()
 list_of_df=[]
 for csv in input_formulas:

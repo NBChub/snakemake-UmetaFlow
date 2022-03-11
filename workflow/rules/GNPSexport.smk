@@ -1,16 +1,4 @@
-# 1) copy all the original mzml files (precursor-corrected ones) in the GNPSExport folder for easier use
-rule FileCopy:
-    input:
-        "results/Interim/mzML/PCfeature_{samples}.mzML"
-    output:
-        "results/GNPSexport/{samples}.mzML"
-    shell:
-        """
-        cp {input} {output}
-        """ 
-
-
-# 2) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
+# 1) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
 
 rule FileFilter:
     input:
@@ -19,10 +7,10 @@ rule FileFilter:
         "results/Interim/GNPSexport/filtered.consensusXML"
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/FileFilter -id:remove_unannotated_features -in {input} -out {output} 
+        ./FileFilter -id:remove_unannotated_features -in {input} -out {output} 
         """
 
-# 3) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
+# 1) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 
 rule GNPS_export:
     input:
@@ -32,10 +20,10 @@ rule GNPS_export:
         "results/GNPSexport/MSMS.mgf" 
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/GNPSExport -ini resources/GNPSExport.ini -in_cm {input.var1} -in_mzml {input.var2} -out {output} 
+        ./GNPSExport -ini resources/GNPSExport.ini -in_cm {input.var1} -in_mzml {input.var2} -out {output} 
         """
 
-# 4) export the consensusXML file to a txt file for GNPS
+# 3) export the consensusXML file to a txt file for GNPS
 
 rule GNPS_txt_export:
     input:
@@ -44,5 +32,5 @@ rule GNPS_txt_export:
         "results/GNPSexport/FeatureQuantificationTable.txt" 
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
+        ./TextExporter -in {input} -out {output}
         """
