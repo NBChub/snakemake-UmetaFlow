@@ -1,35 +1,8 @@
 import pandas as pd
-consensus = snakemake.input[0]
-with open(consensus, 'r') as file:
-    for i,line in enumerate(file):
-        if '#CONSENSUS' in line:
-            header = line.split('\t')
-            break
 
-HEADERS = ["rt_cf", "mz_cf", "charge_cf"]
-positions = [i for i,col in enumerate(header) if col in HEADERS]
+DF_features=pd.read_csv(snakemake.input[0], sep="\t")
 
-def thin():
-    with open(consensus, 'r') as file:
-        for i,line in enumerate(file):
-            if '#CONSENSUS' in line:
-                header = line
-            if '#' in line:
-                continue
-            if 'MAP' in line:
-                continue
-            if 'RUN' in line:
-                continue
-            row = line.split('\t')
-            row = [row[i] for i in positions]
-            yield row #a generator that won't keep the data matrix (lines) in memory but will provide them when needed
-
-DF_features = pd.DataFrame(thin(), columns=HEADERS)
-DF_features = DF_features[["rt_cf","mz_cf", "charge_cf"]]
-DF_features["charge_cf"] = pd.to_numeric(DF_features["charge_cf"], downcast="integer")
-DF_features["mz_cf"] = pd.to_numeric(DF_features["mz_cf"], downcast="float")
-DF_features["rt_cf"] = pd.to_numeric(DF_features["rt_cf"], downcast="float")
-DF_features= DF_features.rename(columns={"charge_cf": "Charge", "mz_cf": "Mass", "rt_cf": "RetentionTime"})
+DF_features= DF_features.rename(columns={ "charge":"Charge", "mz": "Mass", "RT": "RetentionTime"})
 
 for ind in DF_features.index:
     if DF_features["Charge"][ind] == 0:

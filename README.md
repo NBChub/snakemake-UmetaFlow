@@ -3,17 +3,21 @@
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.7.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 [![Build Status](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics.svg?branch=master)](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics)
 
-This is a snakemake implementation of the [Metabolomics OpenMS workflow](./OpenMS_workflow.ipynb) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
+This is a snakemake implementation of the pyOpenMS workflow (see https://github.com/eeko-kon/pyOpenMS_untargeted_metabolomics.git) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
 
 ## Workflow overview
 
-The pipeline consists of three separate workflows that are interconnected, and one data analysis guide:
+The pipeline consists of five interconnected steps:
 
-1) Pre-processing: converting raw data to a feature table with a series of algorithms 
+1) File conversion: Simply add your Thermo raw files in data/raw/ and they will be converted to centroid mzML files. If you have Agilent or Bruker files, skip that step (write "FALSE" for rule fileconversion in the config.yaml file - see more under "Configure workflow") and convert them independently using proteowizard (see https://proteowizard.sourceforge.io/) and add them to the data/mzML/ directory.
 
-2) GNPSexport: generate all the files necessary to create a FBMN job at GNPS. (see https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/) 
+2) Pre-processing: converting raw data to a feature table with a series of algorithms 
 
-3) Re-quantification: Re-quantify all raw files to avoid missing values resulted by the pre-processing workflow for statistical analysis and data exploration.
+3) Structural and formula predictions (SIRIUS and CSI:FingeID)
+
+4) GNPSexport: generate all the files necessary to create a FBMN job at GNPS. (see https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/) 
+
+5) Re-quantification: Re-quantify all raw files to avoid missing values resulted by the pre-processing workflow for statistical analysis and data exploration.
 
 ![dag](/images/MetabolomicsFlow.svg)
 
@@ -33,9 +37,9 @@ Step 2: https://docs.github.com/en/github/authenticating-to-github/connecting-to
 
 ### Step 2: Configure workflow
 
-Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution, and `samples.tsv` to specify the samples (files) that will be processed + analysed. 
+Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution (write TRUE/FALSE if you want to run the specific rules of the workflow), and `samples.tsv` to specify the samples (files) that will be processed + analysed. 
 
-**Suggestion: Use the Jupyter notebook [Create_sampletsv_file](./Create_sampletsv_file.ipynb) after you add all your files in the data/raw/ directory**
+**Suggestion: Use the Jupyter notebook [Create_sampletsv_file](./Create_sampletsv_file.ipynb) after you add all your files in the data/raw/ or data/mzML/ directory**
 
 `samples.tsv` example:
 
@@ -98,7 +102,7 @@ If you encounter errors installing OpenMS, follow the steps indicated here: http
     
     (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
     
-    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.9/sirius-4.9.9-linux64-headless.zip  && unzip *.zip)
+    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.12/sirius-4.9.12-linux64-headless.zip && unzip *.zip)
 
 Test your configuration by performing a dry-run via
 
