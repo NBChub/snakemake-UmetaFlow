@@ -7,7 +7,7 @@ rule FileFilter:
         "results/Interim/GNPSexport/filtered.consensusXML"
     shell:
         """
-        ./FileFilter -id:remove_unannotated_features -in {input} -out {output} 
+        FileFilter -id:remove_unannotated_features -in {input} -out {output} 
         """
 
 # 1) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
@@ -20,7 +20,7 @@ rule GNPS_export:
         "results/GNPSexport/MSMS.mgf" 
     shell:
         """
-        ./GNPSExport -ini resources/GNPSExport.ini -in_cm {input.var1} -in_mzml {input.var2} -out {output} 
+        GNPSExport -ini resources/GNPSExport.ini -in_cm {input.var1} -in_mzml {input.var2} -out {output} 
         """
 
 # 3) export the consensusXML file to a txt file for GNPS
@@ -32,5 +32,5 @@ rule GNPS_txt_export:
         "results/GNPSexport/FeatureQuantificationTable.txt" 
     shell:
         """
-        ./TextExporter -in {input} -out {output}
+        TextExporter -in {input} -out {output}
         """
