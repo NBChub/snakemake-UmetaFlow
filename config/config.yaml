@@ -5,7 +5,7 @@ samples: config/samples.tsv
 
 projects:
 # Project 1
-  - name: pep
+  - name: example
     samples: config/samples.tsv
 
 #### RULE CONFIGURATION ####
