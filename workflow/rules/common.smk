@@ -62,7 +62,9 @@ def get_final_output():
                 "annotate" : [expand("results/SIRIUS/SIRIUS_library.csv"),
         expand("results/CSI/CSI_library.csv"),
         expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable.csv"),
-        expand("results/annotations/GNPS_annotated_FeatureTable.csv")]
+        expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable_Requant.csv"),
+        expand("results/annotations/GNPS_annotated_FeatureTable.csv"),
+        expand("results/annotations/GNPS_annotated_FeatureTable_Requant.csv")]
                 }
     
     # get keys from config
