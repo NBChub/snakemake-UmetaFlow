@@ -1,4 +1,4 @@
-# 1) Feature Finding algorithm (without convex hulls)
+# 1) Feature Finding algorithm (without convexhulls)
 
 rule preprocess_noconvexhulls_sirius:
     input:
@@ -42,7 +42,7 @@ rule precursorcorrection_feature_sirius:
 
 rule sirius:
     input: 
-        var1= "resources/Sirius/sirius.app/Contents/MacOS/sirius",
+        var1= "resources/Sirius/sirius/bin/sirius",
         var2= "results/Interim/sirius/PCfeature_nch_{samples}.mzML", 
         var3= "results/Interim/sirius/MFD_nch_{samples}.featureXML"        
     output:
