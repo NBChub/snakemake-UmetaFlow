@@ -1,4 +1,4 @@
-name: file_conversion
+name: conda_env
 channels:
   - conda-forge
   - bioconda

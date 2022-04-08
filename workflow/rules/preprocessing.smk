@@ -7,7 +7,7 @@ rule precursorcorrection_peak:
         "results/Interim/mzML/PCpeak_{samples}.mzML"
     shell:
         """
-        HighResPrecursorMassCorrector -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0"
+        /Users/eeko/openms-develop/openms_build/bin/HighResPrecursorMassCorrector -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0"
         """
 
 # 2) Preprocessing: Feature finding algorithm that detects peaks 
@@ -16,13 +16,25 @@ rule preprocess:
     input:
         "results/Interim/mzML/PCpeak_{samples}.mzML"
     output:
+        "results/Interim/preprocessed/nofilter_{samples}.featureXML"
+    shell:
+        """
+        /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true"
+        """
+
+# 3) Quality filter: Remove features that are of quality lower than 0.0005: 
+    
+rule quality:
+    input:
+        "results/Interim/preprocessed/nofilter_{samples}.featureXML"
+    output:
         "results/Interim/preprocessed/FFM_{samples}.featureXML"
     shell:
         """
-        FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true"
+        /Users/eeko/openms-develop/openms_build/bin/FileFilter -in {input} -out {output} -feature:q 0.0005:
         """
 
-# 3) Decharger: Decharging algorithm for adduct assignment
+# 4) Decharger: Decharging algorithm for adduct assignment
 
 rule decharge:
     input:
@@ -31,10 +43,10 @@ rule decharge:
         "results/Interim/preprocessed/MFD_{samples}.featureXML"
     shell:
         """
-        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        /Users/eeko/openms-develop/openms_build/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
         """
 
-# 4) Tables of features (individual)
+# 5) Tables of features (individual)
 
 rule individual_feature_tables:
     input:
@@ -43,11 +55,10 @@ rule individual_feature_tables:
         "results/Interim/feature_tables/features_{samples}.csv"
     shell:
         """
-        TextExporter -in {input} -out {output}
-        """
+        /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
+        """        
 
-
-# 4) Correct the MS2 precursor in a feature level (for GNPS FBMN).        
+# 6) Correct the MS2 precursor in a feature level (for GNPS FBMN and SIRIUS).        
 
 rule precursorcorrection_feature:
     input:
@@ -57,10 +68,10 @@ rule precursorcorrection_feature:
         "results/Interim/mzML/PCfeature_{samples}.mzML"
     shell:
         """
-        HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
+        /Users/eeko/openms-develop/openms_build/bin/HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
         """ 
 
-# 5) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
+# 7) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
 
 rule MapAlignerPoseClustering:
     input:
@@ -70,24 +81,10 @@ rule MapAlignerPoseClustering:
         var2= expand("results/Interim/preprocessed/MapAlignerPoseClustering_{samples}.trafoXML", samples=SAMPLES)
     shell:
         """
-        MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
+        /Users/eeko/openms-develop/openms_build/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
-# 6) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
-
-rule IDMapper:
-    input:
-        var1= "resources/emptyfile.idXML",
-        var2= "results/Interim/preprocessed/MapAlignerPoseClustering_{samples}.featureXML",
-        var3= "results/Interim/mzML/PCfeature_{samples}.mzML"
-    output:
-        "results/Interim/preprocessed/IDMapper_{samples}.featureXML"
-    shell:
-        """
-        IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
-        """
-
-# 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
+# 8) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
 
 rule FeatureLinkerUnlabeledKD:
     input:
@@ -96,10 +93,10 @@ rule FeatureLinkerUnlabeledKD:
         "results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"
     shell:
         """
-        FeatureLinkerUnlabeledKD -in {input} -out {output} 
+        /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
-# 8) export the consensusXML file to a txt file
+# 9) export the consensusXML file to a txt file
 
 rule txt_export:
     input:
@@ -108,10 +105,10 @@ rule txt_export:
         "results/Interim/preprocessed/FeatureQuantificationTable.txt" 
     shell:
         """
-        TextExporter -in {input} -out {output}
+        /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
         """
 
-# 9) Convert the table to an easily readable format
+# 10) Convert the table to an easily readable format
 
 rule feature_table:
     input:
@@ -123,3 +120,81 @@ rule feature_table:
         "../envs/python.yaml"
     script:
         "../scripts/cleanup.py"    
+
+# Re-quantify the features in all data (missing value correction)
+# This rule is currently not used - in progress
+
+
+# 11) Build a library of features detected in all files from the consensus feature (using pandas)
+
+rule build_library:
+    input:
+        "results/Preprocessed/FeatureQuantificationTable.csv"
+    output:
+        "results/Interim/Requantified/MetaboliteIdentification.tsv"
+    conda:
+        "../envs/python.yaml"   
+    script:
+        "../scripts/metaboliteidentification.py"
+
+# 12) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
+
+rule aligner:
+    input:
+        var1= "results/Interim/mzML/PCpeak_{samples}.mzML",
+        var2= "results/Interim/preprocessed/MapAlignerPoseClustering_{samples}.trafoXML"
+    output:
+        "results/Interim/Requantified/Aligned_{samples}.mzML"
+    shell:
+        """
+        /Users/eeko/openms-develop/openms_build/bin/MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
+        """ 
+
+# 13) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
+
+rule metaboident:
+    input:
+        var1= "results/Interim/Requantified/MetaboliteIdentification.tsv",
+        var2= "results/Interim/Requantified/Aligned_{samples}.mzML"
+    output:
+        "results/Interim/Requantified/FFMID_{samples}.featureXML"
+    shell:
+        """
+        /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
+        """
+
+# 14) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different sfiles together, which have a smiliar m/z and rt (MS1 level).
+
+rule FeatureLinker:
+    input:
+        expand("results/Interim/Requantified/FFMID_{samples}.featureXML", samples=SAMPLES)
+    output:
+        "results/Interim/Requantified/Requantified.consensusXML"
+    shell:
+        """
+        /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output}
+        """
+
+# 15) export the consensusXML file to a csv file to produce a single matrix for PCA
+
+rule matrix:
+    input:
+        "results/Interim/Requantified/Requantified.consensusXML"
+    output:
+        "results/Interim/Requantified/consensus.tsv" 
+    shell:
+        """
+        /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
+        """
+        
+# 16) Convert the table to an easily readable format:
+
+rule cleanup:
+    input:
+        "results/Interim/Requantified/consensus.tsv" 
+    output:
+        "results/Requantified/FeatureMatrix_requant.tsv"
+    conda:
+        "../envs/python.yaml"   
+    script:
+        "../scripts/cleanup.py"
