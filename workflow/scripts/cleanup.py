@@ -53,10 +53,10 @@ def map():
             yield files
 
 DF_features = pd.DataFrame(thin(), columns=header)
-DF_features= DF_features.rename(columns={"rt_cf":"RT", "mz_cf":"mz", "intensity_cf": "intensity", "charge_cf":"charge"})
+DF_features= DF_features.rename(columns={"rt_cf":"RT", "mz_cf":"mz", "intensity_cf": "intensity", "charge_cf":"charge", "quality_cf":"quality"})
 Features_flt=DF_features.filter(regex=fr'(rt_\d+|mz_\d+|quality_\d+|width_\d+|charge_\d+)')
 cols= Features_flt.columns
-DF_features= DF_features.drop(columns=["#CONSENSUS", "width_cf", "quality_cf"])
+DF_features= DF_features.drop(columns=["#CONSENSUS", "width_cf"])
 DF_features= DF_features.drop(columns=cols)
 DF_features.columns = DF_features.columns.str.replace(r'intensity_', 'MAP_')
 

@@ -4,8 +4,10 @@ rule all:
     input:
         get_final_output()
 
+
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
 include: "rules/GNPSexport.smk",
+include: "rules/requantification.smk",
 include: "rules/sirius.smk",
 include: "rules/annotate.smk"
