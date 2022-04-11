@@ -34,19 +34,7 @@ rule quality:
         /Users/eeko/openms-develop/openms_build/bin/FileFilter -in {input} -out {output} -feature:q 0.0005:
         """
 
-# 4) Decharger: Decharging algorithm for adduct assignment
-
-rule decharge:
-    input:
-        "results/Interim/preprocessed/FFM_{samples}.featureXML"
-    output:
-        "results/Interim/preprocessed/MFD_{samples}.featureXML"
-    shell:
-        """
-        /Users/eeko/openms-develop/openms_build/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
-        """
-
-# 5) Tables of features (individual)
+# 4) Tables of features (individual)
 
 rule individual_feature_tables:
     input:
@@ -58,7 +46,7 @@ rule individual_feature_tables:
         /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
         """        
 
-# 6) Correct the MS2 precursor in a feature level (for GNPS FBMN and SIRIUS).        
+# 5) Correct the MS2 precursor in a feature level (for GNPS FBMN and SIRIUS).        
 
 rule precursorcorrection_feature:
     input:
@@ -71,7 +59,7 @@ rule precursorcorrection_feature:
         /Users/eeko/openms-develop/openms_build/bin/HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
         """ 
 
-# 7) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
+# 6) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
 
 rule MapAlignerPoseClustering:
     input:
@@ -84,7 +72,7 @@ rule MapAlignerPoseClustering:
         /Users/eeko/openms-develop/openms_build/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
-# 8) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
+# 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
 
 rule FeatureLinkerUnlabeledKD:
     input:
@@ -96,7 +84,7 @@ rule FeatureLinkerUnlabeledKD:
         /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
-# 9) export the consensusXML file to a txt file
+# 8) export the consensusXML file to a txt file
 
 rule txt_export:
     input:
@@ -108,7 +96,7 @@ rule txt_export:
         /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
         """
 
-# 10) Convert the table to an easily readable format
+# 9) Convert the table to an easily readable format
 
 rule feature_table:
     input:
@@ -125,7 +113,7 @@ rule feature_table:
 # This rule is currently not used - in progress
 
 
-# 11) Build a library of features detected in all files from the consensus feature (using pandas)
+# 10) Build a library of features detected in all files from the consensus feature (using pandas)
 
 rule build_library:
     input:
@@ -137,7 +125,7 @@ rule build_library:
     script:
         "../scripts/metaboliteidentification.py"
 
-# 12) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
+# 11) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
 
 rule aligner:
     input:
@@ -150,7 +138,7 @@ rule aligner:
         /Users/eeko/openms-develop/openms_build/bin/MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
         """ 
 
-# 13) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
+# 12) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
 
 rule metaboident:
     input:
@@ -163,11 +151,23 @@ rule metaboident:
         /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 20.0
         """
 
+# 13) Decharger: Decharging algorithm for adduct assignment
+
+rule decharge:
+    input:
+        "results/Interim/Requantified/FFMID_{samples}.featureXML"
+    output:
+        "results/Interim/Requantified/MFD_{samples}.featureXML"
+    shell:
+        """
+        /Users/eeko/openms-develop/openms_build/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        """
+
 # 14) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different sfiles together, which have a smiliar m/z and rt (MS1 level).
 
 rule FeatureLinker:
     input:
-        expand("results/Interim/Requantified/FFMID_{samples}.featureXML", samples=SAMPLES)
+        expand("results/Interim/Requantified/MFD_{samples}.featureXML", samples=SAMPLES)
     output:
         "results/Interim/Requantified/Requantified.consensusXML"
     shell:
