@@ -37,7 +37,7 @@ Step 2: https://docs.github.com/en/github/authenticating-to-github/connecting-to
 
 ### Step 2: Configure workflow
 
-Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution (write TRUE/FALSE if you want to run the specific rules of the workflow), and `samples.tsv` to specify the samples (files) that will be processed + analysed. 
+Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution (write TRUE/FALSE if you want to run/skip the specific rules of the workflow), and `samples.tsv` to specify the samples (files) that will be processed. 
 
 **Suggestion: Use the Jupyter notebook [Create_sampletsv_file](./Create_sampletsv_file.ipynb) after you add all your files in the data/raw/ or data/mzML/ directory**
 
@@ -88,6 +88,7 @@ Activate the conda environment:
 
     conda activate snakemake
 
+Build OpenMS on (Linux)[https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_linux.html] or (MacOS)[https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/release/latest/html/install_mac.html] until the 3.0 release is published.
 
 #### For Linux only 
 
@@ -105,16 +106,7 @@ Press enter (RETURN) to continue
     (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
 
 
-#### Get the necessary executables (OpenMS binaries, ThermoRawFileParser & sirius executables):
-
-    (cd resources && wget https://abibuilder.informatik.uni-tuebingen.de/archive/openms/OpenMSInstaller/release/latest/OpenMS-2.7.0-Debian-Linux-x86_64.deb && sudo apt-get install sudo apt-get install gdebi
-    && sudo gdebi OpenMS-2.7.0-Debian-Linux-x86_64.deb)
-
-If you encounter errors installing OpenMS, follow the steps indicated here: https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_linux_bin.html
-    
-    (cd resources/ThermoRawFileParser && wget https://github.com/compomics/ThermoRawFileParser/releases/download/v1.3.4/ThermoRawFileParser.zip && unzip ThermoRawFileParser.zip)
-    
-    (cd resources/Sirius/ && wget https://github.com/boecker-lab/sirius/releases/download/v4.9.12/sirius-4.9.12-linux64-headless.zip && unzip *.zip)
+#### Execute the workflow
 
 Test your configuration by performing a dry-run via
 
