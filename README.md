@@ -1,4 +1,4 @@
-# Metabolomics workflow for Linux systems
+# Metabolomics workflow for Linux and iOS systems
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.7.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 [![Build Status](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics.svg?branch=master)](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics)
@@ -54,11 +54,22 @@ Further formatting rules can be defined in the `workflow/schemas/` folder.
 
 ### Step 3: Create a conda environment& install snakemake
 
+#### For iOS only 
+
+Install homebrew and wget (for **iOS** only!):
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+Press enter (RETURN) to continue 
+
+#### For both systems
+
+    brew install wget
+
 Installing conda
 Get the latest version of conda with the following command:
 
     wget -O - https://www.anaconda.com/distribution/ 2>/dev/null | sed -ne 's@.*\(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3-.*-Linux-x86_64\.sh\)\">64-Bit (x86) Installer.*@\1@p' | xargs wget
-
 
 Installing Snakemake using [Mamba](https://github.com/mamba-org/mamba) is advised. In case you don’t use [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) you can always install [Mamba](https://github.com/mamba-org/mamba) into any other Conda-based Python distribution with:
 
@@ -77,15 +88,16 @@ Activate the conda environment:
 
     conda activate snakemake
 
+
+#### For Linux only 
+
 Install mono with sudo (https://www.mono-project.com/download/stable/#download-lin):
 
     sudo apt install mono-devel
 
 If sudo cannot find the package, then follow the directions in the above link for the Ubuntu version that you work with.
 
-Press enter (RETURN) to continue and install wget if it is not already installed in your Linux machine:
-    
-    brew install wget
+Press enter (RETURN) to continue 
 
 
 #### Get example input data (only for testing the workflow with the example dataset)
@@ -117,7 +129,7 @@ See the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/exe
 
 ### Step 5: Investigate results
 
-All the results are in a csv format and can be opened simply with excel or using pandas dataframes. 
+All the results are in a csv format and can be opened simply with excel or using pandas dataframes. All the files under results/interim can be ignored or deleted.
 
 ## Developer Notes
 ### Config & Schemas
