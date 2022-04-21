@@ -36,7 +36,6 @@ def get_final_output():
     # dictionary of rules and its output files
     rule_dict = {"fileconversion" : expand("data/mzML/{samples}.mzML", samples=SAMPLES),
                 "preprocessing" : [expand("results/Interim/mzML/PCpeak_{samples}.mzML", samples=SAMPLES),
-        expand("results/Interim/preprocessed/nofilter_{samples}.featureXML", samples=SAMPLES),
         expand("results/Interim/preprocessed/FFM_{samples}.featureXML", samples=SAMPLES),
         expand("results/Interim/preprocessed/MFD_{samples}.featureXML", samples=SAMPLES),
         expand("results/Interim/feature_tables/features_{samples}.csv", samples=SAMPLES),
@@ -48,7 +47,8 @@ def get_final_output():
         expand("results/Preprocessed/FeatureQuantificationTable.csv")],
                 "GNPSexport" : [expand("results/Interim/GNPSexport/filtered.consensusXML"),
         expand("results/GNPSexport/MSMS.mgf"),
-        expand("results/GNPSexport/FeatureQuantificationTable.txt")],
+        expand("results/GNPSexport/FeatureQuantificationTable.txt"),
+        expand("results/GNPSexport/SuppPairs.csv")],
                 "requantification" : [expand("results/Interim/Requantified/MetaboliteIdentification.tsv"),
         expand("results/Interim/Requantified/Aligned_{samples}.mzML", samples=SAMPLES),
         expand("results/Interim/Requantified/FFMID_{samples}.featureXML", samples=SAMPLES),
@@ -63,8 +63,9 @@ def get_final_output():
         expand("results/CSI/CSI_library.csv"),
         expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable.csv"),
         expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable_Requant.csv"),
-        expand("results/annotations/GNPS_annotated_FeatureTable.csv"),
-        expand("results/annotations/GNPS_annotated_FeatureTable_Requant.csv")]
+        # expand("results/annotations/GNPS_annotated_FeatureTable.csv"),
+        # expand("results/annotations/GNPS_annotated_FeatureTable_Requant.csv")
+        ]
                 }
     
     # get keys from config

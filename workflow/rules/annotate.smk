@@ -77,14 +77,14 @@ rule GNPS_library:
 # Filter out the ones that have a mass error > 20.0 ppm and also metabolites that originate from libraries such as HMDB when your samples are generated from bacteria.
 # Annotate compounds in FeatureMatrix
 
-rule GNPS_library_requant:
-    input:
-        "resources/MS2_LIBRARYSEARCH_all_identifications.tsv",
-        "results/Requantified/FeatureMatrix_requant.tsv"
-    output:
-        "results/annotations/GNPS_annotated_FeatureTable_Requant.csv"
-    threads: 4
-    conda:
-        "../envs/python.yaml"
-    script:
-        "../scripts/GNPS.py"     
+#rule GNPS_library_requant:
+#    input:
+#        "resources/MS2_LIBRARYSEARCH_all_identifications.tsv",
+#        "results/Requantified/FeatureMatrix_requant.tsv"
+#    output:
+#        "results/annotations/GNPS_annotated_FeatureTable_Requant.csv"
+#    threads: 4
+#    conda:
+#        "../envs/python.yaml"
+#    script:
+#        "../scripts/GNPS.py"     

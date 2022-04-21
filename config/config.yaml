@@ -11,8 +11,9 @@ projects:
 #### RULE CONFIGURATION ####
 # rules: set value to TRUE if you want to run the analysis or FALSE if you don't
 rules:
-  fileconversion: FALSE
+  fileconversion: TRUE
   preprocessing: TRUE
+  requantification: TRUE
   GNPSexport: TRUE
   sirius: TRUE
   annotate: TRUE
