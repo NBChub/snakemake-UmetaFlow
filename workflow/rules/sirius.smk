@@ -8,13 +8,9 @@ rule preprocess_noconvexhulls_sirius:
         "results/Interim/mzML/PCpeak_{samples}.mzML"
     output:
         "results/Interim/sirius/FFM_nch_{samples}.featureXML"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','FeatureFinderMetabo'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true"
+        FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true"
         """
 
 # 2) Decharger: Decharging algorithm for adduct assignment
@@ -24,13 +20,9 @@ rule sirius_decharge:
         "results/Interim/sirius/FFM_nch_{samples}.featureXML"
     output:
         "results/Interim/sirius/MFD_nch_{samples}.featureXML"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','MetaboliteAdductDecharger'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.4" "Na:+:0.2" "NH4:+:0.2" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.4" "Na:+:0.2" "NH4:+:0.2" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
         """
 
 # 3) SIRIUS generates formula predictions from scores calculated from 1) MS2 fragmentation scores (ppm error + intensity) and 2) MS1 isotopic pattern scores.        

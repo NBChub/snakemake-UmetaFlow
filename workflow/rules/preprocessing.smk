@@ -1,6 +1,3 @@
-import glob
-from os.path import join
-
 # 1) Correct the MS2 precursor on a peak level (To the "highest intensity MS1 peak")
 
 rule precursorcorrection_peak:
@@ -8,13 +5,9 @@ rule precursorcorrection_peak:
         "data/mzML/{samples}.mzML"
     output:
         "results/Interim/mzML/PCpeak_{samples}.mzML"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','HighResPrecursorMassCorrector'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0"
+        HighResPrecursorMassCorrector -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0"
         """
 
 # 2) Preprocessing: Feature finding algorithm that detects peaks 
@@ -24,13 +17,9 @@ rule preprocess:
         "results/Interim/mzML/PCpeak_{samples}.mzML"
     output:
         "results/Interim/preprocessed/FFM_{samples}.featureXML"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','FeatureFinderMetabo'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true"
+        FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true"
         """
 
 # 3) Decharger: Decharging algorithm for adduct assignment
@@ -40,13 +29,9 @@ rule decharge:
         "results/Interim/preprocessed/FFM_{samples}.featureXML"
     output:
         "results/Interim/preprocessed/MFD_{samples}.featureXML"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','MetaboliteAdductDecharger'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
         """
 
 # 4) Tables of features (individual)
@@ -56,13 +41,9 @@ rule individual_feature_tables:
         "results/Interim/preprocessed/MFD_{samples}.featureXML"
     output:
         "results/Interim/feature_tables/features_{samples}.csv"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','TextExporter'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input} -out {output}
+        TextExporter -in {input} -out {output}
         """
 
 
@@ -74,13 +55,9 @@ rule precursorcorrection_feature:
         var2= "results/Interim/preprocessed/MFD_{samples}.featureXML"
     output:
         "results/Interim/mzML/PCfeature_{samples}.mzML"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','HighResPrecursorMassCorrector'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input.var1} -feature:in {input.var2} -out {output} -nearest_peak:mz_tolerance "100.0"
+        HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
         """ 
 
 # 6) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
@@ -91,13 +68,9 @@ rule MapAlignerPoseClustering:
     output:
         var1= expand("results/Interim/preprocessed/MapAlignerPoseClustering_{samples}.featureXML", samples=SAMPLES),
         var2= expand("results/Interim/preprocessed/MapAlignerPoseClustering_{samples}.trafoXML", samples=SAMPLES)
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','MapAlignerPoseClustering'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
+        MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
 # 7) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
@@ -109,13 +82,9 @@ rule IDMapper:
         var3= "results/Interim/mzML/PCfeature_{samples}.mzML"
     output:
         "results/Interim/preprocessed/IDMapper_{samples}.featureXML"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','IDMapper'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
+        IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
         """
 
 # 8) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
@@ -125,13 +94,9 @@ rule FeatureLinkerUnlabeledKD:
         expand("results/Interim/preprocessed/IDMapper_{samples}.featureXML", samples=SAMPLES)
     output:
         "results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','FeatureLinkerUnlabeledKD'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input} -out {output} 
+        FeatureLinkerUnlabeledKD -in {input} -out {output} 
         """
 
 # 9) export the consensusXML file to a txt file
@@ -141,13 +106,9 @@ rule txt_export:
         "results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"
     output:
         "results/Interim/preprocessed/FeatureQuantificationTable.txt" 
-    params:
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','TextExporter'))[0]
-    conda:
-        "../envs/python.yaml"
     shell:
         """
-        {params.bin_path} -in {input} -out {output}
+        TextExporter -in {input} -out {output}
         """
 
 # 10) Convert the table to an easily readable format
