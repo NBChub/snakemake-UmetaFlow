@@ -88,7 +88,7 @@ Activate the conda environment:
 
     conda activate snakemake
 
-Build OpenMS on (Linux)[https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_linux.html] or (MacOS)[https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/release/latest/html/install_mac.html] until the 3.0 release is published.
+Build OpenMS on [Linux](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_linux.html) or [MacOS](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/release/latest/html/install_mac.html) until the 3.0 release is published.
 
 #### For Linux only 
 
