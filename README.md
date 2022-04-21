@@ -56,11 +56,11 @@ Further formatting rules can be defined in the `workflow/schemas/` folder.
 
 #### For MacOS only 
 
-Install homebrew and wget (for **iOS** only!):
+Install homebrew and wget (for **MacOS** only!):
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     
-Press enter (RETURN) to continue 
+Press enter (RETURN) to continue
 
 #### For both systems
 
