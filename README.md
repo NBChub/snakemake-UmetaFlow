@@ -1,4 +1,4 @@
-# Metabolomics workflow for Linux and iOS systems
+# Metabolomics workflow for Linux and MacOS systems
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.7.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 [![Build Status](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics.svg?branch=master)](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics)
@@ -54,7 +54,7 @@ Further formatting rules can be defined in the `workflow/schemas/` folder.
 
 ### Step 3: Create a conda environment& install snakemake
 
-#### For iOS only 
+#### For MacOS only 
 
 Install homebrew and wget (for **iOS** only!):
 
