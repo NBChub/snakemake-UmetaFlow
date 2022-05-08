@@ -6,7 +6,7 @@ DF_features= DF_features.rename(columns={ "charge":"Charge", "mz": "Mass", "RT":
 
 for ind in DF_features.index:
     if DF_features["Charge"][ind] == 0:
-        DF_features.loc[ind, "Mass"]= DF_features.loc[ind,"Mass"]
+        DF_features.loc[ind, "Mass"]= DF_features.loc[ind,"Mass"]- 1.007825
     if DF_features["Charge"][ind] == 1:
         DF_features.loc[ind, "Mass"]= DF_features.loc[ind,"Mass"]- 1.007825
     if DF_features["Charge"][ind] == 2:
@@ -16,6 +16,8 @@ for ind in DF_features.index:
 
 DF_features["Charge"]= DF_features["Charge"].astype(str)
 for ind in DF_features.index:
+    if DF_features["Charge"][ind] == "0":
+        DF_features.loc[ind, "Charge"]= "+1"
     if DF_features["Charge"][ind] == "1":
         DF_features.loc[ind, "Charge"]= "+" + DF_features.loc[ind,"Charge"]
     if DF_features["Charge"][ind] == "2":

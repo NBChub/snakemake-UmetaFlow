@@ -37,7 +37,7 @@ rule metaboident:
         "results/Interim/Requantified/FFMID_{samples}.featureXML"
     shell:
         """
-        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -detect:peak_width 40.0
+        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 10.0 -extract:rt_window 30.0 -detect:peak_width 60.0
         """
 
 
