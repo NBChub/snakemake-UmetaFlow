@@ -3,7 +3,7 @@
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.7.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 [![Build Status](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics.svg?branch=master)](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics)
 
-This is a snakemake implementation of the pyOpenMS workflow (see https://github.com/eeko-kon/pyOpenMS_untargeted_metabolomics.git) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon)
+This is a snakemake implementation of the pyOpenMS workflow (see https://github.com/eeko-kon/pyOpenMS_untargeted_metabolomics.git) tailored by [Eftychia Eva Kontou and Axel Walter](https://github.com/eeko-kon)
 
 ## Workflow overview
 
@@ -65,11 +65,6 @@ Press enter (RETURN) to continue
 #### For both systems
 
     brew install wget
-
-Installing conda
-Get the latest version of conda with the following command:
-
-    wget -O - https://www.anaconda.com/distribution/ 2>/dev/null | sed -ne 's@.*\(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3-.*-Linux-x86_64\.sh\)\">64-Bit (x86) Installer.*@\1@p' | xargs wget
 
 Installing Snakemake using [Mamba](https://github.com/mamba-org/mamba) is advised. In case you don’t use [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) you can always install [Mamba](https://github.com/mamba-org/mamba) into any other Conda-based Python distribution with:
 
