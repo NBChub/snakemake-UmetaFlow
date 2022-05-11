@@ -39,13 +39,12 @@ rule sirius:
         "results/Interim/sirius/structures_{samples}.mzTab"
     params:
         exec_path = glob.glob(join('.snakemake','conda','*','bin','sirius'))[0],
-        bin_path= glob.glob(join('.snakemake','conda','*','bin','SiriusAdapter'))[0]
     conda:
         "../envs/python.yaml"
     threads: 4
     shell:
         """
-        {params.bin_path} -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output[0]} -out_fingerid {output[1]} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]O[40]S[4]P[3] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads}
+        SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output[0]} -out_fingerid {output[1]} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]O[40]S[4]P[3] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads}
         """
 
 # 5) Convert the mzTab to a csv file

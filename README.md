@@ -15,9 +15,11 @@ The pipeline consists of five interconnected steps:
 
 3) Structural and formula predictions (SIRIUS and CSI:FingeID)
 
-4) GNPSexport: generate all the files necessary to create a FBMN job at GNPS. (see https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/) 
+4) GNPSexport: generate all the files necessary to create a FBMN or IIMN job at GNPS. (see https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/ or https://ccms-ucsd.github.io/GNPSDocumentation/fbmn-iin/#iimn-networks-with-collapsed-ion-identity-edges)
 
 5) Re-quantification: Re-quantify all raw files to avoid missing values resulted by the pre-processing workflow for statistical analysis and data exploration.
+
+6) Annotate the feature matrix with formula and structural predictions.
 
 ![dag](/images/MetabolomicsFlow.svg)
 

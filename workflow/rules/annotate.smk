@@ -25,7 +25,6 @@ rule csi_library:
         "../scripts/CSI_library.py"    
 
 # 3) Annotate the Feature Matrix with structural and formula predictions. I recomment that you use both SIRIUS and CSI , even if there are repeating formula values occassionaly, since CSI would sometimes not predict a formula (due to size?)       
-    # You can chose between the preprocessed or the final requantified matrix
 
 rule SIRIUS_annotations:
     input:
@@ -41,7 +40,6 @@ rule SIRIUS_annotations:
         "../scripts/SIRIUS_CSI_annotations.py"    
 
 # 4) Annotate the Requantified Feature Matrix with structural and formula predictions. I recomment that you use both SIRIUS and CSI , even if there are repeating formula values occassionaly, since CSI would sometimes not predict a formula (due to size?)       
-    # You can chose between the preprocessed or the final requantified matrix
 
 rule SIRIUS_annotations_requant:
     input:
@@ -64,7 +62,7 @@ rule SIRIUS_annotations_requant:
 rule GNPS_library:
     input:
         "resources/MS2_LIBRARYSEARCH_all_identifications.tsv",
-        "results/Preprocessed/FeatureQuantificationTable.csv"
+        "results/Preprocessed/SIRIUS_CSI_annotated_FeatureTable.csv"
     output:
         "results/annotations/GNPS_annotated_FeatureTable.csv"
     threads: 4
@@ -80,7 +78,7 @@ rule GNPS_library:
 #rule GNPS_library_requant:
 #    input:
 #        "resources/MS2_LIBRARYSEARCH_all_identifications.tsv",
-#        "results/Requantified/FeatureMatrix_requant.tsv"
+#        "results/Requantified/SIRIUS_CSI_annotated_FeatureTable_Requant.tsv"
 #    output:
 #        "results/annotations/GNPS_annotated_FeatureTable_Requant.csv"
 #    threads: 4
