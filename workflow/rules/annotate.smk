@@ -40,7 +40,7 @@ rule SIRIUS_annotations:
         "../scripts/SIRIUS_CSI_annotations.py"    
 
 
-# 4) Run your raw mzml files directly to GNPS for MS/MS library matching to generate a csv table of metabolites. 
+# 4) Run your raw mzml files directly to GNPS for MS/MS library matching to generate a tsv table of metabolites. 
 # Filter out the ones that have a mass error > 20.0 ppm and also metabolites that originate from libraries such as HMDB when your samples are generated from bacteria.
 # Annotate compounds in FeatureMatrix
 

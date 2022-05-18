@@ -7,7 +7,7 @@ rule all:
 
 include: "rules/fileconversion.smk",
 include: "rules/preprocessing.smk",
-include: "rules/GNPSexport.smk",
 include: "rules/requantification.smk",
+include: "rules/GNPSexport.smk",
 include: "rules/sirius.smk",
 include: "rules/annotate.smk"

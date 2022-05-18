@@ -5,16 +5,25 @@
 
 rule split_consensus:
     input:
-        "results/Interim/preprocessed/preprocessed.consensusXML"
+        "results/Interim/preprocessed/preprocessed.consensusXML",
     output:
         "results/Interim/Requantified/Complete.consensusXML",
         "results/Interim/Requantified/Missing.consensusXML",
-        "results/Interim/Requantified/Complete_{samples}.featureXML"
     threads: 4
     conda:
         "../envs/python.yaml"   
     script:
         "../scripts/split.py"
+
+rule reload_maps:
+    input:
+        expand("results/Interim/preprocessed/MapAligned_{samples}.featureXML", samples=SAMPLES)
+    output:
+        "results/Interim/Requantified/Complete_{samples}.featureXML"
+    conda:
+        "../envs/python.yaml"   
+    script:
+        "../scripts/reloadmaps.py"
 
 # 2) Build a library of features from the consensus with missing values
 
@@ -70,8 +79,8 @@ rule requant:
 
 rule merge:
     input:
-        "results/Interim/Requantified/FFMID_{samples}.featureXML",
-        "results/Interim/Requantified/Complete_{samples}.featureXML"
+        "results/Interim/Requantified/Complete_{samples}.featureXML",
+        "results/Interim/Requantified/FFMID_{samples}.featureXML"
     output:
         "results/Interim/Requantified/Merged_{samples}.featureXML"
     threads: 4
@@ -85,10 +94,10 @@ rule merge:
 rule IDMapper:
     input:
         var1= "resources/emptyfile.idXML",
-        var2= "results/Interim/preprocessed/Merged_{samples}.featureXML",
+        var2= "results/Interim/Requantified/Merged_{samples}.featureXML",
         var3= "results/Interim/mzML/PCfeature_{samples}.mzML"
     output:
-        "results/Interim/preprocessed/IDMapper_{samples}.featureXML"
+        "results/Interim/Requantified/IDMapper_{samples}.featureXML"
     shell:
         """
         IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
@@ -98,9 +107,9 @@ rule IDMapper:
 
 rule decharge:
     input:
-        "results/Interim/preprocessed/IDMapper_{samples}.featureXML"
+        "results/Interim/Requantified/IDMapper_{samples}.featureXML"
     output:
-        "results/Interim/preprocessed/MFD_{samples}.featureXML"
+        "results/Interim/Requantified/MFD_{samples}.featureXML"
     shell:
         """
         MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
@@ -119,7 +128,7 @@ rule FeatureLinker:
         FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
         """
 
-# 9) export the consensusXML file to a csv file to produce a single matrix for PCA
+# 9) export the consensusXML file to a tsv file to produce a single matrix for PCA
 
 rule matrix:
     input:
