@@ -18,10 +18,10 @@ for i, mz, rt in zip(DF_features.index, DF_features['mz'], DF_features['RT']):
     hits = []
     for name, GNPS_mz, GNPS_rt, in zip(GNPS['Compound_Name'], GNPS['Precursor_MZ'], GNPS['RetentionTime']):
         mass_delta = (abs(GNPS_mz-mz)/GNPS_mz)*1000000.0 if GNPS_mz != 0 else np.nan
-        if (GNPS_rt >= rt-30.0) & (GNPS_rt <= rt+30.0) & (mass_delta<= 20.0):
+        if (GNPS_rt >= rt-30.0) & (GNPS_rt <= rt+30.0) & (mass_delta<= 10.0):
             hit = f'{name}'
             if hit not in hits:
                 hits.append(hit)
     DF_features['GNPS_IDs'][i] = ' ## '.join(hits)
 
-DF_features.to_csv(snakemake.output[0], sep='\t', index = False)
+DF_features.to_csv(snakemake.output[0], sep="\t", index = False)

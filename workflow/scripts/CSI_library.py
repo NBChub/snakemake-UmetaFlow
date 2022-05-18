@@ -1,11 +1,10 @@
 import glob
 import pandas as pd
-import numpy as np
 
-input_structures= glob.glob("results/CSI/structures_*.csv")
+input_structures= glob.glob(snakemake.input[0])
 DF_CSI= []
 for i, formulas in enumerate(input_structures):
-    df= pd.read_csv(formulas, index_col="Unnamed: 0")
+    df= pd.read_csv(formulas, sep="\t", index_col="Unnamed: 0")
     df= df.loc[df["opt_global_rank"]==1]
     df_score=df.filter(regex=fr"best_search_engine_score")
     df_opt=df.filter(regex=fr"opt")
@@ -46,7 +45,7 @@ for i, index in enumerate(idx):
         mass_delta = (abs(mz_0 - mz_1)/mz_0)*1000000
         maxdeltaRT = time_0 + 30.0
         mindeltaRT = time_0 - 30.0
-        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 20.0):
+        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 10.0):
             pass
         else:
             m= df_CSI.iloc[i]

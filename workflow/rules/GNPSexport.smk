@@ -2,7 +2,7 @@
 
 rule FileFilter:
     input:
-        "results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"
+        "results/Interim/Requantified/Requantified.consensusXML"
     output:
         "results/Interim/GNPSexport/filtered.consensusXML"
     shell:

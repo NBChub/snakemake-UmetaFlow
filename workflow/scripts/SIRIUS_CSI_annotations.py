@@ -1,6 +1,4 @@
-import glob
 import pandas as pd
-import numpy as np
 
 DF_SIRIUS= pd.read_csv(snakemake.input[0], sep="\t")
 DF_CSI= pd.read_csv(snakemake.input[1], sep="\t")
@@ -17,7 +15,7 @@ for i, mz, rt in zip(DF_features.index, DF_features['mz'], DF_features['RT']):
     hits3=[]
     for name, smiles, formula, Pred_mz, Pred_rt, in zip(DF_CSI['description'], DF_CSI['smiles'], DF_CSI['formulas'], DF_CSI['exp_mass_to_charge'], DF_CSI['retention_time']):
         mass_delta = (abs(Pred_mz-mz)/Pred_mz)*1000000.0 if Pred_mz != 0 else 0
-        if (Pred_rt >= rt-30.0) & (Pred_rt <= rt+30.0) & (mass_delta<= 20.0):
+        if (Pred_rt >= rt-30.0) & (Pred_rt <= rt+30.0) & (mass_delta<= 10.0):
             hit1 = f'{name}'
             hit2 = f'{formula}'
             hit3= f'{smiles}'
@@ -35,7 +33,7 @@ for i, mz, rt in zip(DF_features.index, DF_features['mz'], DF_features['RT']):
     hits = []
     for name, Pred_mz, Pred_rt, in zip(DF_SIRIUS['formulas'], DF_SIRIUS['mz'], DF_SIRIUS['RT']):
         mass_delta = (abs(Pred_mz-mz)/Pred_mz)*1000000.0 if Pred_mz != 0 else 0
-        if (Pred_rt >= rt-30.0) & (Pred_rt <= rt+30.0) & (mass_delta<= 20.0):
+        if (Pred_rt >= rt-30.0) & (Pred_rt <= rt+30.0) & (mass_delta<= 10.0):
             hit = f'{name}'
             if hit not in hits:
                 hits.append(hit)

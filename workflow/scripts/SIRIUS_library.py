@@ -1,12 +1,11 @@
 import glob
 import pandas as pd
-import numpy as np
 
-input_formulas= glob.glob("results/SIRIUS/formulas_*.csv")
+input_formulas= glob.glob(snakemake.input[0])
 DF_SIRIUS = pd.DataFrame()
 list_of_df=[]
-for csv in input_formulas:
-    df= pd.read_csv(csv, sep=",", index_col="Unnamed: 0")
+for tsv in input_formulas:
+    df= pd.read_csv(tsv, sep="\t", index_col="Unnamed: 0")
     s= df["opt_global_rank"]
     pd.to_numeric(s)
     df= df.loc[df["opt_global_rank"]==1]
@@ -46,7 +45,7 @@ for i, index in enumerate(idx):
         mass_delta = (abs(mz_0 - mz_1)/mz_0)*1000000
         maxdeltaRT = time_0 + 30.0
         mindeltaRT = time_0 - 30.0
-        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 20.0):
+        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 10.0):
             pass
         else:
             m= df_sirius.iloc[i]
