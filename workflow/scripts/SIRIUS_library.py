@@ -1,7 +1,8 @@
 import glob
 import pandas as pd
+import os
 
-input_formulas= glob.glob(snakemake.input[0])
+input_formulas= glob.glob(os.path.join("results", "SIRIUS", "formulas_*.csv"))
 DF_SIRIUS = pd.DataFrame()
 list_of_df=[]
 for tsv in input_formulas:

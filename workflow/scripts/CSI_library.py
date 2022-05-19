@@ -1,7 +1,8 @@
 import glob
 import pandas as pd
+import os
 
-input_structures= glob.glob(snakemake.input[0])
+input_structures= glob.glob(os.path.join("results", "CSI", "structures_*.csv"))
 DF_CSI= []
 for i, formulas in enumerate(input_structures):
     df= pd.read_csv(formulas, sep="\t", index_col="Unnamed: 0")

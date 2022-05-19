@@ -105,6 +105,10 @@ Press enter (RETURN) to continue
 
 #### Execute the workflow
 
+Create only the environment initially:
+
+    snakemake --conda-create-envs-only
+
 Test your configuration by performing a dry-run via
 
     snakemake --use-conda -n
