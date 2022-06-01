@@ -2,9 +2,14 @@ from pyopenms import *
 import glob
 
 # first load feature files in an OpenMS format 
+<<<<<<< HEAD
 featurexml_files= glob.glob(snakemake.input[0])
 feature_maps = []
 for featurexml_file in featurexml_files:
+=======
+feature_maps = []
+for featurexml_file in glob.glob(snakemake.input[0]):
+>>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
     fmap = FeatureMap()
     FeatureXMLFile().load(featurexml_file, fmap)
     feature_maps.append(fmap)

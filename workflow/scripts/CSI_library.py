@@ -2,7 +2,11 @@ import glob
 import pandas as pd
 import os
 
+<<<<<<< HEAD
 input_structures= glob.glob(os.path.join("results", "CSI", "structures_*.tsv"))
+=======
+input_structures= glob.glob(os.path.join("results", "CSI", "structures_*.csv"))
+>>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
 DF_CSI= []
 for i, formulas in enumerate(input_structures):
     df= pd.read_csv(formulas, sep="\t", index_col="Unnamed: 0")
@@ -46,7 +50,7 @@ for i, index in enumerate(idx):
         mass_delta = (abs(mz_0 - mz_1)/mz_0)*1000000
         maxdeltaRT = time_0 + 30.0
         mindeltaRT = time_0 - 30.0
-        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 20.0):
+        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 10.0):
             pass
         else:
             m= df_CSI.iloc[i]

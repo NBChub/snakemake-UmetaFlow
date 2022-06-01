@@ -2,7 +2,11 @@ import glob
 import pandas as pd
 import os
 
+<<<<<<< HEAD
 input_formulas= glob.glob(os.path.join("results", "SIRIUS", "formulas_*.tsv"))
+=======
+input_formulas= glob.glob(os.path.join("results", "SIRIUS", "formulas_*.csv"))
+>>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
 DF_SIRIUS = pd.DataFrame()
 list_of_df=[]
 for tsv in input_formulas:
@@ -46,7 +50,7 @@ for i, index in enumerate(idx):
         mass_delta = (abs(mz_0 - mz_1)/mz_0)*1000000
         maxdeltaRT = time_0 + 30.0
         mindeltaRT = time_0 - 30.0
-        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 20.0):
+        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 10.0):
             pass
         else:
             m= df_sirius.iloc[i]

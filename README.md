@@ -105,6 +105,7 @@ Press enter (RETURN) to continue
 
 #### Execute the workflow
 
+<<<<<<< HEAD
 Create the environment with the executables manually:
 
     conda env create --prefix ".snakemake/conda/exe" -f "workflow/envs/exe.yaml" 
@@ -118,6 +119,11 @@ Get the latest pyOpenMS wheels (until pyOpenMS 3.0 is available in conda):
     pip install *cp310*.whl
     conda deactivate
     rm *.zip & rm *.whl
+=======
+Create only the environment initially:
+
+    snakemake --conda-create-envs-only
+>>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
 
 Test your configuration by performing a dry-run via
 

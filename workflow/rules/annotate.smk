@@ -2,7 +2,11 @@
 
 rule sirius_library:
     input:
+<<<<<<< HEAD
         glob.glob(os.path.join("results", "SIRIUS", "formulas_*.tsv"))
+=======
+        expand("results/SIRIUS/formulas_{samples}.tsv", samples=SAMPLES)
+>>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
     output:
         "results/SIRIUS/SIRIUS_library.tsv"
     threads: 4
@@ -15,7 +19,11 @@ rule sirius_library:
 
 rule csi_library:
     input:
+<<<<<<< HEAD
         glob.glob(os.path.join("results", "CSI", "structures_*.tsv"))
+=======
+        expand("results/CSI/structures_{samples}.tsv", samples=SAMPLES)
+>>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
     output:
         "results/CSI/CSI_library.tsv"
     threads: 4
