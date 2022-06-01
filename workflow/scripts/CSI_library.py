@@ -1,11 +1,11 @@
 import glob
 import pandas as pd
-import numpy as np
+import os
 
-input_structures= glob.glob("results/CSI/structures_*.csv")
+input_structures= glob.glob(os.path.join("results", "CSI", "structures_*.tsv"))
 DF_CSI= []
 for i, formulas in enumerate(input_structures):
-    df= pd.read_csv(formulas, index_col="Unnamed: 0")
+    df= pd.read_csv(formulas, sep="\t", index_col="Unnamed: 0")
     df= df.loc[df["opt_global_rank"]==1]
     df_score=df.filter(regex=fr"best_search_engine_score")
     df_opt=df.filter(regex=fr"opt")

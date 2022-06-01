@@ -1,12 +1,12 @@
 import glob
 import pandas as pd
-import numpy as np
+import os
 
-input_formulas= glob.glob("results/SIRIUS/formulas_*.csv")
+input_formulas= glob.glob(os.path.join("results", "SIRIUS", "formulas_*.tsv"))
 DF_SIRIUS = pd.DataFrame()
 list_of_df=[]
-for csv in input_formulas:
-    df= pd.read_csv(csv, sep=",", index_col="Unnamed: 0")
+for tsv in input_formulas:
+    df= pd.read_csv(tsv, sep="\t", index_col="Unnamed: 0")
     s= df["opt_global_rank"]
     pd.to_numeric(s)
     df= df.loc[df["opt_global_rank"]==1]

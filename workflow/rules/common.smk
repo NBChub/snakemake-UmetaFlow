@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from snakemake.utils import validate
 from snakemake.utils import min_version
+import glob
 
 min_version("5.18.0")
 
@@ -25,7 +26,6 @@ wildcard_constraints:
 
 ##### Helper functions #####
 
-
 SAMPLES = samples.sample_name.to_list()
 
 ##### 7. Customize final output based on config["rule"] values #####
@@ -37,34 +37,30 @@ def get_final_output():
     rule_dict = {"fileconversion" : expand("data/mzML/{samples}.mzML", samples=SAMPLES),
                 "preprocessing" : [expand("results/Interim/mzML/PCpeak_{samples}.mzML", samples=SAMPLES),
         expand("results/Interim/preprocessed/FFM_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/preprocessed/MFD_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/feature_tables/features_{samples}.csv", samples=SAMPLES),
         expand("results/Interim/mzML/PCfeature_{samples}.mzML", samples=SAMPLES),
-        expand(["results/Interim/preprocessed/MapAlignerPoseClustering_{samples}.featureXML", "results/Interim/preprocessed/MapAlignerPoseClustering_{samples}.trafoXML"], samples=SAMPLES),
-        expand("results/Interim/preprocessed/IDMapper_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/preprocessed/FeatureLinkerUnlabeledKD.consensusXML"),
-        expand("results/Interim/preprocessed/FeatureQuantificationTable.txt"),
-        expand("results/Preprocessed/FeatureQuantificationTable.csv")],
+        expand(["results/Interim/preprocessed/MapAligned_{samples}.featureXML", "results/Interim/preprocessed/MapAligned_{samples}.trafoXML"], samples=SAMPLES),
+        expand("results/Interim/preprocessed/preprocessed.consensusXML")],
+                "requantification" : [expand(["results/Interim/Requantified/Complete.consensusXML", "results/Interim/Requantified/Missing.consensusXML", "results/Interim/Requantified/Complete_{samples}.featureXML"], samples=SAMPLES),
+        expand("results/Interim/Requantified/MetaboliteIdentification.tsv"),
+        expand("results/Interim/Requantified/Aligned_{samples}.mzML", samples=SAMPLES),
+        expand("results/Interim/Requantified/FFMID_{samples}.featureXML", samples=SAMPLES),
+        expand("results/Interim/Requantified/Merged_{samples}.featureXML", samples=SAMPLES),
+        expand("results/Interim/Requantified/IDMapper_{samples}.featureXML", samples=SAMPLES),
+        expand("results/Interim/Requantified/MFD_{samples}.featureXML", samples=SAMPLES),
+        expand("results/Interim/Requantified/Requantified.consensusXML"),
+        expand("results/Interim/Requantified/consensus.tsv"),
+        expand("results/Requantified/FeatureMatrix.tsv")],
                 "GNPSexport" : [expand("results/Interim/GNPSexport/filtered.consensusXML"),
         expand("results/GNPSexport/MSMS.mgf"),
         expand("results/GNPSexport/FeatureQuantificationTable.txt"),
         expand("results/GNPSexport/SuppPairs.csv")],
-                "requantification" : [expand("results/Interim/Requantified/MetaboliteIdentification.tsv"),
-        expand("results/Interim/Requantified/Aligned_{samples}.mzML", samples=SAMPLES),
-        expand("results/Interim/Requantified/FFMID_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/Requantified/Requantified.consensusXML"),
-        expand("results/Interim/Requantified/consensus.tsv"),
-        expand("results/Requantified/FeatureMatrix_requant.tsv")],
-                "sirius" : [expand("results/Interim/sirius/FFM_nch_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/sirius/MFD_nch_{samples}.featureXML", samples=SAMPLES),
+                "sirius" : [expand("results/Interim/sirius/MFD_{samples}.featureXML", samples=SAMPLES),
         expand(["results/Interim/sirius/formulas_{samples}.mzTab", "results/Interim/sirius/structures_{samples}.mzTab"], samples=SAMPLES),
-        expand(["results/SIRIUS/formulas_{samples}.csv", "results/CSI/structures_{samples}.csv"], samples=SAMPLES)],
-                "annotate" : [expand("results/SIRIUS/SIRIUS_library.csv"),
-        expand("results/CSI/CSI_library.csv"),
-        expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable.csv"),
-        expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable_Requant.csv"),
-        # expand("results/annotations/GNPS_annotated_FeatureTable.csv"),
-        # expand("results/annotations/GNPS_annotated_FeatureTable_Requant.csv")
+        expand(["results/SIRIUS/formulas_{samples}.tsv", "results/CSI/structures_{samples}.tsv"], samples=SAMPLES)],
+                "annotate" : [expand("results/SIRIUS/SIRIUS_library.tsv"),
+        expand("results/CSI/CSI_library.tsv"),
+        expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"),
+        expand("results/annotations/GNPS_annotated_FeatureTable.tsv"),
         ]
                 }
     

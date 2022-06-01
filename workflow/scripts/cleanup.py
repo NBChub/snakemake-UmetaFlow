@@ -77,4 +77,4 @@ for col in cols:
             DF_features.rename(columns={col: col_name}, inplace=True)
 
 DF_features= DF_features.reset_index()            
-DF_features.to_csv(snakemake.output[0],  sep='\t', index = False)
+DF_features.to_csv(snakemake.output[0], sep="\t", index = False)

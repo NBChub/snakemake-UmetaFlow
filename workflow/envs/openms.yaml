@@ -1,4 +1,4 @@
-name: file_conversion
+name: openms
 channels:
   - conda-forge
   - bioconda
@@ -12,5 +12,3 @@ dependencies:
   - pyteomics=4.4.2
   - numpy=1.20.2
   - bioconda::openms
-  - bioconda::thermorawfileparser
-  - bioconda::sirius-csifingerid

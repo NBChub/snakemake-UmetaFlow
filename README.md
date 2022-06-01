@@ -19,7 +19,7 @@ The pipeline consists of five interconnected steps:
 
 5) Re-quantification: Re-quantify all raw files to avoid missing values resulted by the pre-processing workflow for statistical analysis and data exploration.
 
-6) Annotate the feature matrix with formula and structural predictions.
+6) Annotate the feature matrix with formula and structural predictions (optionally also with MSMS library annotations from GNPS).
 
 ![dag](/images/MetabolomicsFlow.svg)
 
@@ -98,12 +98,26 @@ If sudo cannot find the package, then follow the directions in the above link fo
 Press enter (RETURN) to continue 
 
 
-#### Get example input data (only for testing the workflow with the example dataset)
+#### Get example input data (optionally for testing the workflow with the example dataset)
 
     (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
 
 
 #### Execute the workflow
+
+Create the environment with the executables manually:
+
+    conda env create --prefix ".snakemake/conda/exe" -f "workflow/envs/exe.yaml" 
+
+Get the latest pyOpenMS wheels (until pyOpenMS 3.0 is available in conda):
+
+    MY_OS="Linux" # or "macOS" or "Windows" (case-sensitive)
+    wget https://nightly.link/OpenMS/OpenMS/workflows/pyopenms-wheels/nightly/${MY_OS}-wheels.zip\?status\=completed
+    mv ${MY_OS}-wheels.zip\?status=completed ${MY_OS}-wheels.zip & unzip *.zip
+    conda activate .snakemake/conda/exe
+    pip install *cp310*.whl
+    conda deactivate
+    rm *.zip & rm *.whl
 
 Test your configuration by performing a dry-run via
 

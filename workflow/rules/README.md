@@ -12,7 +12,15 @@ If you have Agilent or Bruker files, skip that step (write "FALSE" for rule file
 
 Converting raw data to a feature table with a series of OpenMS algorithms (see documentation [here](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/index.html)). 
 
-### `3) SIRIUS and CSI:FingerID:`
+![dag](/images/Preprocessing.svg) 
+
+### `3) Re-quantification:` 
+
+Re-quantify all raw files to avoid missing values resulted by the pre-processing steps for statistical analysis and data exploration. Generate a FeatureMatrix for further statistical analysis.
+
+![dag](/images/Re-quantification.svg) 
+
+### `4) SIRIUS and CSI:FingerID:`
 
 The pre-processed feature tables are then introduced to SIRIUS and CSI:FingerID for formula and structural predictions (see documentation [here](https://boecker-lab.github.io/docs.sirius.github.io/)).
 
@@ -56,20 +64,13 @@ and also removing the output files also from [Snakefile](workflow/Snakefile) by 
         expand("results/{samples}/formulas_{samples}.csv", samples=SAMPLES),
 ```
 
-![dag](/images/Preprocessing+SIRIUS_CSI_FingerID.svg)
+![dag](/images/SIRIUS_CSI_FingerID.svg)
 
-### `4) GNPSexport:` 
+### `5) GNPSexport:` 
 
 Generate all the files necessary to create a FBMN job at GNPS (see documentation [here](https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/)). 
 
 Create a metadata csv file for GNPS from the samples.tsv file using the Jupyter notebook [file](Create_sampletsv_file.ipynb)
 
-
-
 ![dag](/images/GNPSExport.svg) 
 
-### `4) Re-quantification:` 
-
-Re-quantify all raw files to avoid missing values resulted by the pre-processing steps for statistical analysis and data exploration. Generate a FeatureMatrix for further statistical analysis.
-
-![dag](/images/Re-quantification.svg) 
