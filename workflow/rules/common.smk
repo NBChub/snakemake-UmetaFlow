@@ -54,21 +54,13 @@ def get_final_output():
         expand("results/GNPSexport/MSMS.mgf"),
         expand("results/GNPSexport/FeatureQuantificationTable.txt"),
         expand("results/GNPSexport/SuppPairs.csv")],
-<<<<<<< HEAD
                 "sirius" : [expand("results/Interim/sirius/MFD_{samples}.featureXML", samples=SAMPLES),
-=======
-                "sirius" : [expand("results/Interim/sirius/MFD_nch_{samples}.featureXML", samples=SAMPLES),
->>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
         expand(["results/Interim/sirius/formulas_{samples}.mzTab", "results/Interim/sirius/structures_{samples}.mzTab"], samples=SAMPLES),
         expand(["results/SIRIUS/formulas_{samples}.tsv", "results/CSI/structures_{samples}.tsv"], samples=SAMPLES)],
                 "annotate" : [expand("results/SIRIUS/SIRIUS_library.tsv"),
         expand("results/CSI/CSI_library.tsv"),
         expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"),
-<<<<<<< HEAD
         expand("results/annotations/GNPS_annotated_FeatureTable.tsv"),
-=======
-        # expand("results/annotations/GNPS_annotated_FeatureTable.tsv"),
->>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
         ]
                 }
     

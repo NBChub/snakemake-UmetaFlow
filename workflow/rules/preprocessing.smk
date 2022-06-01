@@ -20,11 +20,7 @@ rule preprocess:
     threads: 4
     shell:
         """
-<<<<<<< HEAD
         /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true" -threads {threads}
-=======
-        FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true" -threads {threads}
->>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
         """
 
 # 3) Correct the MS2 precursor in a feature level (for GNPS FBMN).        
@@ -63,10 +59,6 @@ rule FeatureLinkerUnlabeledKD:
     threads: 4
     shell:
         """
-<<<<<<< HEAD
         /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
-=======
-        FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
->>>>>>> 36aac52cfd4423bb92386ddfb3059a9655b26263
         """
 
