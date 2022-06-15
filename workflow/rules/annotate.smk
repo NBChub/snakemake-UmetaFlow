@@ -1,8 +1,11 @@
+import os
+import glob
+
 # 1) Create a sirius library from all the tables with formula predictions by only taking into acount the rank #1 predictions for simplicity. Mind that there are cases where SIRIUS predicts the correct formula ranked as >1. 
 
 rule sirius_library:
     input:
-        glob.glob(os.path.join("results", "SIRIUS", "formulas_*.tsv"))
+        expand("results/SIRIUS/formulas_{samples}.tsv", samples=SAMPLES)
     output:
         "results/SIRIUS/SIRIUS_library.tsv"
     threads: 4
@@ -15,7 +18,7 @@ rule sirius_library:
 
 rule csi_library:
     input:
-        glob.glob(os.path.join("results", "CSI", "structures_*.tsv"))
+        expand("results/CSI/structures_{samples}.tsv", samples=SAMPLES)
     output:
         "results/CSI/CSI_library.tsv"
     threads: 4
@@ -46,7 +49,7 @@ rule SIRIUS_annotations:
 
 rule GNPS_library:
     input:
-        "resources/MS2_LIBRARYSEARCH_all_identifications.tsv",
+        glob.glob(os.path.join("resources", "*.tsv")),
         "results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"
     output:
         "results/annotations/GNPS_annotated_FeatureTable.tsv"

@@ -44,9 +44,9 @@ for i, index in enumerate(idx):
         time_1= new_df["retention_time"][index]
         #(print(mz_0, time_0, mz_1, time_1))
         mass_delta = (abs(mz_0 - mz_1)/mz_0)*1000000
-        maxdeltaRT = time_0 + 30.0
-        mindeltaRT = time_0 - 30.0
-        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 20.0):
+        maxdeltaRT = time_0 + 5.0
+        mindeltaRT = time_0 - 5.0
+        if (mindeltaRT<= time_1 <= maxdeltaRT) & (mass_delta<= 10.0):
             pass
         else:
             m= df_CSI.iloc[i]

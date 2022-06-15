@@ -12,7 +12,7 @@ def df_sirius(filename):
     SIRIUS_DF= SIRIUS_DF.rename(columns= {"best_search_engine_score[1]":	"SiriusScore"}) #This score is the sum of the fragmentation pattern scoring ("TreeScore") and the isotope pattern scoring ("IsotopeScore")
     SIRIUS_DF= SIRIUS_DF.rename(columns= {"best_search_engine_score[2]":	"TreeScore"})
     SIRIUS_DF= SIRIUS_DF.rename(columns= {"best_search_engine_score[3]":	"IsotopeScore"}) #The closer to 10, the higher the quality of the isotope pattern
-    SIRIUS_DF=SIRIUS_DF[SIRIUS_DF["IsotopeScore"] > 0.0] #Isotope scores that are equal to zero are very low quality and filtered out
+    SIRIUS_DF=SIRIUS_DF[SIRIUS_DF["IsotopeScore"] >= 0.0] #Isotope scores that are equal to zero are very low quality and filtered out
     SIRIUS_DF.to_csv(snakemake.output[0], sep="\t")
 
 

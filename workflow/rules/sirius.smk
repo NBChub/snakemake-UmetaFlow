@@ -13,24 +13,22 @@ rule adduct_annotations:
         "results/Interim/sirius/MFD_{samples}.featureXML" 
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
         """       
 
 rule sirius:
     input: 
-        var1= "results/Interim/Requantified/Aligned_{samples}.mzML", 
-        var2= "results/Interim/sirius/MFD_{samples}.featureXML"        
+        var1= "results/Interim/Requantified/Aligned_{samples}.mzML",
+        var2= "results/Interim/sirius/MFD_{samples}.featureXML" 
     output:
-        "results/Interim/sirius/formulas_{samples}.mzTab",
-        "results/Interim/sirius/structures_{samples}.mzTab"
-    conda:
-        "../envs/exe.yaml"
+        out1= "results/Interim/sirius/formulas_{samples}.mzTab",
+        out2= "results/Interim/sirius/structures_{samples}.mzTab"
     params:
-        exec_path = glob.glob(join('.snakemake','conda','exe','bin','sirius'))
+        exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
     threads: 4
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output[0]} -out_fingerid {output[1]} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads}
+        SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output.out1} -out_fingerid {output.out2} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads}
         """
 
 # 2) Convert the mzTab to a tsv file

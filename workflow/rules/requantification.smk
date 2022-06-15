@@ -33,7 +33,7 @@ rule txt_export_2:
         "results/Interim/Requantified/FeatureQuantificationTable.txt" 
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
+        TextExporter -in {input} -out {output}
         """
 
 rule build_library:
@@ -57,7 +57,7 @@ rule aligner:
         "results/Interim/Requantified/Aligned_{samples}.mzML"
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
+        MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
         """ 
 
 # 4) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
@@ -71,7 +71,7 @@ rule requant:
     threads: 4
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 10.0 -extract:rt_window 30.0 -detect:peak_width 60.0 -threads {threads}
+        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 10.0 -extract:rt_window 30.0 -detect:peak_width 60.0 -threads {threads}
         """
 
 # 5) Merge the re-quantified with the complete feature files
@@ -88,43 +88,43 @@ rule merge:
     script:
         "../scripts/merge.py"    
 
-# 6) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
+
+# 6) Decharger: Decharging algorithm for adduct assignment
+
+rule decharge:
+    input:
+        "results/Interim/Requantified/Merged_{samples}.featureXML"
+    output:
+        "results/Interim/Requantified/MFD_{samples}.featureXML"
+    shell:
+        """
+        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        """
+# 7) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
 
 rule IDMapper:
     input:
         var1= "resources/emptyfile.idXML",
-        var2= "results/Interim/Requantified/Merged_{samples}.featureXML",
+        var2= "results/Interim/Requantified/MFD_{samples}.featureXML",
         var3= "results/Interim/mzML/PCfeature_{samples}.mzML"
     output:
         "results/Interim/Requantified/IDMapper_{samples}.featureXML"
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
-        """
-
-# 7) Decharger: Decharging algorithm for adduct assignment
-
-rule decharge:
-    input:
-        "results/Interim/Requantified/IDMapper_{samples}.featureXML"
-    output:
-        "results/Interim/Requantified/MFD_{samples}.featureXML"
-    shell:
-        """
-        /Users/eeko/openms-develop/openms_build/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
         """
 
 # 8) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different sfiles together, which have a smiliar m/z and rt (MS1 level).
 
 rule FeatureLinker:
     input:
-        expand("results/Interim/Requantified/MFD_{samples}.featureXML", samples=SAMPLES)
+        expand("results/Interim/Requantified/IDMapper_{samples}.featureXML", samples=SAMPLES)
     output:
         "results/Interim/Requantified/Requantified.consensusXML"
     threads: 4
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
+        FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
         """
 
 # 9) export the consensusXML file to a tsv file to produce a single matrix for PCA
@@ -136,7 +136,7 @@ rule matrix:
         "results/Interim/Requantified/consensus.tsv" 
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output}
+        TextExporter -in {input} -out {output}
         """
         
 # 10) Convert the table to an easily readable format:

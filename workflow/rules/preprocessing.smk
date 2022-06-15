@@ -7,7 +7,7 @@ rule precursorcorrection_peak:
         "results/Interim/mzML/PCpeak_{samples}.mzML"
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/HighResPrecursorMassCorrector -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0"
+        HighResPrecursorMassCorrector -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0"
         """
 
 # 2) Preprocessing: Feature finding algorithm that detects peaks 
@@ -20,7 +20,7 @@ rule preprocess:
     threads: 4
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true" -threads {threads}
+        FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true" -threads {threads}
         """
 
 # 3) Correct the MS2 precursor in a feature level (for GNPS FBMN).        
@@ -33,7 +33,7 @@ rule precursorcorrection_feature:
         "results/Interim/mzML/PCfeature_{samples}.mzML"
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
+        HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
         """ 
 
 # 4) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
@@ -46,7 +46,7 @@ rule MapAlignerPoseClustering:
         var2= expand("results/Interim/preprocessed/MapAligned_{samples}.trafoXML", samples=SAMPLES)
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
+        MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
         """ 
 
 # 5) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
@@ -59,6 +59,27 @@ rule FeatureLinkerUnlabeledKD:
     threads: 4
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
+        FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
         """
 
+rule FFM_matrix:
+    input:
+        "results/Interim/preprocessed/preprocessed.consensusXML"
+    output:
+        "results/Interim/preprocessed/consensus.tsv" 
+    shell:
+        """
+        TextExporter -in {input} -out {output}
+        """
+        
+# 10) Convert the table to an easily readable format:
+
+rule FFM_cleanup:
+    input:
+        "results/Interim/preprocessed/consensus.tsv" 
+    output:
+        "results/Preprocessed/FeatureMatrix.tsv"
+    conda:
+        "../envs/exe.yaml"
+    script:
+        "../scripts/cleanup.py"
