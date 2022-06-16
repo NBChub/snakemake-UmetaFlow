@@ -13,13 +13,13 @@ The pipeline consists of five interconnected steps:
 
 2) Pre-processing: converting raw data to a feature table with a series of algorithms 
 
-3) Structural and formula predictions (SIRIUS and CSI:FingeID)
+3) Re-quantification: Re-quantify all raw files to avoid missing values resulted by the pre-processing workflow for statistical analysis and data exploration.
 
-4) GNPSexport: generate all the files necessary to create a FBMN or IIMN job at GNPS. (see https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/ or https://ccms-ucsd.github.io/GNPSDocumentation/fbmn-iin/#iimn-networks-with-collapsed-ion-identity-edges)
+4) Structural and formula predictions (SIRIUS and CSI:FingeID)
 
-5) Re-quantification: Re-quantify all raw files to avoid missing values resulted by the pre-processing workflow for statistical analysis and data exploration.
+5) GNPSexport: generate all the files necessary to create a FBMN or IIMN job at GNPS. (see https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/ or https://ccms-ucsd.github.io/GNPSDocumentation/fbmn-iin/#iimn-networks-with-collapsed-ion-identity-edges)
 
-6) Annotate the feature matrix with formula and structural predictions (optionally also with MSMS library annotations from GNPS).
+6) Annotate the feature matrix with formula and structural predictions.
 
 ![dag](/images/MetabolomicsFlow.svg)
 
@@ -78,7 +78,6 @@ Then install Snakemake with:
 
 For installation details, see the [instructions in the Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html).
 
-
 ### Step 4: Execute workflow
 
 Activate the conda environment:
@@ -97,27 +96,22 @@ If sudo cannot find the package, then follow the directions in the above link fo
 
 Press enter (RETURN) to continue 
 
-
-#### Get example input data (optionally for testing the workflow with the example dataset)
+#### Get example input data (only for testing the workflow with the example dataset)
 
     (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
-
-
+    
 #### Execute the workflow
-
-Create the environment with the executables manually:
-
-    conda env create --prefix ".snakemake/conda/exe" -f "workflow/envs/exe.yaml" 
-
+    
 Get the latest pyOpenMS wheels (until pyOpenMS 3.0 is available in conda):
 
     MY_OS="Linux" # or "macOS" or "Windows" (case-sensitive)
     wget https://nightly.link/OpenMS/OpenMS/workflows/pyopenms-wheels/nightly/${MY_OS}-wheels.zip\?status\=completed
-    mv ${MY_OS}-wheels.zip\?status=completed ${MY_OS}-wheels.zip & unzip *.zip
-    conda activate .snakemake/conda/exe
-    pip install *cp310*.whl
-    conda deactivate
-    rm *.zip & rm *.whl
+    mv ${MY_OS}-wheels.zip\?status=completed .snakemake/conda/${MY_OS}-wheels.zip & unzip *.zip
+    find *.whl > .snakemake/conda/requirements.txt
+
+Create the environment with the executables manually:
+
+    conda env create --prefix ".snakemake/conda/exe" -f "workflow/envs/exe.yaml" 
 
 Test your configuration by performing a dry-run via
 
