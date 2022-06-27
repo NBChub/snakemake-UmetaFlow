@@ -22,14 +22,18 @@ DF_features.insert(0, 'CSI_smiles', '')
 for i, sirius, mz, rt in zip(DF_features.index, DF_features['SIRIUS'], DF_features['mz'], DF_features['RT']):
     hits1 = []
     hits2= []
+    hits3=[]
     for name, smiles, formula, Pred_mz, Pred_rt, in zip(DF_CSI['description'], DF_CSI['smiles'], DF_CSI['formulas'], DF_CSI['exp_mass_to_charge'], DF_CSI['retention_time']):
-        if (formula in sirius) & (Pred_rt >= rt-30.0) & (Pred_rt <= rt+30.0):
-            hit1 = f'{name}'
-            hit2= f'{smiles}'
+        mass_delta = (abs(Pred_mz-mz)/Pred_mz)*1000000.0 if Pred_mz != 0 else 0
+        if (formula in sirius) & (Pred_rt >= rt-30.0) & (Pred_rt <= rt+30.0) & (mass_delta<= 10.0):
+            hit1= f'{formula}'
+            hit2 = f'{name}'
+            hit3= f'{smiles}'
             if hit1 not in hits1:
                 hits1.append(hit1)
                 hits2.append(hit2)
-    DF_features['CSI_name'][i] = ' ## '.join(hits1)
-    DF_features['CSI_smiles'][i] = ' ## '.join(hits2)
+                hits3.append(hit3)
+    DF_features['CSI_name'][i] = ' ## '.join(hits2)
+    DF_features['CSI_smiles'][i] = ' ## '.join(hits3)
 
 DF_features.to_csv(snakemake.output[0], sep="\t", index= None)
