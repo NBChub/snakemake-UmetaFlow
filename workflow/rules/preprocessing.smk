@@ -66,20 +66,8 @@ rule FFM_matrix:
     input:
         "results/Interim/preprocessed/preprocessed.consensusXML"
     output:
-        "results/Interim/preprocessed/consensus.tsv" 
-    shell:
-        """
-        TextExporter -in {input} -out {output}
-        """
-        
-# 10) Convert the table to an easily readable format:
-
-rule FFM_cleanup:
-    input:
-        "results/Interim/preprocessed/consensus.tsv" 
-    output:
         "results/Preprocessed/FeatureMatrix.tsv"
     conda:
-        "../envs/exe.yaml"
+        "../envs/pyopenms.yaml"
     script:
         "../scripts/cleanup.py"

@@ -9,7 +9,7 @@ rule split_consensus:
         "results/Interim/Requantified/Missing.consensusXML"
     threads: 4
     conda:
-        "../envs/exe.yaml"
+        "../envs/pyopenms.yaml"
     script:
         "../scripts/split.py"
 
@@ -20,7 +20,7 @@ rule reload_maps:
     output:
         "results/Interim/Requantified/Complete_{samples}.featureXML"
     conda:
-        "../envs/exe.yaml"
+        "../envs/pyopenms.yaml"
     script:
         "../scripts/reloadmaps.py"
 
@@ -43,7 +43,7 @@ rule build_library:
         "results/Interim/Requantified/MetaboliteIdentification.tsv"
     threads: 4
     conda:
-        "../envs/exe.yaml"
+        "../envs/pyopenms.yaml"
     script:
         "../scripts/metaboliteidentification.py"    
 
@@ -71,7 +71,7 @@ rule requant:
     threads: 4
     shell:
         """
-        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 10.0 -extract:rt_window 30.0 -detect:peak_width 60.0 -threads {threads}
+        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 5.0 -extract:rt_window 30.0 -detect:peak_width 60.0 -threads {threads}
         """
 
 # 5) Merge the re-quantified with the complete feature files
@@ -84,7 +84,7 @@ rule merge:
         "results/Interim/Requantified/Merged_{samples}.featureXML"
     threads: 4
     conda:
-        "../envs/exe.yaml"
+        "../envs/pyopenms.yaml"
     script:
         "../scripts/merge.py"    
 
@@ -133,21 +133,9 @@ rule matrix:
     input:
         "results/Interim/Requantified/Requantified.consensusXML"
     output:
-        "results/Interim/Requantified/consensus.tsv" 
-    shell:
-        """
-        TextExporter -in {input} -out {output}
-        """
-        
-# 10) Convert the table to an easily readable format:
-
-rule cleanup:
-    input:
-        "results/Interim/Requantified/consensus.tsv" 
-    output:
         "results/Requantified/FeatureMatrix.tsv"
     conda:
-        "../envs/exe.yaml"
+        "../envs/pyopenms.yaml"
     script:
         "../scripts/cleanup.py"
 
