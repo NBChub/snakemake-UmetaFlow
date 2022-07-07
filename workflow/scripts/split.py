@@ -1,4 +1,5 @@
 from pyopenms import *
+import glob
 
 # Split the ConsensusMap into features that have no missing values, 
 # and features that have at least one missing value; 

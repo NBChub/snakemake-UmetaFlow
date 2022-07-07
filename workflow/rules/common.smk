@@ -1,4 +1,5 @@
 import os
+import fnmatch
 import pandas as pd
 from snakemake.utils import validate
 from snakemake.utils import min_version
@@ -26,6 +27,11 @@ wildcard_constraints:
 
 ##### Helper functions #####
 
+def find_files(base, pattern):
+    '''Return list of files matching pattern in base folder.'''
+    return [n for n in fnmatch.filter(os.listdir(base), pattern) if
+        os.path.isfile(os.path.join(base, n))]
+
 SAMPLES = samples.sample_name.to_list()
 
 ##### 7. Customize final output based on config["rule"] values #####
@@ -36,14 +42,15 @@ def get_final_output():
     # dictionary of rules and its output files
     rule_dict = {"fileconversion" : expand("data/mzML/{samples}.mzML", samples=SAMPLES),
                 "preprocessing" : [expand("results/Interim/mzML/PCpeak_{samples}.mzML", samples=SAMPLES),
-        expand("results/Interim/preprocessed/FFM_{samples}.featureXML", samples=SAMPLES),
+        expand("results/Interim/Preprocessed/FFM_{samples}.featureXML", samples=SAMPLES),
         expand("results/Interim/mzML/PCfeature_{samples}.mzML", samples=SAMPLES),
-        expand(["results/Interim/preprocessed/MapAligned_{samples}.featureXML", "results/Interim/preprocessed/MapAligned_{samples}.trafoXML"], samples=SAMPLES),
-        expand("results/Interim/preprocessed/preprocessed.consensusXML"),
+        expand(["results/Interim/Preprocessed/MapAligned_{samples}.featureXML", "results/Interim/Preprocessed/MapAligned_{samples}.trafoXML"], samples=SAMPLES),
+        expand("results/GNPSexport/mzML/Aligned_{samples}.mzML", samples=SAMPLES),
+        expand("results/Interim/Preprocessed/MFD_{samples}.featureXML", samples=SAMPLES),
+        expand("results/Interim/Preprocessed/Preprocessed.consensusXML"),
         expand("results/Preprocessed/FeatureMatrix.tsv")],
                 "requantification" : [expand(["results/Interim/Requantified/Complete.consensusXML", "results/Interim/Requantified/Missing.consensusXML", "results/Interim/Requantified/Complete_{samples}.featureXML"], samples=SAMPLES),
         expand("results/Interim/Requantified/MetaboliteIdentification.tsv"),
-        expand("results/Interim/Requantified/Aligned_{samples}.mzML", samples=SAMPLES),
         expand("results/Interim/Requantified/FFMID_{samples}.featureXML", samples=SAMPLES),
         expand("results/Interim/Requantified/Merged_{samples}.featureXML", samples=SAMPLES),
         expand("results/Interim/Requantified/MFD_{samples}.featureXML", samples=SAMPLES),
@@ -55,12 +62,11 @@ def get_final_output():
         expand("results/GNPSexport/FeatureQuantificationTable.txt"),
         expand("results/GNPSexport/SuppPairs.csv"),
         expand("results/GNPSexport/metadata.tsv")],
-                "sirius" : [expand("results/Interim/sirius/MFD_{samples}.featureXML", samples=SAMPLES),
-        expand(["results/Interim/sirius/formulas_{samples}.mzTab", "results/Interim/sirius/structures_{samples}.mzTab"], samples=SAMPLES),
+                "sirius_csi" : [expand(["results/Interim/sirius/formulas_{samples}.mzTab", "results/Interim/sirius/structures_{samples}.mzTab"], samples=SAMPLES),
         expand(["results/SIRIUS/formulas_{samples}.tsv", "results/CSI/structures_{samples}.tsv"], samples=SAMPLES)],
-                "annotate" : [expand("results/SIRIUS/SIRIUS_library.tsv"),
-        expand("results/CSI/CSI_library.tsv"),
-        expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"),
+                "sirius" : [expand("results/Interim/sirius/formulas_{samples}.mzTab", samples=SAMPLES),
+        expand("results/SIRIUS/formulas_{samples}.tsv", samples=SAMPLES)],
+                "annotate" : [expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"),
         expand("results/annotations/GNPS_annotated_FeatureTable.tsv"),
         ]
                 }
