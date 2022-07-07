@@ -11,12 +11,8 @@ for csv in input_formulas:
     pd.to_numeric(s)
     df= df.loc[df["opt_global_rank"]==1]
     df= df.rename(columns={"opt_global_featureId":"featureId"})
-    df_score=df.filter(regex=fr"Score")
-    df_opt=df.filter(regex=fr"opt")
-    cols_score= df_score.columns
-    cols_opt= df_opt.columns
-    df= df.drop(columns=cols_score)
-    df= df.drop(columns= cols_opt)
+    df= df.drop(columns=df.filter(regex=fr"Score").columns)
+    df= df.drop(columns= df.filter(regex=fr"opt").columns)
     df=df.reset_index()
     list_of_df.append(df)
 DF_SIRIUS= pd.concat(list_of_df,ignore_index=True)
@@ -35,12 +31,8 @@ for csv in input_structures:
     pd.to_numeric(s)
     df= df.loc[df["opt_global_rank"]==1]
     df= df.rename(columns={"opt_global_featureId":"featureId"})
-    df_score=df.filter(regex=fr"Score")
-    df_opt=df.filter(regex=fr"opt")
-    cols_score= df_score.columns
-    cols_opt= df_opt.columns
-    df= df.drop(columns=cols_score)
-    df= df.drop(columns= cols_opt)
+    df= df.drop(columns=df.filter(regex=fr"Score").columns)
+    df= df.drop(columns= df.filter(regex=fr"opt").columns)
     df=df.reset_index()
     list_of_df.append(df)
 DF_CSI= pd.concat(list_of_df,ignore_index=True)
