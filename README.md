@@ -1,9 +1,9 @@
-# Metabolomics workflow for Linux and MacOS systems
+# UmetaFlow: An Untargeted Metabolomics workflow for high-throughput data processing and analysis for Linux and MacOS systems
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.7.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 [![Build Status](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics.svg?branch=master)](https://travis-ci.org/snakemake-workflows/snakemake-bgc-analytics)
 
-This is a snakemake implementation of the pyOpenMS workflow (see https://github.com/eeko-kon/pyOpenMS_untargeted_metabolomics.git) tailored by [Eftychia Eva Kontou and Axel Walter](https://github.com/eeko-kon)
+This is a snakemake implementation of the pyOpenMS workflow (see https://github.com/eeko-kon/pyOpenMS_untargeted_metabolomics.git) tailored by [Eftychia Eva Kontou](https://github.com/eeko-kon) and [Axel Walter](https://github.com/axelwalter).
 
 ## Workflow overview
 
@@ -19,9 +19,13 @@ The pipeline consists of five interconnected steps:
 
 5) GNPSexport: generate all the files necessary to create a FBMN or IIMN job at GNPS. (see https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/ or https://ccms-ucsd.github.io/GNPSDocumentation/fbmn-iin/#iimn-networks-with-collapsed-ion-identity-edges)
 
-6) Annotate the feature matrix with formula and structural predictions.
+6) Annotate the feature matrix with formula and structural predictions (GNPS metabolite annotations optional).
 
-![dag](/images/MetabolomicsFlow.svg)
+### Overview
+![dag](/images/UmetaFlow_graph.svg)
+
+### Detailed steps
+![dag](/images/UmetaFlow.svg)
 
 ## Usage
 
@@ -52,7 +56,6 @@ Configure the workflow according to your needs via editing the files in the `con
 
 
 Further formatting rules can be defined in the `workflow/schemas/` folder.
-
 
 ### Step 3: Create a conda environment& install snakemake
 
@@ -88,11 +91,11 @@ Build OpenMS on [Linux](https://abibuilder.informatik.uni-tuebingen.de/archive/o
 
 #### For Linux only 
 
-Install mono with sudo (https://www.mono-project.com/download/stable/#download-lin):
+Install mono with sudo:
 
     sudo apt install mono-devel
 
-If sudo cannot find the package, then follow the directions in the above link for the Ubuntu version that you work with.
+If sudo cannot find the package, then follow the directions in the [link](https://www.mono-project.com/download/stable/#download-lin) for the Ubuntu version that you work with.
 
 Press enter (RETURN) to continue 
 
@@ -149,7 +152,7 @@ All the results are in a .TSV format and can be opened simply with excel or usin
 
 ### Test Data (only for testing the workflow with the example dataset)
 
-* Current test data are built from known metabolite producer strains or standard samples that have been analysed with a Thermo IDX mass spectrometer. The presence of the metabolites and their fragmentation patterns has been manually confirmed using TOPPView.
+* Current test data are built from known metabolite producer strains or standard samples that have been analyzed with a Thermo Orbitrap IDX instrument. The presence of the metabolites and their fragmentation patterns has been manually confirmed using TOPPView.
 
 ### Citations
 

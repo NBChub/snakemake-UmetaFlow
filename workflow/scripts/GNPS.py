@@ -4,7 +4,7 @@ import numpy as np
 
 df= pd.read_csv(snakemake.input[0], sep='\t', encoding='latin-1')
 df.drop(df.index[df['IonMode'] == "negative"], inplace=True)
-df.drop(df.index[df['MZErrorPPM'] > 20.0], inplace=True)
+df.drop(df.index[df['MZErrorPPM'] > 10.0], inplace=True)
 GNPS=df.filter(["Compound_Name", "RT_Query", "Precursor_MZ"])
 GNPS=GNPS.rename(columns= {"RT_Query": "RetentionTime"})
 GNPS=GNPS.drop_duplicates(subset="Compound_Name", keep='first')

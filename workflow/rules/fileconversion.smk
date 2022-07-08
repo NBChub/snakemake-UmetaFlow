@@ -10,7 +10,7 @@ rule mzml_conversion:
     output:
         "data/mzML/{samples}.mzML" 
     params:
-        exec_path = glob.glob(join('.snakemake','conda','*','bin','ThermoRawFileParser.exe'))[0]
+        exec_path = glob.glob(join('.snakemake','conda','*','bin','ThermoRawFileParser.exe'))
     shell:
         """
         mono {params.exec_path} -i={input} -b={output}
