@@ -108,13 +108,15 @@ Press enter (RETURN) to continue
 Get the latest pyOpenMS wheels (until pyOpenMS 3.0 is available in conda):
 
     MY_OS="Linux" # or "macOS" or "Windows" (case-sensitive)
-    wget https://nightly.link/OpenMS/OpenMS/workflows/pyopenms-wheels/nightly/${MY_OS}-wheels.zip\?status\=completed
-    mv ${MY_OS}-wheels.zip\?status=completed .snakemake/conda/${MY_OS}-wheels.zip & unzip *.zip
-    find *.whl > .snakemake/conda/requirements.txt
+    mkdir -p .snakemake/conda/
+    wget -O .snakemake/conda/${MY_OS}-wheels.zip https://nightly.link/OpenMS/OpenMS/workflows/pyopenms-wheels/nightly/${MY_OS}-wheels.zip\?status\=completed
+    (cd .snakemake/conda/ && unzip *.zip)
+    find .snakemake/conda/*cp39*.whl > .snakemake/conda/requirements.txt
+    rm .snakemake/conda/*.whl & rm .snakemake/conda/*.zip
 
 Create the environment with the executables manually:
 
-    conda env create --prefix ".snakemake/conda/exe" -f "workflow/envs/exe.yaml" 
+    mamba env create --prefix ".snakemake/conda/exe" -f "workflow/envs/exe.yaml"
 
 Test your configuration by performing a dry-run via
 
