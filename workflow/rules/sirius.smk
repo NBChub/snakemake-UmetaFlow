@@ -10,48 +10,35 @@ if config["rules"]["requantification"]==True:
     rule sirius:
         input: 
             var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
-<<<<<<< HEAD
             var2= "results/Interim/Requantified/MFD_{samples}.featureXML" 
         output:
             "results/Interim/Sirius/formulas_{samples}.mzTab"
-=======
-            var2= "results/Interim/Requantification/MFD_{samples}.featureXML" 
-        output:
-            "results/Interim/sirius/formulas_{samples}.mzTab"
->>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
         shell:
             """
-            /Users/eeko/openms-develop/openms_build/bin/SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -project:processors {threads} -threads {threads}
+            SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -project:processors {threads} -threads {threads}
             """
 else:
     rule sirius:
         input: 
             var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
-<<<<<<< HEAD
             var2= "results/Interim/Preprocessed/MFD_{samples}.featureXML" 
         output:
             "results/Interim/Sirius/formulas_{samples}.mzTab"
-=======
-            var2= "results/Interim/preprocessed/MFD_{samples}.featureXML" 
-        output:
-            "results/Interim/sirius/formulas_{samples}.mzTab"
->>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
         shell:
             """
-            /Users/eeko/openms-develop/openms_build/bin/SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -project:processors {threads} -threads {threads}
+            SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -project:processors {threads} -threads {threads}
             """
 
 # 2) Convert the mzTab to a tsv file
 
 rule df_sirius:
     input: 
-<<<<<<< HEAD
         "results/Interim/Sirius/formulas_{samples}.mzTab"
     output:
         "results/Sirius/formulas_{samples}.tsv"
@@ -59,13 +46,4 @@ rule df_sirius:
         "../envs/openms.yaml"
     script:
         "../scripts/df_SIRIUS.py"
-=======
-        "results/Interim/sirius/formulas_{samples}.mzTab"
-    output:
-        "results/SIRIUS/formulas_{samples}.tsv"
-    conda:
-        "../envs/openms.yaml"
-    script:
-        "../scripts/df_sirius.py"
->>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
 

@@ -9,17 +9,10 @@ if config["rules"]["sirius_csi"]==True:
         rule sirius_annotations:
             input:
                 "results/Requantified/FeatureMatrix.tsv",
-<<<<<<< HEAD
                 expand("results/SiriusCSI/formulas_{samples}.tsv", samples=SAMPLES),
                 expand("results/SiriusCSI/structures_{samples}.tsv", samples=SAMPLES)
             output:
                 "results/annotations/annotated_FeatureTable.tsv"
-=======
-                expand("results/SIRIUS/formulas_{samples}.tsv", samples=SAMPLES),
-                expand("results/CSI/structures_{samples}.tsv", samples=SAMPLES)
-            output:
-                "results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"
->>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
             threads: 4
             conda:
                 "../envs/openms.yaml"
@@ -29,17 +22,10 @@ if config["rules"]["sirius_csi"]==True:
         rule sirius_annotations:
             input:
                 "results/Preprocessed/FeatureMatrix.tsv",
-<<<<<<< HEAD
                 expand("results/SiriusCSI/formulas_{samples}.tsv", samples=SAMPLES),
                 expand("results/SiriusCSI/structures_{samples}.tsv", samples=SAMPLES)
             output:
                 "results/annotations/annotated_FeatureTable.tsv"
-=======
-                expand("results/SIRIUS/formulas_{samples}.tsv", samples=SAMPLES),
-                expand("results/CSI/structures_{samples}.tsv", samples=SAMPLES)
-            output:
-                "results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"
->>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
             threads: 4
             conda:
                 "../envs/openms.yaml"
@@ -50,15 +36,9 @@ else:
         rule sirius_annotations:
             input:
                 "results/Requantified/FeatureMatrix.tsv",
-<<<<<<< HEAD
                 expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)
             output:
                 "results/annotations/annotated_FeatureTable.tsv"
-=======
-                expand("results/SIRIUS/formulas_{samples}.tsv", samples=SAMPLES)
-            output:
-                "results/annotations/SIRIUS_annotated_FeatureTable.tsv"
->>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
             threads: 4
             conda:
                 "../envs/openms.yaml"
@@ -68,15 +48,9 @@ else:
         rule sirius_annotations:
             input:
                 "results/Preprocessed/FeatureMatrix.tsv",
-<<<<<<< HEAD
                 expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)
             output:
                 "results/annotations/annotated_FeatureTable.tsv"
-=======
-                expand("results/SIRIUS/formulas_{samples}.tsv", samples=SAMPLES)
-            output:
-                "results/annotations/SIRIUS_annotated_FeatureTable.tsv"
->>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
             threads: 4
             conda:
                 "../envs/openms.yaml"
@@ -92,11 +66,7 @@ if GNPS_library:
     rule GNPS_annotations:
         input:
             glob.glob(os.path.join("resources", "*.tsv")),
-<<<<<<< HEAD
             "results/annotations/annotated_FeatureTable.tsv"
-=======
-            "results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"
->>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
         output:
             "results/annotations/GNPS_annotated_FeatureTable.tsv"
         threads: 4
