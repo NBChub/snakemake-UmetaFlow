@@ -1,5 +1,6 @@
 # 1) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
 
+<<<<<<< HEAD
 if config["rules"]["requantification"]==True:
     rule FileFilter:
         input:
@@ -20,6 +21,17 @@ else:
             """
             /Users/eeko/openms-develop/openms_build/bin/FileFilter -id:remove_unannotated_features -in {input} -out {output} 
             """        
+=======
+rule FileFilter:
+    input:
+        "results/Interim/Requantified/Requantified.consensusXML"
+    output:
+        "results/Interim/GNPSexport/filtered.consensusXML"
+    shell:
+        """
+        /Users/eeko/openms-develop/openms_build/bin/FileFilter -id:remove_unannotated_features -in {input} -out {output} 
+        """
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
 
 # 2) GNPS_export creates an mgf file with only the MS2 information of all files (introduce mzml files with spaces between them)
 

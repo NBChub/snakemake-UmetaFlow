@@ -10,9 +10,15 @@ if config["rules"]["requantification"]==True:
     rule sirius:
         input: 
             var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
+<<<<<<< HEAD
             var2= "results/Interim/Requantified/MFD_{samples}.featureXML" 
         output:
             "results/Interim/Sirius/formulas_{samples}.mzTab"
+=======
+            var2= "results/Interim/Requantification/MFD_{samples}.featureXML" 
+        output:
+            "results/Interim/sirius/formulas_{samples}.mzTab"
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
@@ -24,9 +30,15 @@ else:
     rule sirius:
         input: 
             var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
+<<<<<<< HEAD
             var2= "results/Interim/Preprocessed/MFD_{samples}.featureXML" 
         output:
             "results/Interim/Sirius/formulas_{samples}.mzTab"
+=======
+            var2= "results/Interim/preprocessed/MFD_{samples}.featureXML" 
+        output:
+            "results/Interim/sirius/formulas_{samples}.mzTab"
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
@@ -39,6 +51,7 @@ else:
 
 rule df_sirius:
     input: 
+<<<<<<< HEAD
         "results/Interim/Sirius/formulas_{samples}.mzTab"
     output:
         "results/Sirius/formulas_{samples}.tsv"
@@ -46,4 +59,13 @@ rule df_sirius:
         "../envs/openms.yaml"
     script:
         "../scripts/df_SIRIUS.py"
+=======
+        "results/Interim/sirius/formulas_{samples}.mzTab"
+    output:
+        "results/SIRIUS/formulas_{samples}.tsv"
+    conda:
+        "../envs/openms.yaml"
+    script:
+        "../scripts/df_sirius.py"
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
 

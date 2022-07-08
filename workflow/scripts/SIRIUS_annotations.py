@@ -2,7 +2,11 @@ import pandas as pd
 import glob
 import os
 
+<<<<<<< HEAD
 input_formulas= glob.glob(os.path.join("results", "Sirius", "formulas_*.tsv"))
+=======
+input_formulas= glob.glob(os.path.join("results", "SIRIUS", "formulas_*.tsv"))
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
 DF_SIRIUS = pd.DataFrame()
 list_of_df=[]
 for csv in input_formulas:

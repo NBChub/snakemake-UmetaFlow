@@ -62,11 +62,19 @@ def get_final_output():
         expand("results/GNPSexport/FeatureQuantificationTable.txt"),
         expand("results/GNPSexport/SuppPairs.csv"),
         expand("results/GNPSexport/metadata.tsv")],
+<<<<<<< HEAD
                 "sirius_csi" : [expand(["results/Interim/SiriusCSI/formulas_{samples}.mzTab", "results/Interim/SiriusCSI/structures_{samples}.mzTab"], samples=SAMPLES),
         expand(["results/SiriusCSI/formulas_{samples}.tsv", "results/SiriusCSI/structures_{samples}.tsv"], samples=SAMPLES)],
                 "sirius" : [expand("results/Interim/Sirius/formulas_{samples}.mzTab", samples=SAMPLES),
         expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)],
                 "annotate" : [expand("results/annotations/annotated_FeatureTable.tsv"),
+=======
+                "sirius_csi" : [expand(["results/Interim/sirius/formulas_{samples}.mzTab", "results/Interim/sirius/structures_{samples}.mzTab"], samples=SAMPLES),
+        expand(["results/SIRIUS/formulas_{samples}.tsv", "results/CSI/structures_{samples}.tsv"], samples=SAMPLES)],
+                "sirius" : [expand("results/Interim/sirius/formulas_{samples}.mzTab", samples=SAMPLES),
+        expand("results/SIRIUS/formulas_{samples}.tsv", samples=SAMPLES)],
+                "annotate" : [expand("results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"),
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
         expand("results/annotations/GNPS_annotated_FeatureTable.tsv"),
         ]
                 }

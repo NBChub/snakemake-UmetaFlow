@@ -74,6 +74,7 @@ rule adduct_annotations_FFM:
         /Users/eeko/openms-develop/openms_build/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
         """    
 
+<<<<<<< HEAD
 # 6) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
 
 rule IDMapper_FFM:
@@ -102,6 +103,22 @@ rule FeatureLinkerUnlabeledKD:
         """
 
 # 8) export the consensusXML file to a tsv file to produce a single matrix for PCA
+=======
+# 6) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
+
+rule FeatureLinkerUnlabeledKD:
+    input:
+        expand("results/Interim/Preprocessed/MapAligned_{samples}.featureXML", samples=SAMPLES)
+    output:
+        "results/Interim/Preprocessed/Preprocessed.consensusXML"
+    threads: 4
+    shell:
+        """
+        /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
+        """
+
+# 7) export the consensusXML file to a tsv file to produce a single matrix for PCA
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
 
 rule FFM_matrix:
     input:

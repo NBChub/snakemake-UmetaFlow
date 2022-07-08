@@ -7,6 +7,7 @@ from os.path import join
 # "CANOPUS predicts compound classes from the molecular fingerprint predicted by CSI:FingerID without any database search involved. Hence, it provides structural information for compounds for which neither spectral nor structural reference data are available."
 
 if config["rules"]["requantification"]==True:
+<<<<<<< HEAD
     rule sirius_csi:
         input: 
             var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
@@ -14,6 +15,15 @@ if config["rules"]["requantification"]==True:
         output:
             out1= "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
             out2= "results/Interim/SiriusCSI/structures_{samples}.mzTab"
+=======
+    rule sirius:
+        input: 
+            var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
+            var2= "results/Interim/Requantification/MFD_{samples}.featureXML" 
+        output:
+            out1= "results/Interim/sirius/formulas_{samples}.mzTab",
+            out2= "results/Interim/sirius/structures_{samples}.mzTab"
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
@@ -22,6 +32,7 @@ if config["rules"]["requantification"]==True:
             /Users/eeko/openms-develop/openms_build/bin/SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output.out1} -out_fingerid {output.out2} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads}
             """
 else:
+<<<<<<< HEAD
     rule sirius_csi:
         input: 
             var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
@@ -29,6 +40,15 @@ else:
         output:
             out1= "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
             out2= "results/Interim/SiriusCSI/structures_{samples}.mzTab"
+=======
+    rule sirius:
+        input: 
+            var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
+            var2= "results/Interim/preprocessed/MFD_{samples}.featureXML" 
+        output:
+            out1= "results/Interim/sirius/formulas_{samples}.mzTab",
+            out2= "results/Interim/sirius/structures_{samples}.mzTab"
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
@@ -39,6 +59,7 @@ else:
 
 # 2) Convert the mzTab to a tsv file
 
+<<<<<<< HEAD
 rule df_sirius_csi:
     input: 
         "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
@@ -46,6 +67,15 @@ rule df_sirius_csi:
     output:
         "results/SiriusCSI/formulas_{samples}.tsv",
         "results/SiriusCSI/structures_{samples}.tsv"
+=======
+rule df_sirius:
+    input: 
+        "results/Interim/sirius/formulas_{samples}.mzTab",
+        "results/Interim/sirius/structures_{samples}.mzTab"
+    output:
+        "results/SIRIUS/formulas_{samples}.tsv",
+        "results/CSI/structures_{samples}.tsv"
+>>>>>>> 8c5ccedc94fc856850dde76e921e22a705428575
     conda:
         "../envs/openms.yaml"
     script:
