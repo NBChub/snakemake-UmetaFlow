@@ -43,11 +43,9 @@ for i, rows in DF_CSI.iterrows():
     DF_CSI["featureId"][i]= DF_CSI["featureId"][i].split(",")
 
 DF_features= pd.read_csv(snakemake.input[0], sep="\t")
-DF_features=DF_features.set_index(["mz", "RT"])
-DF_features= DF_features.drop(columns=["charge", "quality", "id"])
+DF_features= DF_features.drop(columns=["quality", "id"])
 DF_features= DF_features.fillna(0)
 DF_features["feature_ids"]= [ids[1:-1].split(",") for ids in DF_features["feature_ids"]]
-DF_features= DF_features.reset_index()
 
 DF_features.insert(0, "CSI_predictions_name", "")
 DF_features.insert(0, "CSI_predictions_formula", "")
