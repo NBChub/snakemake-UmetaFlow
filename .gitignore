@@ -26,3 +26,4 @@ CreateFeatureMetaboidentcsv.ipynb
 workflow/scripts/OpenMSWF.py
 *.sh
 *.txt
+workflow/report/logs/*

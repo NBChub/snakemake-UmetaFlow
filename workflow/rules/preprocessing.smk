@@ -5,9 +5,12 @@ rule precursorcorrection_peak:
         "data/mzML/{samples}.mzML"
     output:
         "results/Interim/mzML/PCpeak_{samples}.mzML"
+    log: "workflow/report/logs/preprocessing/precursorcorrection_peak_{samples}.log"
+    conda:
+        "../envs/openms.yaml"
     shell:
         """
-        HighResPrecursorMassCorrector -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0"
+        /Users/eeko/openms-develop/openms_build/bin/HighResPrecursorMassCorrector -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0" -log {log} 2>> {log}
         """
 
 # 2) Preprocessing: Feature finding algorithm that detects peaks 
@@ -17,10 +20,13 @@ rule preprocess:
         "results/Interim/mzML/PCpeak_{samples}.mzML"
     output:
         "results/Interim/Preprocessed/FFM_{samples}.featureXML"
+    log: "workflow/report/logs/preprocessing/preprocess_{samples}.log"
+    conda:
+        "../envs/openms.yaml"
     threads: 4
     shell:
         """
-        FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true" -threads {threads}
+        /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetabo -in {input} -out {output} -algorithm:common:noise_threshold_int "1.0e04" -algorithm:mtd:mass_error_ppm "10.0" -algorithm:epd:width_filtering "fixed" -algorithm:ffm:isotope_filtering_model "none" -algorithm:ffm:remove_single_traces "true" -algorithm:ffm:report_convex_hulls "true" -threads {threads} -log {log} 2>> {log}
         """
 
 # 3) Correct the MS2 precursor in a feature level (for GNPS FBMN).        
@@ -31,9 +37,12 @@ rule precursorcorrection_feature:
         var2= "results/Interim/Preprocessed/FFM_{samples}.featureXML"
     output:
         "results/Interim/mzML/PCfeature_{samples}.mzML"
+    log: "workflow/report/logs/preprocessing/precursorcorrection_feature_{samples}.log"
+    conda:
+        "../envs/openms.yaml"
     shell:
         """
-        HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0"
+        /Users/eeko/openms-develop/openms_build/bin/HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0" -log {log} 2>> {log} 
         """ 
 
 # 4) (i) MapAlignerPoseClustering is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs.
@@ -44,9 +53,15 @@ rule MapAligner:
     output:
         var1= expand("results/Interim/Preprocessed/MapAligned_{samples}.featureXML", samples=SAMPLES),
         var2= expand("results/Interim/Preprocessed/MapAligned_{samples}.trafoXML", samples=SAMPLES)
+    log: 
+        general= "workflow/report/logs/preprocessing/MapAlignerGeneral.log",
+        job= "workflow/report/logs/preprocessing/MapAligner.log"
+    conda:
+        "../envs/openms.yaml"
     shell:
         """
-        MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2}
+        echo "Preparing maps for alignment..." > {log.general}
+        /Users/eeko/openms-develop/openms_build/bin/MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2} -log {log.job} 2>> {log.job}
         """ 
 
 # 4) (ii) MapRTTransformer is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs using the transformation files from the reprocessing rule MapAlignerPoseClustering (faster computationally)
@@ -57,9 +72,12 @@ rule mzMLaligner:
         var2= "results/Interim/Preprocessed/MapAligned_{samples}.trafoXML"
     output:
         "results/GNPSexport/mzML/Aligned_{samples}.mzML"
+    log: "workflow/report/logs/preprocessing/mzMLaligner_{samples}.log"
+    conda:
+        "../envs/openms.yaml"
     shell:
         """
-        MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output}
+        /Users/eeko/openms-develop/openms_build/bin/MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output} -log {log} 2>> {log} 
         """ 
 
 # 5) Decharger: Decharging algorithm for adduct assignment
@@ -69,9 +87,12 @@ rule adduct_annotations_FFM:
         "results/Interim/Preprocessed/MapAligned_{samples}.featureXML"
     output:
         "results/Interim/Preprocessed/MFD_{samples}.featureXML" 
+    log: "workflow/report/logs/preprocessing/adduct_annotations_FFM_{samples}.log"
+    conda:
+        "../envs/openms.yaml"
     shell:
         """
-        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1"
+        /Users/eeko/openms-develop/openms_build/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1" -log {log} 2>> {log} 
         """    
 
 # 6) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
@@ -83,32 +104,41 @@ rule IDMapper_FFM:
         var3= "results/GNPSexport/mzML/Aligned_{samples}.mzML"
     output:
         "results/Interim/Preprocessed/IDMapper_{samples}.featureXML"
+    log: "workflow/report/logs/preprocessing/IDMapper_FFM_{samples}.log"
+    conda:
+        "../envs/openms.yaml"
     shell:
         """
-        IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} 
+        /Users/eeko/openms-develop/openms_build/bin/IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} -log {log} 2>> {log} 
         """
 
 # 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
 
-rule FeatureLinkerUnlabeledKD:
+rule FeatureLinker_FFM:
     input:
         expand("results/Interim/Preprocessed/IDMapper_{samples}.featureXML", samples=SAMPLES)
     output:
         "results/Interim/Preprocessed/Preprocessed.consensusXML"
+    log: "workflow/report/logs/preprocessing/FeatureLinker_FFM.log"
+    conda:
+        "../envs/openms.yaml"
     threads: 4
     shell:
         """
-        FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads}
+        /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads} -log {log} 2>> {log} 
         """
 
 # 8) export the consensusXML file to a tsv file to produce a single matrix for PCA
 
 rule FFM_matrix:
     input:
-        "results/Interim/Preprocessed/Preprocessed.consensusXML"
+        input_cmap= "results/Interim/Preprocessed/Preprocessed.consensusXML"
     output:
-        "results/Preprocessed/FeatureMatrix.tsv"
+        output_tsv= "results/Preprocessed/FeatureMatrix.tsv"
+    log: "workflow/report/logs/preprocessing/FFM_matrix.log"
     conda:
         "../envs/pyopenms.yaml"
-    script:
-        "../scripts/cleanup.py"
+    shell:
+        """
+        python workflow/scripts/cleanup.py {input.input_cmap} {output.output_tsv} 2>> {log}
+        """

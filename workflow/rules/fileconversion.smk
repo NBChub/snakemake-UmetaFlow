@@ -8,10 +8,13 @@ rule mzml_conversion:
     input:
         "data/raw/{samples}.raw"
     output:
-        "data/mzML/{samples}.mzML" 
+        "data/mzML/{samples}.mzML"
+    log: "workflow/report/logs/FileConversion/mzml_conversion_{samples}.log"
+    conda:
+        join('.snakemake', 'conda', 'exe')
     params:
-        exec_path = glob.glob(join('.snakemake','conda','*','bin','ThermoRawFileParser.exe'))
+        exec_path = glob.glob(join('.snakemake','conda','exe','bin','ThermoRawFileParser.exe'))
     shell:
         """
-        mono {params.exec_path} -i={input} -b={output}
+        mono {params.exec_path} -i={input} -b={output} >> {log}
         """

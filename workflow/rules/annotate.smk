@@ -8,54 +8,66 @@ if config["rules"]["sirius_csi"]==True:
     if config["rules"]["requantification"]==True:
         rule sirius_annotations:
             input:
-                "results/Requantified/FeatureMatrix.tsv",
-                expand("results/SiriusCSI/formulas_{samples}.tsv", samples=SAMPLES),
-                expand("results/SiriusCSI/structures_{samples}.tsv", samples=SAMPLES)
+                matrix= "results/Requantified/FeatureMatrix.tsv",
+                sirius= expand("results/SiriusCSI/formulas_{samples}.tsv", samples=SAMPLES),
+                csi= expand("results/SiriusCSI/structures_{samples}.tsv", samples=SAMPLES)
             output:
-                "results/annotations/annotated_FeatureTable.tsv"
+                annotated= "results/annotations/annotated_FeatureTable.tsv"
+            log: "workflow/report/logs/annotate/sirius_annotations.log"
             threads: 4
             conda:
                 "../envs/openms.yaml"
-            script:
-                "../scripts/SIRIUS_CSI_annotations.py"    
+            shell:
+                """
+                python workflow/scripts/SIRIUS_CSI_annotations.py 2> {log}
+                """
     else:
         rule sirius_annotations:
             input:
-                "results/Preprocessed/FeatureMatrix.tsv",
-                expand("results/SiriusCSI/formulas_{samples}.tsv", samples=SAMPLES),
-                expand("results/SiriusCSI/structures_{samples}.tsv", samples=SAMPLES)
+                matrix="results/Preprocessed/FeatureMatrix.tsv",
+                sirius= expand("results/SiriusCSI/formulas_{samples}.tsv", samples=SAMPLES),
+                csi= expand("results/SiriusCSI/structures_{samples}.tsv", samples=SAMPLES)
             output:
-                "results/annotations/annotated_FeatureTable.tsv"
+                annotated= "results/annotations/annotated_FeatureTable.tsv"
+            log: "workflow/report/logs/annotate/sirius_annotations.log"
             threads: 4
             conda:
                 "../envs/openms.yaml"
-            script:
-                "../scripts/SIRIUS_CSI_annotations.py"   
+            shell:
+                """
+                python workflow/scripts/SIRIUS_CSI_annotations.py" 2> {log}  
+                """ 
 else:
     if config["rules"]["requantification"]==True:
         rule sirius_annotations:
             input:
-                "results/Requantified/FeatureMatrix.tsv",
-                expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)
+                matrix= "results/Requantified/FeatureMatrix.tsv",
+                sirius= expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)
             output:
-                "results/annotations/annotated_FeatureTable.tsv"
+                annotated= "results/annotations/annotated_FeatureTable.tsv"
+            log: "workflow/report/logs/annotate/sirius_annotations.log"
             threads: 4
             conda:
                 "../envs/openms.yaml"
-            script:
-                "../scripts/SIRIUS_annotations.py"    
+            shell:
+                """
+                python workflow/scripts/SIRIUS_annotations.py 2> {log}    
+                """
     else:
         rule sirius_annotations:
             input:
-                "results/Preprocessed/FeatureMatrix.tsv",
-                expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)
+                matrix= "results/Preprocessed/FeatureMatrix.tsv",
+                sirius= expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)
             output:
-                "results/annotations/annotated_FeatureTable.tsv"
+                annotated= "results/annotations/annotated_FeatureTable.tsv"
+            log: "workflow/report/logs/annotate/sirius_annotations.log"
             threads: 4
             conda:
                 "../envs/openms.yaml"
-            script:
-                "../scripts/SIRIUS_annotations.py" 
+            shell:
+                """
+                python workflow/scripts/SIRIUS_annotations.py 2> {log}
+                """
 
 # 2) Run your aligned mzml files (from directory GNPSexport/mzML) directly to GNPS for MS/MS library matching to generate a tsv table of metabolites. 
 # Filter out the ones that have a mass error > 10.0 ppm and also metabolites that originate from libraries such as HMDB when your samples are generated from bacteria.
@@ -65,15 +77,18 @@ GNPS_library = find_files("resources", "*.tsv")
 if GNPS_library:
     rule GNPS_annotations:
         input:
-            glob.glob(os.path.join("resources", "*.tsv")),
-            "results/annotations/annotated_FeatureTable.tsv"
+            lib= glob.glob(os.path.join("resources", "*.tsv")),
+            featurematrix= "results/annotations/annotated_FeatureTable.tsv"
         output:
-            "results/annotations/GNPS_annotated_FeatureTable.tsv"
+            gnps= "results/annotations/GNPS_annotated_FeatureTable.tsv"
+        log: "workflow/report/logs/annotate/GNPS_annotations.log"
         threads: 4
         conda:
             "../envs/openms.yaml"
-        script:
-            "../scripts/GNPS.py" 
+        shell:
+            """
+            python workflow/scripts/GNPS.py {input.lib} {input.featurematrix} {output.gnps} 2>> {log}
+            """
 else:
     print("no file found")
     rule GNPS_annotations:
@@ -81,7 +96,10 @@ else:
             "results/annotations/SIRIUS_CSI_annotated_FeatureTable.tsv"
         output:
             "results/annotations/GNPS_annotated_FeatureTable.tsv"
+        log: "workflow/report/logs/annotate/GNPS_annotations.log"
+        conda:
+            "../envs/openms.yaml"
         shell:
             """ 
-            echo "No GNPS metabolite identification file was found" > {output}
+            echo "No GNPS metabolite identification file was found" > {output} >> {log}
             """

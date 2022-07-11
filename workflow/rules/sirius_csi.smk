@@ -14,12 +14,15 @@ if config["rules"]["requantification"]==True:
         output:
             out1= "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
             out2= "results/Interim/SiriusCSI/structures_{samples}.mzTab"
+        conda:
+            join('.snakemake', 'conda', 'exe')
+        log: "workflow/report/logs/sirius_csi/SiriusAdapter_{samples}.log"
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
         shell:
             """
-            SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output.out1} -out_fingerid {output.out2} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads}
+            /Users/eeko/openms-develop/openms_build/bin/SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output.out1} -out_fingerid {output.out2} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads} -log {log} 2>> {log}
             """
 else:
     rule sirius_csi:
@@ -29,25 +32,31 @@ else:
         output:
             out1= "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
             out2= "results/Interim/SiriusCSI/structures_{samples}.mzTab"
+        conda:
+            join('.snakemake', 'conda', 'exe')
+        log: "workflow/report/logs/sirius_csi/SiriusAdapter_{samples}.log"
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
         shell:
             """
-            SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output.out1} -out_fingerid {output.out2} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads}
+            /Users/eeko/openms-develop/openms_build/bin/SiriusAdapter -sirius_executable {params.exec_path} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output.out1} -out_fingerid {output.out2} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile orbitrap -sirius:db none -sirius:ions_considered "[M+H]+, [M-H2O+H]+, [M+Na]+, [M+NH4]+" -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -debug 3 -fingerid:candidates 5 -project:processors {threads} -threads {threads} -log {log} 2>> {log}
             """
 
 # 2) Convert the mzTab to a tsv file
 
 rule df_sirius_csi:
     input: 
-        "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
-        "results/Interim/SiriusCSI/structures_{samples}.mzTab"
+        input_sirius= "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
+        input_csi= "results/Interim/SiriusCSI/structures_{samples}.mzTab"
     output:
-        "results/SiriusCSI/formulas_{samples}.tsv",
-        "results/SiriusCSI/structures_{samples}.tsv"
+        output_sirius= "results/SiriusCSI/formulas_{samples}.tsv",
+        output_csi= "results/SiriusCSI/structures_{samples}.tsv"
+    log: "workflow/report/logs/sirius_csi/SiriusDF_{samples}.log"
     conda:
         "../envs/openms.yaml"
-    script:
-        "../scripts/df_SIRIUS_CSI.py"
+    shell:    
+        """
+        python workflow/scripts/df_SIRIUS_CSI.py {input.input_sirius} {input.input_csi} {output.output_sirius} {output.output_csi} 2>> {log}
+        """
 
