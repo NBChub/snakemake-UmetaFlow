@@ -43,7 +43,7 @@ rule text_export:
         "../envs/openms.yaml"
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/TextExporter -in {input} -out {output} -log {log} 2>> {log}
+        TextExporter -in {input} -out {output} -log {log} 2>> {log}
         """
 
 rule build_library:
@@ -74,7 +74,7 @@ rule requantify:
     threads: 4
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 10.0 -threads {threads} -log {log} 2>> {log}
+        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 10.0 -threads {threads} -log {log} 2>> {log}
         """
 
 # 4) Merge the re-quantified with the complete feature files
@@ -107,7 +107,7 @@ rule adduct_annotations_FFMident:
         "../envs/openms.yaml"
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1" -log {log} 2>> {log}
+        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1" -log {log} 2>> {log}
         """
 # 6) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
 
@@ -123,7 +123,7 @@ rule IDMapper_FFMident:
         "../envs/openms.yaml"
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} -log {log} 2>> {log}
+        IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} -log {log} 2>> {log}
         """
 
 # 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different sfiles together, which have a smiliar m/z and rt (MS1 level).
@@ -139,7 +139,7 @@ rule FeatureLinker_FFMident:
     threads: 4
     shell:
         """
-        /Users/eeko/openms-develop/openms_build/bin/FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads} -log {log} 2>> {log}
+        FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads} -log {log} 2>> {log}
         """
 
 # 8) export the consensusXML file to a tsv file to produce a single matrix for PCA
