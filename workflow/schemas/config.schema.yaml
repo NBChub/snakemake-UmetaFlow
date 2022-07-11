@@ -6,17 +6,8 @@ type: object
 
 # possible entries of the config file and which type they should be
 properties:
-  projects:
-    type: array
-    items:
-      type: object
-      properties:
-        name:
-          type: string
-        samples:
-          type: string
-    required:
-      - samples
+  samples:
+    type: string
   rules:
     type: object
     properties:
@@ -34,5 +25,5 @@ properties:
         type: boolean
 
 required:
-  - projects
+  - samples
   - rules
