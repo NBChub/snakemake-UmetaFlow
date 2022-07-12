@@ -6,15 +6,13 @@ type: object
 
 # possible entries of the config file and which type they should be
 properties:
-  projects:
-    type: array
-    items:
-      type: object
-      properties:
-        name:
-          type: string
-        samples:
-          type: string
+  items:
+    type: object
+    properties:
+      name:
+        type: string
+      samples:
+        type: string
     required:
       - samples
   rules:
@@ -29,6 +27,8 @@ properties:
       requantification:
         type: boolean
       sirius:
+        type: boolean
+      sirius_csi:
         type: boolean
       annotate:
         type: boolean
