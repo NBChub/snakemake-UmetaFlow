@@ -3,7 +3,7 @@ import glob
 import os
 import sys
 
-def sirius_csi_annotations(matrix, sirius, annotated):
+def sirius_annotations(matrix, annotated):
     input_formulas= glob.glob(os.path.join("results", "Sirius", "formulas_*.tsv"))
     DF_SIRIUS = pd.DataFrame()
     list_of_df=[]
@@ -45,4 +45,4 @@ def sirius_csi_annotations(matrix, sirius, annotated):
     return DF_features
 
 if __name__ == "__main__":
-    sirius_csi_annotations(sys.argv[1], sys.argv[2], sys.argv[3])
+    sirius_annotations(sys.argv[1], sys.argv[2])

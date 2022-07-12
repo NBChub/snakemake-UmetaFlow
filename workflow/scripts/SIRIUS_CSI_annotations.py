@@ -3,12 +3,12 @@ import glob
 import os
 import sys
 
-def sirius_csi_annotations(matrix, sirius, csi, annotated):
+def sirius_csi_annotations(matrix, annotated):
     input_formulas= glob.glob(os.path.join("results", "SiriusCSI", "formulas_*.tsv"))
     DF_SIRIUS = pd.DataFrame()
     list_of_df=[]
-    for csv in input_formulas:
-        df= pd.read_csv(csv, sep="\t", index_col="Unnamed: 0")
+    for tsv in input_formulas:
+        df= pd.read_csv(tsv, sep="\t", index_col="Unnamed: 0")
         s= df["opt_global_rank"]
         pd.to_numeric(s)
         df= df.loc[df["opt_global_rank"]==1]
@@ -27,8 +27,8 @@ def sirius_csi_annotations(matrix, sirius, csi, annotated):
     input_structures= glob.glob(os.path.join("results", "SiriusCSI", "structures_*.tsv"))
     DF_CSI = pd.DataFrame()
     list_of_df=[]
-    for csv in input_structures:
-        df= pd.read_csv(csv, sep="\t", index_col="Unnamed: 0")
+    for tsv in input_structures:
+        df= pd.read_csv(tsv, sep="\t", index_col="Unnamed: 0")
         s= df["opt_global_rank"]
         pd.to_numeric(s)
         df= df.loc[df["opt_global_rank"]==1]
@@ -49,17 +49,29 @@ def sirius_csi_annotations(matrix, sirius, csi, annotated):
     DF_features= DF_features.fillna(0)
     DF_features["feature_ids"]= [ids[1:-1].split(",") for ids in DF_features["feature_ids"]]
 
+    DF_features.insert(0, "SIRIUS_predictions", "")
+
+    for i, id in zip(DF_features.index, DF_features["feature_ids"]):
+        hits = []
+        for name, Pred_id in zip(DF_SIRIUS["formulas"], DF_SIRIUS["featureId"]): 
+            for x,y in zip(id,Pred_id):
+                if x==y:
+                    hit = f"{name}"
+                    if hit not in hits:
+                        hits.append(hit)
+        DF_features["SIRIUS_predictions"][i] = ", ".join(hits)
+
     DF_features.insert(0, "CSI_predictions_name", "")
     DF_features.insert(0, "CSI_predictions_formula", "")
     DF_features.insert(0, "CSI_predictions_smiles", "")
 
-    for i, id in zip(DF_features.index, DF_features["feature_ids"]):
+    for i, id, sirius in zip(DF_features.index, DF_features["feature_ids"], DF_features["SIRIUS_predictions"]):
         hits1 = []
         hits2= []
         hits3=[]
         for name, formula, smiles, Pred_id in zip(DF_CSI["name"], DF_CSI["formulas"], DF_CSI["smiles"], DF_CSI["featureId"]): 
             for x,y in zip(id,Pred_id):
-                if x==y:
+                if (x==y)& (formula in sirius):
                     hit1 = f"{name}"
                     hit2 = f"{formula}"
                     hit3= f"{smiles}"
@@ -71,20 +83,8 @@ def sirius_csi_annotations(matrix, sirius, csi, annotated):
         DF_features["CSI_predictions_formula"][i] = " ## ".join(hits2)
         DF_features["CSI_predictions_smiles"][i] = " ## ".join(hits3)
 
-    DF_features.insert(0, "SIRIUS_predictions", "")
-
-    for i, id in zip(DF_features.index, DF_features["feature_ids"]):
-        hits = []
-        for name, Pred_id in zip(DF_SIRIUS["formulas"], DF_SIRIUS["featureId"]): 
-            for x,y in zip(id,Pred_id):
-                if x==y:
-                    hit = f"{name}"
-                    if hit not in hits:
-                        hits.append(hit)
-        DF_features["SIRIUS_predictions"][i] = " ## ".join(hits)
-
     DF_features.to_csv(annotated, sep="\t", index= None)
     return DF_features
 
 if __name__ == "__main__":
-    sirius_csi_annotations(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    sirius_csi_annotations(sys.argv[1], sys.argv[2])

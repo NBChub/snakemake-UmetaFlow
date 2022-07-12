@@ -19,7 +19,7 @@ if config["rules"]["sirius_csi"]==True:
                 "../envs/openms.yaml"
             shell:
                 """
-                python workflow/scripts/SIRIUS_CSI_annotations.py {input.matrix} {input.sirius} {input.csi} {output.annotated} 2>> {log}
+                python workflow/scripts/SIRIUS_CSI_annotations.py {input.matrix} {output.annotated} 2>> {log}
                 """
     else:
         rule sirius_annotations:
@@ -35,7 +35,7 @@ if config["rules"]["sirius_csi"]==True:
                 "../envs/openms.yaml"
             shell:
                 """
-                python workflow/scripts/SIRIUS_CSI_annotations.py {input.matrix} {input.sirius} {input.csi} {output.annotated} 2>> {log}
+                python workflow/scripts/SIRIUS_CSI_annotations.py {input.matrix} {output.annotated} 2>> {log}
                 """ 
 else:
     if config["rules"]["requantification"]==True:
@@ -51,7 +51,7 @@ else:
                 "../envs/openms.yaml"
             shell:
                 """
-                python workflow/scripts/SIRIUS_annotations.py {input.matrix} {input.sirius} {output.annotated} 2>> {log}    
+                python workflow/scripts/SIRIUS_annotations.py {input.matrix} {output.annotated} 2>> {log}    
                 """
     else:
         rule sirius_annotations:
@@ -66,7 +66,7 @@ else:
                 "../envs/openms.yaml"
             shell:
                 """
-                python workflow/scripts/SIRIUS_annotations.py {input.matrix} {input.sirius} {output.annotated} 2>> {log}    
+                python workflow/scripts/SIRIUS_annotations.py {input.matrix} {output.annotated} 2>> {log}    
                 """
 
 # 2) Run your aligned mzml files (from directory GNPSexport/mzML) directly to GNPS for MS/MS library matching to generate a tsv table of metabolites. 
