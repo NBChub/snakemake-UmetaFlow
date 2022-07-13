@@ -125,7 +125,7 @@ rule FeatureLinker_FFM:
     threads: 4
     shell:
         """
-        FeatureLinkerUnlabeledKD -in {input} -out {output} -threads {threads} -log {log} 2>> {log} 
+        FeatureLinkerUnlabeledKD -in {input} -out {output} -algorithm:warp:enabled false -algorithm:link:rt_tol 30.0 -algorithm:link:mz_tol 8.0 -threads {threads} -log {log} 2>> {log} 
         """
 
 # 8) export the consensusXML file to a tsv file to produce a single matrix for PCA
