@@ -32,6 +32,8 @@ properties:
         type: boolean
       annotate:
         type: boolean
+      fbmn_sirius:
+        type: boolean
 
 required:
   - rules

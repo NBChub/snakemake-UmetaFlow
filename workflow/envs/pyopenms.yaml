@@ -9,3 +9,5 @@ dependencies:
     - -r requirements.txt
   - pandas
   - numpy
+  - networkx
+  - requests

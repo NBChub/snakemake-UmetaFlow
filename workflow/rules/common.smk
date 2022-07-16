@@ -64,7 +64,8 @@ def get_final_output():
                 "sirius" : [expand("results/Interim/Sirius/formulas_{samples}.mzTab", samples=SAMPLES),
         expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)],
                 "annotate" : [expand("results/annotations/annotated_FeatureTable.tsv"),
-        expand("results/annotations/GNPS_annotated_FeatureTable.tsv"),
+        expand("results/annotations/GNPS_annotated_FeatureTable.tsv")],
+                "fbmn_sirius": [expand("results/GNPSexport/fbmn_network_sirius.graphml")
         ]
                 }
     
