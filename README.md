@@ -112,7 +112,7 @@ Get the latest pyOpenMS wheels (until pyOpenMS 3.0 is available in conda):
     MY_OS="Linux" # or "macOS" or "Windows" (case-sensitive)
     mkdir -p .snakemake/conda/
     wget -O .snakemake/conda/${MY_OS}-wheels.zip https://nightly.link/OpenMS/OpenMS/workflows/pyopenms-wheels/nightly/${MY_OS}-wheels.zip\?status\=completed
-    (cd .snakemake/conda/ && unzip *.zip)
+    (cd .snakemake/conda/ && mv ${MY_OS}-wheels.zip\?status=completed ${MY_OS}-wheels.zip && unzip *.zip)
     find .snakemake/conda/*cp39*.whl > .snakemake/conda/requirements.txt
     rm .snakemake/conda/*.whl & rm .snakemake/conda/*.zip
 
