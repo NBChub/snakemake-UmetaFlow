@@ -21,7 +21,7 @@ The pipeline consists of five interconnected steps:
 
 6) Annotate the feature matrix with formula and structural predictions (GNPS metabolite annotations optional).
 
-7) Integrate Sirius and CSI predictions to the network (after FBMN)
+7) Integrate Sirius and CSI predictions to the network (after FBMN)- this currently only works with one file
 
 ### Overview
 ![dag](/images/UmetaFlow_graph.svg)

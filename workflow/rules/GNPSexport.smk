@@ -39,9 +39,10 @@ rule GNPS_export:
         out3= "results/GNPSexport/SuppPairs.csv",
         out4= "results/GNPSexport/metadata.tsv"
     log: "workflow/report/logs/GNPSexport/GNPS_export.log"
+    threads: 4
     conda:
         "../envs/openms.yaml"
     shell:
         """
-        GNPSExport -in_cm {input.var1} -in_mzml {input.var2} -out {output.out1} -out_quantification {output.out2} -out_pairs {output.out3} -out_meta_values {output.out4} -log {log} 2>> {log}
+        GNPSExport -in_cm {input.var1} -in_mzml {input.var2} -out {output.out1} -out_quantification {output.out2} -out_pairs {output.out3} -out_meta_values {output.out4} -threads {threads} -log {log} 2>> {log}
         """

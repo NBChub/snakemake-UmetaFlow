@@ -56,12 +56,13 @@ rule MapAligner:
     log: 
         general= "workflow/report/logs/preprocessing/MapAlignerGeneral.log",
         job= "workflow/report/logs/preprocessing/MapAligner.log"
+    threads: 4
     conda:
         "../envs/openms.yaml"
     shell:
         """
         echo "Preparing maps for alignment..." > {log.general}
-        MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2} -log {log.job} 2>> {log.job}
+        MapAlignerPoseClustering -algorithm:max_num_peaks_considered -1 -algorithm:superimposer:mz_pair_max_distance 0.05 -algorithm:pairfinder:distance_MZ:max_difference 10.0 -algorithm:pairfinder:distance_MZ:unit ppm -in {input} -out {output.var1} -trafo_out {output.var2} -threads {threads} -log {log.job} 2>> {log.job}
         """ 
 
 # 4) (ii) MapRTTransformer is used to perform a linear retention time alignment, to correct for linear shifts in retention time between different runs using the transformation files from the reprocessing rule MapAlignerPoseClustering (faster computationally)
@@ -73,11 +74,12 @@ rule mzMLaligner:
     output:
         "results/GNPSexport/mzML/Aligned_{samples}.mzML"
     log: "workflow/report/logs/preprocessing/mzMLaligner_{samples}.log"
+    threads: 4
     conda:
         "../envs/openms.yaml"
     shell:
         """
-        MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output} -log {log} 2>> {log} 
+        MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output} -threads {threads} -log {log} 2>> {log} 
         """ 
 
 # 5) Decharger: Decharging algorithm for adduct assignment

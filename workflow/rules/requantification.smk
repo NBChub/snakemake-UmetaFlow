@@ -24,6 +24,7 @@ rule reload_maps:
     output:
         out_complete= "results/Interim/Requantified/Complete_{samples}.featureXML"
     log: "workflow/report/logs/requantification/reload_maps_{samples}.log"
+    threads: 4
     conda:
         "../envs/pyopenms.yaml"
     shell:    
@@ -103,11 +104,12 @@ rule adduct_annotations_FFMident:
     output:
         "results/Interim/Requantified/MFD_{samples}.featureXML"
     log: "workflow/report/logs/requantification/adduct_annotations_FFMident_{samples}.log"
+    threads: 4
     conda:
         "../envs/openms.yaml"
     shell:
         """
-        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1" -log {log} 2>> {log}
+        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1" -threads {threads} -log {log} 2>> {log}
         """
 # 6) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
 
@@ -119,11 +121,12 @@ rule IDMapper_FFMident:
     output:
         "results/Interim/Requantified/IDMapper_{samples}.featureXML"
     log: "workflow/report/logs/requantification/IDMapper_FFMident_{samples}.log"
+    threads: 4
     conda:
         "../envs/openms.yaml"
     shell:
         """
-        IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} -log {log} 2>> {log}
+        IDMapper -id {input.var1} -in {input.var2} -spectra:in {input.var3} -out {output} -threads {threads} -log {log} 2>> {log}
         """
 
 # 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different sfiles together, which have a smiliar m/z and rt (MS1 level).
