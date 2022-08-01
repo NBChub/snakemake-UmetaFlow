@@ -113,7 +113,7 @@ Press enter (RETURN) to continue
 
 #### Get example input data (only for testing the workflow with the example dataset)
 
-    (cd data && wget https://zenodo.org/record/6948431/files/raw.zip && unzip *.zip -d raw)
+    (cd data && wget https://zenodo.org/record/6948449/files/Commercial_std_raw.zip?download=1 && unzip *.zip -d raw)
     
 #### Execute the workflow
     
