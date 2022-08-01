@@ -41,7 +41,7 @@ Step 1: https://docs.github.com/en/github/authenticating-to-github/connecting-to
 Step 2: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
 
-    git clone git@github.com:NBChub/snakemake-metabolomics.git
+    git clone https://github.com/NBChub/snakemake-UmetaFlow.git
 
 ### Step 2: Configure workflow
 
@@ -113,7 +113,7 @@ Press enter (RETURN) to continue
 
 #### Get example input data (only for testing the workflow with the example dataset)
 
-    (cd data && wget https://zenodo.org/record/5511115/files/raw.zip && unzip *.zip -d raw)
+    (cd data && wget https://zenodo.org/record/6948431/files/raw.zip && unzip *.zip -d raw)
     
 #### Execute the workflow
     
