@@ -61,18 +61,28 @@ Further formatting rules can be defined in the `workflow/schemas/` folder.
 
 ### Step 3: Create a conda environment& install snakemake
 
-#### For MacOS only 
+#### For both systems
 
-Install homebrew and wget (for **MacOS** only!):
+Install homebrew and wget:
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    
+  
 Press enter (RETURN) to continue
 
+#### For Linux only !
+
+Follow the Next steps instructions to add Linuxbrew to your PATH and to your bash shell profile script, either ~/.profile on Debian/Ubuntu or ~/.bash_profile on CentOS/Fedora/RedHat (https://github.com/Linuxbrew/brew).
+
+    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
+    echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
+    
 #### For both systems
 
     brew install wget
 
+Install conda for any [system](https://docs.conda.io/en/latest/miniconda.html#linux-installers).
 Installing Snakemake using [Mamba](https://github.com/mamba-org/mamba) is advised. In case you don’t use [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) you can always install [Mamba](https://github.com/mamba-org/mamba) into any other Conda-based Python distribution with:
 
     conda install -n base -c conda-forge mamba
@@ -91,7 +101,7 @@ Activate the conda environment:
 
 Build OpenMS on [Linux](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_linux.html) or [MacOS](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/release/latest/html/install_mac.html) until the 3.0 release is published.
 
-#### For Linux only 
+#### For Linux only !
 
 Install mono with sudo:
 
