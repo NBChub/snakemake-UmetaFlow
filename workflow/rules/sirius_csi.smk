@@ -9,14 +9,14 @@ from os.path import join
 if config["rules"]["requantification"]==True:
     rule sirius_csi:
         input: 
-            var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
-            var2= "results/Interim/Requantified/MFD_{samples}.featureXML" 
+            var1= join("results", "GNPSexport", "mzML", "Aligned_{samples}.mzML"),
+            var2= join("results", "Interim", "Requantified", "MFD_{samples}.featureXML") 
         output:
-            out1= "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
-            out2= "results/Interim/SiriusCSI/structures_{samples}.mzTab"
+            out1= join("results", "Interim", "SiriusCSI", "formulas_{samples}.mzTab"),
+            out2= join("results", "Interim", "SiriusCSI", "structures_{samples}.mzTab")
         conda:
             join('.snakemake', 'conda', 'exe')
-        log: "workflow/report/logs/sirius_csi/SiriusAdapter_{samples}.log"
+        log: join("workflow", "report", "logs", "sirius_csi", "SiriusAdapter_{samples}.log")
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
@@ -27,14 +27,14 @@ if config["rules"]["requantification"]==True:
 else:
     rule sirius_csi:
         input: 
-            var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
-            var2= "results/Interim/Preprocessed/MFD_{samples}.featureXML" 
+            var1= join("results", "GNPSexport", "mzML", "Aligned_{samples}.mzML"),
+            var2= join("results", "Interim", "Preprocessed", "MFD_{samples}.featureXML") 
         output:
-            out1= "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
-            out2= "results/Interim/SiriusCSI/structures_{samples}.mzTab"
+            out1= join("results", "Interim", "SiriusCSI", "formulas_{samples}.mzTab"),
+            out2= join("results", "Interim", "SiriusCSI", "structures_{samples}.mzTab")
         conda:
             join('.snakemake', 'conda', 'exe')
-        log: "workflow/report/logs/sirius_csi/SiriusAdapter_{samples}.log"
+        log: join("workflow", "report", "logs", "sirius_csi", "SiriusAdapter_{samples}.log")
         params:
             exec_path = glob.glob(join('.snakemake','conda','exe', 'bin', 'sirius'))
         threads: 4
@@ -47,16 +47,16 @@ else:
 
 rule df_sirius_csi:
     input: 
-        input_sirius= "results/Interim/SiriusCSI/formulas_{samples}.mzTab",
-        input_csi= "results/Interim/SiriusCSI/structures_{samples}.mzTab"
+        input_sirius= join("results", "Interim", "SiriusCSI", "formulas_{samples}.mzTab"),
+        input_csi= join("results", "Interim", "SiriusCSI", "structures_{samples}.mzTab")
     output:
-        output_sirius= "results/SiriusCSI/formulas_{samples}.tsv",
-        output_csi= "results/SiriusCSI/structures_{samples}.tsv"
-    log: "workflow/report/logs/sirius_csi/SiriusDF_{samples}.log"
+        output_sirius= join("results", "SiriusCSI", "formulas_{samples}.tsv"),
+        output_csi= join("results", "SiriusCSI", "structures_{samples}.tsv")
+    log: join("workflow", "report", "logs", "sirius_csi", "SiriusDF_{samples}.log")
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:    
         """
-        python workflow/scripts/df_SIRIUS_CSI.py {input.input_sirius} {input.input_csi} {output.output_sirius} {output.output_csi} 2>> {log}
+        python join("workflow", "scripts", "df_SIRIUS_CSI.py") {input.input_sirius} {input.input_csi} {output.output_sirius} {output.output_csi} 2>> {log}
         """
 

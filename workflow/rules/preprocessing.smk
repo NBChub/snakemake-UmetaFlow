@@ -1,13 +1,15 @@
+import glob
+from os.path import join 
 # 1) Correct the MS2 precursor on a peak level (To the "highest intensity MS1 peak")
 
 rule precursorcorrection_peak:
     input:
-        "data/mzML/{samples}.mzML"
+        join("data", "mzML", "{samples}.mzML")
     output:
-        "results/Interim/mzML/PCpeak_{samples}.mzML"
-    log: "workflow/report/logs/preprocessing/precursorcorrection_peak_{samples}.log"
+        join("results", "Interim", "mzML", "PCpeak_{samples}.mzML")
+    log: join("workflow", "report", "logs", "preprocessing", "precursorcorrection_peak_{samples}.log")
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:
         """
         HighResPrecursorMassCorrector -in {input} -out {output} -highest_intensity_peak:mz_tolerance "100.0" -log {log} 2>> {log}
@@ -17,12 +19,12 @@ rule precursorcorrection_peak:
     
 rule preprocess:
     input:
-        "results/Interim/mzML/PCpeak_{samples}.mzML"
+        join("results", "Interim", "mzML", "PCpeak_{samples}.mzML")
     output:
-        "results/Interim/Preprocessed/FFM_{samples}.featureXML"
-    log: "workflow/report/logs/preprocessing/preprocess_{samples}.log"
+        join("results", "Interim", "Preprocessed", "FFM_{samples}.featureXML")
+    log: join("workflow", "report", "logs", "preprocessing", "preprocess_{samples}.log")
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     threads: 4
     shell:
         """
@@ -33,13 +35,13 @@ rule preprocess:
 
 rule precursorcorrection_feature:
     input:
-        var1= "results/Interim/mzML/PCpeak_{samples}.mzML",
-        var2= "results/Interim/Preprocessed/FFM_{samples}.featureXML"
+        var1= join("results", "Interim", "mzML", "PCpeak_{samples}.mzML"),
+        var2= join("results", "Interim", "Preprocessed", "FFM_{samples}.featureXML")
     output:
-        "results/Interim/mzML/PCfeature_{samples}.mzML"
-    log: "workflow/report/logs/preprocessing/precursorcorrection_feature_{samples}.log"
+        join("results", "Interim", "mzML", "PCfeature_{samples}.mzML")
+    log: join("workflow", "report", "logs", "preprocessing", "precursorcorrection_feature_{samples}.log")
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:
         """
         HighResPrecursorMassCorrector -in {input.var1} -feature:in {input.var2} -out {output}  -nearest_peak:mz_tolerance "100.0" -log {log} 2>> {log} 
@@ -49,16 +51,16 @@ rule precursorcorrection_feature:
 
 rule MapAligner:
     input:
-        expand("results/Interim/Preprocessed/FFM_{samples}.featureXML", samples=SAMPLES)
+        expand(join("results", "Interim", "Preprocessed", "FFM_{samples}.featureXML"), samples=SAMPLES)
     output:
-        var1= expand("results/Interim/Preprocessed/MapAligned_{samples}.featureXML", samples=SAMPLES),
-        var2= expand("results/Interim/Preprocessed/MapAligned_{samples}.trafoXML", samples=SAMPLES)
+        var1= expand(join("results", "Interim", "Preprocessed", "MapAligned_{samples}.featureXML"), samples=SAMPLES),
+        var2= expand(join("results", "Interim", "Preprocessed", "MapAligned_{samples}.trafoXML"), samples=SAMPLES)
     log: 
-        general= "workflow/report/logs/preprocessing/MapAlignerGeneral.log",
-        job= "workflow/report/logs/preprocessing/MapAligner.log"
+        general= join("workflow", "report", "logs", "preprocessing", "MapAlignerGeneral.log"),
+        job= join("workflow", "report", "logs", "preprocessing", "MapAligner.log")
     threads: 4
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:
         """
         echo "Preparing maps for alignment..." > {log.general}
@@ -69,14 +71,14 @@ rule MapAligner:
 
 rule mzMLaligner:
     input:
-        var1= "results/Interim/mzML/PCfeature_{samples}.mzML",
-        var2= "results/Interim/Preprocessed/MapAligned_{samples}.trafoXML"
+        var1= join("results", "Interim", "mzML", "PCfeature_{samples}.mzML"),
+        var2= join("results", "Interim", "Preprocessed", "MapAligned_{samples}.trafoXML")
     output:
-        "results/GNPSexport/mzML/Aligned_{samples}.mzML"
-    log: "workflow/report/logs/preprocessing/mzMLaligner_{samples}.log"
+        join("results", "GNPSexport", "mzML", "Aligned_{samples}.mzML")
+    log: join("workflow", "report", "logs", "preprocessing", "mzMLaligner_{samples}.log")
     threads: 4
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:
         """
         MapRTTransformer -in {input.var1} -trafo_in {input.var2} -out {output} -threads {threads} -log {log} 2>> {log} 
@@ -86,12 +88,12 @@ rule mzMLaligner:
 
 rule adduct_annotations_FFM:
     input:
-        "results/Interim/Preprocessed/MapAligned_{samples}.featureXML"
+        join("results", "Interim", "Preprocessed", "MapAligned_{samples}.featureXML")
     output:
-        "results/Interim/Preprocessed/MFD_{samples}.featureXML" 
-    log: "workflow/report/logs/preprocessing/adduct_annotations_FFM_{samples}.log"
+        join("results", "Interim", "Preprocessed", "MFD_{samples}.featureXML")
+    log: join("workflow", "report", "logs", "preprocessing", "adduct_annotations_FFM_{samples}.log")
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:
         """
         MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1" -log {log} 2>> {log} 
@@ -101,29 +103,29 @@ rule adduct_annotations_FFM:
 
 rule IDMapper_FFM:
     input:
-        var1= "resources/emptyfile.idXML",
-        var2= "results/Interim/Preprocessed/MFD_{samples}.featureXML",
-        var3= "results/GNPSexport/mzML/Aligned_{samples}.mzML"
+        var1= join("resources", "emptyfile.idXML"),
+        var2= join("results", "Interim", "Preprocessed", "MFD_{samples}.featureXML"),
+        var3= join("results", "GNPSexport", "mzML", "Aligned_{samples}.mzML")
     output:
-        "results/Interim/Preprocessed/IDMapper_{samples}.featureXML"
-    log: "workflow/report/logs/preprocessing/IDMapper_FFM_{samples}.log"
+        join("results", "Interim", "Preprocessed", "IDMapper_{samples}.featureXML")
+    log: join("workflow", "report", "logs", "preprocessing", "IDMapper_FFM_{samples}.log")
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:
         """
         IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} -log {log} 2>> {log} 
         """
 
-# 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and rt (MS1 level).
+# 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m", "z and rt (MS1 level).
 
 rule FeatureLinker_FFM:
     input:
-        expand("results/Interim/Preprocessed/IDMapper_{samples}.featureXML", samples=SAMPLES)
+        expand(join("results", "Interim", "Preprocessed", "IDMapper_{samples}.featureXML"), samples=SAMPLES)
     output:
-        "results/Interim/Preprocessed/Preprocessed.consensusXML"
-    log: "workflow/report/logs/preprocessing/FeatureLinker_FFM.log"
+        join("results", "Interim", "Preprocessed", "Preprocessed.consensusXML")
+    log: join("workflow", "report", "logs", "preprocessing", "FeatureLinker_FFM.log")
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     threads: 4
     shell:
         """
@@ -134,13 +136,13 @@ rule FeatureLinker_FFM:
 
 rule FFM_matrix:
     input:
-        input_cmap= "results/Interim/Preprocessed/Preprocessed.consensusXML"
+        input_cmap= join("results", "Interim", "Preprocessed", "Preprocessed.consensusXML")
     output:
-        output_tsv= "results/Preprocessed/FeatureMatrix.tsv"
-    log: "workflow/report/logs/preprocessing/FFM_matrix.log"
+        output_tsv= join("results", "Preprocessed", "FeatureMatrix.tsv")
+    log: join("workflow", "report", "logs", "preprocessing", "FFM_matrix.log")
     conda:
-        "../envs/pyopenms.yaml"
+        join("..", "envs", "pyopenms.yaml")
     shell:
         """
-        python workflow/scripts/cleanup.py {input.input_cmap} {output.output_tsv} 2>> {log}
+        python join("workflow", "scripts", "cleanup.py") {input.input_cmap} {output.output_tsv} 2>> {log}
         """

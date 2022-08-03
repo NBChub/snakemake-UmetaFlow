@@ -9,8 +9,8 @@ min_version("5.18.0")
 
 ##### load config and sample sheets #####
 
-configfile: "config/config.yaml"
-validate(config, schema="../schemas/config.schema.yaml")
+configfile: os.path.join("config", "config.yaml")
+validate(config, schema=os.path.join("..", "schemas", "config.schema.yaml"))
 
 # set up sample
 samples = pd.read_csv(config["samples"], sep="\t").set_index("sample_name", drop=False)
@@ -36,36 +36,36 @@ def get_final_output():
     Generate final output for rule all given a TRUE value in config["rules"]
     """
     # dictionary of rules and its output files
-    rule_dict = {"fileconversion" : expand("data/mzML/{samples}.mzML", samples=SAMPLES),
-                "preprocessing" : [expand("results/Interim/mzML/PCpeak_{samples}.mzML", samples=SAMPLES),
-        expand("results/Interim/Preprocessed/FFM_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/mzML/PCfeature_{samples}.mzML", samples=SAMPLES),
-        expand(["results/Interim/Preprocessed/MapAligned_{samples}.featureXML", "results/Interim/Preprocessed/MapAligned_{samples}.trafoXML"], samples=SAMPLES),
-        expand("results/GNPSexport/mzML/Aligned_{samples}.mzML", samples=SAMPLES),
-        expand("results/Interim/Preprocessed/MFD_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/Preprocessed/Preprocessed.consensusXML"),
-        expand("results/Preprocessed/FeatureMatrix.tsv")],
-                "requantification" : [expand(["results/Interim/Requantified/Complete.consensusXML", "results/Interim/Requantified/Missing.consensusXML"]),
-        expand("results/Interim/Requantified/Complete_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/Requantified/MetaboliteIdentification.tsv"),
-        expand("results/Interim/Requantified/FFMID_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/Requantified/Merged_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/Requantified/MFD_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/Requantified/IDMapper_{samples}.featureXML", samples=SAMPLES),
-        expand("results/Interim/Requantified/Requantified.consensusXML"),
-        expand("results/Requantified/FeatureMatrix.tsv")],
-                "GNPSexport" : [expand("results/Interim/GNPSexport/filtered.consensusXML"),
-        expand("results/GNPSexport/MSMS.mgf"),
-        expand("results/GNPSexport/FeatureQuantificationTable.txt"),
-        expand("results/GNPSexport/SuppPairs.csv"),
-        expand("results/GNPSexport/metadata.tsv")],
-                "sirius_csi" : [expand(["results/Interim/SiriusCSI/formulas_{samples}.mzTab", "results/Interim/SiriusCSI/structures_{samples}.mzTab"], samples=SAMPLES),
-        expand(["results/SiriusCSI/formulas_{samples}.tsv", "results/SiriusCSI/structures_{samples}.tsv"], samples=SAMPLES)],
-                "sirius" : [expand("results/Interim/Sirius/formulas_{samples}.mzTab", samples=SAMPLES),
-        expand("results/Sirius/formulas_{samples}.tsv", samples=SAMPLES)],
-                "annotate" : [expand("results/annotations/annotated_FeatureTable.tsv"),
-        expand("results/annotations/GNPS_annotated_FeatureTable.tsv")],
-                "fbmn_sirius": [expand("results/GNPSexport/fbmn_network_sirius.graphml")
+    rule_dict = {"fileconversion" : expand(os.path.join("data", "mzML", "{samples}.mzML"), samples=SAMPLES),
+                "preprocessing" : [expand(os.path.join("results", "Interim", "mzML", "PCpeak_{samples}.mzML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "Preprocessed", "FFM_{samples}.featureXML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "mzML", "PCfeature_{samples}.mzML"), samples=SAMPLES),
+        expand([os.path.join("results", "Interim", "Preprocessed", "MapAligned_{samples}.featureXML"), os.path.join("results", "Interim", "Preprocessed", "MapAligned_{samples}.trafoXML")], samples=SAMPLES),
+        expand(os.path.join("results", "GNPSexport", "mzML", "Aligned_{samples}.mzML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "Preprocessed", "MFD_{samples}.featureXML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "Preprocessed", "Preprocessed.consensusXML")),
+        expand(os.path.join("results", "Preprocessed", "FeatureMatrix.tsv"))],
+                "requantification" : [expand([os.path.join("results", "Interim", "Requantified", "Complete.consensusXML"), os.path.join("results", "Interim", "Requantified", "Missing.consensusXML")]),
+        expand(os.path.join("results", "Interim", "Requantified", "Complete_{samples}.featureXML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "Requantified", "MetaboliteIdentification.tsv")),
+        expand(os.path.join("results", "Interim", "Requantified", "FFMID_{samples}.featureXML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "Requantified", "Merged_{samples}.featureXML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "Requantified", "MFD_{samples}.featureXML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "Requantified", "IDMapper_{samples}.featureXML"), samples=SAMPLES),
+        expand(os.path.join("results", "Interim", "Requantified", "Requantified.consensusXML")),
+        expand(os.path.join("results", "Requantified", "FeatureMatrix.tsv"))],
+                "GNPSexport" : [expand(os.path.join("results", "Interim", "GNPSexport", "filtered.consensusXML")),
+        expand(os.path.join("results", "GNPSexport", "MSMS.mgf")),
+        expand(os.path.join("results", "GNPSexport", "FeatureQuantificationTable.txt")),
+        expand(os.path.join("results", "GNPSexport", "SuppPairs.csv")),
+        expand(os.path.join("results", "GNPSexport", "metadata.tsv"))],
+                "sirius_csi" : [expand([os.path.join("results", "Interim", "SiriusCSI", "formulas_{samples}.mzTab"), os.path.join("results", "Interim", "SiriusCSI", "structures_{samples}.mzTab")], samples=SAMPLES),
+        expand([os.path.join("results", "SiriusCSI", "formulas_{samples}.tsv"), os.path.join("results", "SiriusCSI", "structures_{samples}.tsv")], samples=SAMPLES)],
+                "sirius" : [expand(os.path.join("results", "Interim", "Sirius", "formulas_{samples}.mzTab"), samples=SAMPLES),
+        expand(os.path.join("results", "Sirius", "formulas_{samples}.tsv"), samples=SAMPLES)],
+                "annotate" : [expand(os.path.join("results", "annotations", "annotated_FeatureTable.tsv")),
+        expand(os.path.join("results", "annotations", "GNPS_annotated_FeatureTable.tsv"))],
+                "fbmn_sirius": [expand(os.path.join("results", "GNPSexport", "fbmn_network_sirius.graphml"))
         ]
                 }
     

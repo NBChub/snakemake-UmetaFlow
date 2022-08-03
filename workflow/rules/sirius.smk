@@ -9,11 +9,11 @@ from os.path import join
 if config["rules"]["requantification"]==True:
     rule sirius:
         input: 
-            var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
-            var2= "results/Interim/Requantified/MFD_{samples}.featureXML" 
+            var1= join("results", "GNPSexport", "mzML", "Aligned_{samples}.mzML"),
+            var2= join("results", "Interim", "Requantified", "MFD_{samples}.featureXML") 
         output:
-            "results/Interim/Sirius/formulas_{samples}.mzTab"
-        log: "workflow/report/logs/sirius/SiriusAdapter_{samples}.log"
+            join("results", "Interim", "Sirius", "formulas_{samples}.mzTab")
+        log: join("workflow", "report", "logs", "sirius", "SiriusAdapter_{samples}.log")
         conda:
             join('.snakemake', 'conda', 'exe') 
         params:
@@ -26,11 +26,11 @@ if config["rules"]["requantification"]==True:
 else:
     rule sirius:
         input: 
-            var1= "results/GNPSexport/mzML/Aligned_{samples}.mzML",
-            var2= "results/Interim/Preprocessed/MFD_{samples}.featureXML" 
+            var1= join("results", "GNPSexport", "mzML", "Aligned_{samples}.mzML"),
+            var2= join("results", "Interim", "Preprocessed", "MFD_{samples}.featureXML")
         output:
-            "results/Interim/Sirius/formulas_{samples}.mzTab"
-        log: "workflow/report/logs/sirius/SiriusAdapter_{samples}.log"
+            join("results", "Interim", "Sirius", "formulas_{samples}.mzTab")
+        log: join("workflow", "report", "logs", "sirius", "SiriusAdapter_{samples}.log")
         conda:
             join('.snakemake', 'conda', 'exe') 
         params:
@@ -45,14 +45,14 @@ else:
 
 rule df_sirius:
     input: 
-        input_sirius= "results/Interim/Sirius/formulas_{samples}.mzTab"
+        input_sirius= join("results", "Interim", "Sirius", "formulas_{samples}.mzTab")
     output:
-        output_sirius= "results/Sirius/formulas_{samples}.tsv"
-    log: "workflow/report/logs/sirius/SiriusDF_{samples}.log"
+        output_sirius= join("results", "Sirius", "formulas_{samples}.tsv")
+    log: join("workflow", "report", "logs", "sirius", "SiriusDF_{samples}.log")
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:    
         """
-        python workflow/scripts/df_SIRIUS.py {input.input_sirius} {output.output_sirius} 2>> {log}
+        python join("workflow", "scripts", "df_SIRIUS.py") {input.input_sirius} {output.output_sirius} 2>> {log}
         """
 

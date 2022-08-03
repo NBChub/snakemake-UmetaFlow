@@ -1,14 +1,17 @@
+import glob
+from os.path import join 
+
 # 1) Filter out the features that do not have an MS2 pattern (no protein ID annotations)
 
 if config["rules"]["requantification"]==True:
     rule FileFilter:
         input:
-            "results/Interim/Requantified/Requantified.consensusXML"
+            join("results", "Interim", "Requantified", "Requantified.consensusXML")
         output:
-            "results/Interim/GNPSexport/filtered.consensusXML"
-        log: "workflow/report/logs/GNPSexport/FileFilter.log"
+            join("results", "Interim", "GNPSexport", "filtered.consensusXML")
+        log: join("workflow", "report", "logs", "GNPSexport", "FileFilter.log")
         conda:
-            "../envs/openms.yaml"
+            join("..", "envs", "openms.yaml")
         shell:
             """
             FileFilter -id:remove_unannotated_features -in {input} -out {output} -log {log} 2>> {log}
@@ -16,12 +19,12 @@ if config["rules"]["requantification"]==True:
 else:            
     rule FileFilter:
         input:
-            "results/Interim/Preprocessed/Preprocessed.consensusXML"
+            join("results", "Interim", "Preprocessed", "Preprocessed.consensusXML")
         output:
-            "results/Interim/GNPSexport/filtered.consensusXML"
-        log: "workflow/report/logs/GNPSexport/FileFilter.log"
+            join("results", "Interim", "GNPSexport", "filtered.consensusXML")
+        log: join("workflow", "report", "logs", "GNPSexport", "FileFilter.log")
         conda:
-            "../envs/openms.yaml"
+            join("..", "envs", "openms.yaml")
         shell:
             """
             FileFilter -id:remove_unannotated_features -in {input} -out {output} -log {log} 2>> {log}
@@ -31,17 +34,17 @@ else:
 
 rule GNPS_export:
     input:
-        var1= "results/Interim/GNPSexport/filtered.consensusXML",
-        var2= expand("results/GNPSexport/mzML/Aligned_{samples}.mzML", samples=SAMPLES)
+        var1= join("results", "Interim", "GNPSexport", "filtered.consensusXML"),
+        var2= expand(join("results", "GNPSexport", "mzML", "Aligned_{samples}.mzML"), samples=SAMPLES)
     output:
-        out1= "results/GNPSexport/MSMS.mgf",
-        out2= "results/GNPSexport/FeatureQuantificationTable.txt", 
-        out3= "results/GNPSexport/SuppPairs.csv",
-        out4= "results/GNPSexport/metadata.tsv"
-    log: "workflow/report/logs/GNPSexport/GNPS_export.log"
+        out1= join("results", "GNPSexport", "MSMS.mgf"),
+        out2= join("results", "GNPSexport", "FeatureQuantificationTable.txt"), 
+        out3= join("results", "GNPSexport", "SuppPairs.csv"),
+        out4= join("results", "GNPSexport", "metadata.tsv")
+    log: join("workflow", "report", "logs", "GNPSexport", "GNPS_export.log")
     threads: 4
     conda:
-        "../envs/openms.yaml"
+        join("..", "envs", "openms.yaml")
     shell:
         """
         GNPSExport -in_cm {input.var1} -in_mzml {input.var2} -out {output.out1} -out_quantification {output.out2} -out_pairs {output.out3} -out_meta_values {output.out4} -threads {threads} -log {log} 2>> {log}

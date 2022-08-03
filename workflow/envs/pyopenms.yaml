@@ -7,7 +7,7 @@ dependencies:
   - pip:
     - ipython
     - -r requirements.txt
+    - pyteomics
   - pandas
   - numpy
   - networkx
-  - requests

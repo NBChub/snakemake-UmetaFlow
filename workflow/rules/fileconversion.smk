@@ -6,10 +6,10 @@ from os.path import join
 
 rule mzml_conversion:
     input:
-        "data/raw/{samples}.raw"
+        join("data", "raw", "{samples}.raw")
     output:
-        "data/mzML/{samples}.mzML"
-    log: "workflow/report/logs/FileConversion/mzml_conversion_{samples}.log"
+        join("data", "mzML", "{samples}.mzML")
+    log: join("workflow", "report", "logs", "FileConversion", "mzml_conversion_{samples}.log")
     conda:
         join('.snakemake', 'conda', 'exe')
     params:
