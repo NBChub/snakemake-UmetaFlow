@@ -84,7 +84,7 @@ if GNPS_library:
         log: join("workflow", "report", "logs", "annotate", "GNPS_annotations.log")
         threads: 4
         conda:
-            join("..", "envs", "pyopenms.yaml")
+            join("..", "envs", "openms.yaml")
         shell:
             """
             python join("workflow", "scripts", "GNPS.py") {input.lib} {input.featurematrix} {input.mgf_path} {output.gnps} 2>> {log}
@@ -98,7 +98,7 @@ else:
             join("results", "annotations", "GNPS_annotated_FeatureTable.tsv")
         log: join("workflow", "report", "logs", "annotate", "GNPS_annotations.log")
         conda:
-            join("..", "envs", "pyopenms.yaml")
+            join("..", "envs", "openms.yaml")
         shell:
             """ 
             echo "No GNPS metabolite identification file was found" > {output} 2>> {log}

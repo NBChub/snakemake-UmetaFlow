@@ -15,7 +15,7 @@ if config["rules"]["requantification"]==True:
         log: join("workflow", "report", "logs", "GNPSexport", "fbmn_sirius.log")
         threads: 4
         conda:
-            join("..", "envs", "pyopenms.yaml")
+            join("..", "envs", "openms.yaml")
         shell:
             """
             python join("workflow", "scripts", "FBMN_SIRIUS.py") {input.input_matrix} {input.input_mgf} {input.input_graphml} {output.output_graphml} 2>> {log}
@@ -31,7 +31,7 @@ else:
         log: join("workflow", "report", "logs", "GNPSexport", "fbmn_sirius.log")
         threads: 4
         conda:
-            join("..", "envs", "pyopenms.yaml")
+            join("..", "envs", "openms.yaml")
         shell:
             """
             python join("workflow", "scripts", "FBMN_SIRIUS.py") {input.input_matrix} {input.input_mgf} {input.input_graphml} {output.output_graphml} 2>> {log}
