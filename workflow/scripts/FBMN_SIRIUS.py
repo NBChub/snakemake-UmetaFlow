@@ -10,7 +10,7 @@ def integration(input_matrix, input_mgf, input_graphml, output_graphml):
     # input matrix
     Matrix= pd.read_csv(input_matrix, sep="\t")
     Matrix["id"]= Matrix["id"].astype(str)
-    Matrix["feature_ids"]= [ids[1:-1].split(",") for ids in Matrix["feature_ids"]]
+    Matrix["feature_ids"]= Matrix["feature_ids"].values.tolist()
     #input mgf file
     file= mgf.MGF(source=input_mgf, use_header=True, convert_arrays=2, read_charges=True, read_ions=False, dtype=None, encoding=None)
     parameters=[]
@@ -22,9 +22,9 @@ def integration(input_matrix, input_mgf, input_graphml, output_graphml):
     Matrix.insert(0, "SCANS", "")
     for i, id in zip(Matrix.index, Matrix["id"]):
         hits = []
-        for scan, feature_id in zip(mgf_file["scans"], mgf_file["feature_id"]): 
+        for scans, feature_id in zip(mgf_file["scans"], mgf_file["feature_id"]): 
             if feature_id==id:
-                hit = f"{scan}"
+                hit = f"{scans}"
                 if hit not in hits:
                     hits.append(hit)
         Matrix["SCANS"][i] = " ## ".join(hits)
@@ -42,17 +42,15 @@ def integration(input_matrix, input_mgf, input_graphml, output_graphml):
     DF_SIRIUS= pd.concat(list_of_df,ignore_index=True)
     DF_SIRIUS= DF_SIRIUS.drop(columns="index")
     DF_SIRIUS["opt_global_featureId"]= DF_SIRIUS["opt_global_featureId"].str.replace(r"id_", "")
-    DF_SIRIUS["opt_global_featureId"]= [ids[1:-1].split(",") for ids in DF_SIRIUS["opt_global_featureId"]]
     #add the scan number to the SIRIUS predictions   
     DF_SIRIUS.insert(0, "SCANS", "")
     for i, Pred_id in zip(DF_SIRIUS.index, DF_SIRIUS["opt_global_featureId"]):
         hits = []
         for scans, feature_id in zip(Matrix["SCANS"], Matrix["feature_ids"]): 
-            for x,y in zip(feature_id, Pred_id):
-                    if x==y:
-                        hit = f"{scans}"
-                        if hit not in hits:
-                            hits.append(hit)
+            if Pred_id in feature_id:
+                hit = f"{scans}"
+                if hit not in hits:
+                    hits.append(hit)
         DF_SIRIUS["SCANS"][i] = " ## ".join(hits)
     #introduce the CSI predictions
     input_structures= glob.glob(os.path.join("results", "SiriusCSI", "structures_*.tsv"))
@@ -68,17 +66,16 @@ def integration(input_matrix, input_mgf, input_graphml, output_graphml):
     DF_CSI= pd.concat(list_of_df,ignore_index=True)
     DF_CSI= DF_CSI.drop(columns="index")
     DF_CSI["opt_global_featureId"]= DF_CSI["opt_global_featureId"].str.replace(r"id_", "")
-    DF_CSI["opt_global_featureId"]= [ids[1:-1].split(",") for ids in DF_CSI["opt_global_featureId"]]
-    #add the scan number to the SIRIUS predictions   
+    #add the scan number to the CSI predictions   
     DF_CSI.insert(0, "SCANS", "")
+
     for i, Pred_id in zip(DF_CSI.index, DF_CSI["opt_global_featureId"]):
         hits = []
         for scans, feature_id in zip(Matrix["SCANS"], Matrix["feature_ids"]): 
-            for x,y in zip(feature_id, Pred_id):
-                if x==y:
-                    hit = f"{scans}"
-                    if hit not in hits:
-                        hits.append(hit)
+            if Pred_id in feature_id:
+                hit = f"{scans}"
+                if hit not in hits:
+                    hits.append(hit)
         DF_CSI["SCANS"][i] = " ## ".join(hits)
     #read the graphml file downloaded from GNPS FBMN and add the SIRIUS and CSI information
     G = nx.read_graphml(input_graphml)
@@ -99,6 +96,7 @@ def integration(input_matrix, input_mgf, input_graphml, output_graphml):
             G.nodes[scan]["csifingerid:smiles"] = result["smiles"]
             G.nodes[scan]["csifingerid:Confidence_Score"] = result["best_search_engine_score[1]"]
             G.nodes[scan]["csifingerid:dbflags"] = result["opt_global_dbflags"]
+            G.nodes[scan]["csifingerid:description"] = result["description"]
 
     nx.write_graphml(G, output_graphml)
 
