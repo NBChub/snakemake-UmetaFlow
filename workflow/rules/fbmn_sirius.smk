@@ -1,5 +1,5 @@
 # This rule is for integrating the FBMN results with the SIRIUS annotations.
-# After the FBMN job is done, download the graphml file under the directory workflow", "GNPSexport and run the following rule:
+# After the FBMN job is done, download the graphml file under the directory workflow/GNPSexport and run the following rule:
 # Credits to Ming Wang for sharing the Jupyter notebook for the integration
 import glob
 from os.path import join
