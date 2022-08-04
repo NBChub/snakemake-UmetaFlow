@@ -15,9 +15,9 @@ if config["rules"]["requantification"]==True:
             join("results", "Interim", "Sirius", "formulas_{samples}.mzTab")
         log: join("workflow", "report", "logs", "sirius", "SiriusAdapter_{samples}.log")
         conda:
-            join(*.snakemake*, *conda*, *exe*) 
+            join(".snakemake", "conda", "exe") 
         params:
-            exec_path = glob.glob(join(*.snakemake*,*conda*,*exe*, *bin*, *sirius*))
+            exec_path = glob.glob(join(".snakemake","conda","exe", "bin", "sirius"))
         threads: 4
         shell:
             """
@@ -32,9 +32,9 @@ else:
             join("results", "Interim", "Sirius", "formulas_{samples}.mzTab")
         log: join("workflow", "report", "logs", "sirius", "SiriusAdapter_{samples}.log")
         conda:
-            join(*.snakemake*, *conda*, *exe*) 
+            join(".snakemake", "conda", "exe") 
         params:
-            exec_path = glob.glob(join(*.snakemake*,*conda*,*exe*, *bin*, *sirius*))
+            exec_path = glob.glob(join(".snakemake","conda","exe", "bin", "sirius"))
         threads: 4
         shell:
             """
