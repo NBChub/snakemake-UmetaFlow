@@ -57,6 +57,6 @@ rule df_sirius_csi:
         join("..", "envs", "openms.yaml")
     shell:    
         """
-        python join("workflow", "scripts", "df_SIRIUS_CSI.py") {input.input_sirius} {input.input_csi} {output.output_sirius} {output.output_csi} 2>> {log}
+        python workflow/scripts/df_SIRIUS_CSI.py {input.input_sirius} {input.input_csi} {output.output_sirius} {output.output_csi} 2>> {log}
         """
 

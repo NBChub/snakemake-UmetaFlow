@@ -18,7 +18,7 @@ if config["rules"]["sirius_csi"]==True:
                 join("..", "envs", "openms.yaml")
             shell:
                 """
-                python join("workflow", "scripts", "SIRIUS_CSI_annotations.py") {input.matrix} {output.annotated} 2>> {log}
+                python workflow/scripts/SIRIUS_CSI_annotations.py {input.matrix} {output.annotated} 2>> {log}
                 """
     else:
         rule sirius_annotations:
@@ -34,7 +34,7 @@ if config["rules"]["sirius_csi"]==True:
                 join("..", "envs", "openms.yaml")
             shell:
                 """
-                python join("workflow", "scripts", "SIRIUS_CSI_annotations.py") {input.matrix} {output.annotated} 2>> {log}
+                python workflow/scripts/SIRIUS_CSI_annotations.py {input.matrix} {output.annotated} 2>> {log}
                 """ 
 else:
     if config["rules"]["requantification"]==True:
@@ -50,7 +50,7 @@ else:
                 join("..", "envs", "openms.yaml")
             shell:
                 """
-                python join("workflow", "scripts", "SIRIUS_annotations.py") {input.matrix} {output.annotated} 2>> {log}    
+                python workflow/scripts/SIRIUS_annotations.py {input.matrix} {output.annotated} 2>> {log}    
                 """
     else:
         rule sirius_annotations:
@@ -65,7 +65,7 @@ else:
                 join("..", "envs", "openms.yaml")
             shell:
                 """
-                python join("workflow", "scripts", "SIRIUS_annotations.py") {input.matrix} {output.annotated} 2>> {log}    
+                python workflow/scripts/SIRIUS_annotations.py {input.matrix} {output.annotated} 2>> {log}    
                 """
 
 # 2) After FBMN, download the cytoscape data and move the .TSV file from the directory "DB_result" under the workflow's directory "resources". This file has all the MSMS library matches that GNPS performs during FBMN. 
@@ -87,7 +87,7 @@ if GNPS_library:
             join("..", "envs", "openms.yaml")
         shell:
             """
-            python join("workflow", "scripts", "GNPS.py") {input.lib} {input.featurematrix} {input.mgf_path} {output.gnps} 2>> {log}
+            python workflow/scripts/GNPS.py") {input.lib} {input.featurematrix} {input.mgf_path} {output.gnps} 2>> {log}
             """
 else:
     print("no file found")

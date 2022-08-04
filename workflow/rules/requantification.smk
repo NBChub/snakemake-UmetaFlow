@@ -16,7 +16,7 @@ rule split_consensus:
         join("..", "envs", "pyopenms.yaml")
     shell:    
         """
-        python join("workflow", "scripts", "split.py") {input.in_cmap} {output.out_complete} {output.out_missing} 2>> {log}
+        python workflow/scripts/split.py {input.in_cmap} {output.out_complete} {output.out_missing} 2>> {log}
         """
 
 rule reload_maps:
@@ -31,7 +31,7 @@ rule reload_maps:
         join("..", "envs", "pyopenms.yaml")
     shell:    
         """
-        python join("workflow", "scripts", "reloadmaps.py") {input.in_aligned} {input.in_complete} {output.out_complete} 2>> {log}
+        python workflow/scripts/reloadmaps.py {input.in_aligned} {input.in_complete} {output.out_complete} 2>> {log}
         """
 
 # 2) Build a library of features from the consensus with missing values
@@ -60,7 +60,7 @@ rule build_library:
         join("..", "envs", "pyopenms.yaml")
     shell:    
         """
-        python join("workflow", "scripts", "metaboliteidentification.py") {input.matrix} {output.lib} 2>> {log}   
+        python workflow/scripts/metaboliteidentification.py {input.matrix} {output.lib} 2>> {log}   
         """
 
 # 3) Re-quantify all the raw files to cover missing values (missing value imputation can be avoided with that step)
@@ -94,7 +94,7 @@ rule merge:
         join("..", "envs", "pyopenms.yaml")
     shell:    
         """
-        python join("workflow", "scripts", "merge.py") {input.in_complete} {input.in_requant} {output.out_merged} 2>> {log}
+        python workflow/scripts/merge.py {input.in_complete} {input.in_requant} {output.out_merged} 2>> {log}
         """
 
 
@@ -159,7 +159,7 @@ rule FFMident_matrix:
         join("..", "envs", "pyopenms.yaml")
     shell:
         """
-        python join("workflow", "scripts", "cleanup.py") {input.input_cmap} {output.output_tsv} 2>> {log}
+        python workflow/scripts/cleanup.py {input.input_cmap} {output.output_tsv} 2>> {log}
         """
 
 

@@ -18,7 +18,7 @@ if config["rules"]["requantification"]==True:
             join("..", "envs", "openms.yaml")
         shell:
             """
-            python join("workflow", "scripts", "FBMN_SIRIUS.py") {input.input_matrix} {input.input_mgf} {input.input_graphml} {output.output_graphml} 2>> {log}
+            python workflow/scripts/FBMN_SIRIUS.py {input.input_matrix} {input.input_mgf} {input.input_graphml} {output.output_graphml} 2>> {log}
             """
 else:
     rule graphml:
@@ -34,5 +34,5 @@ else:
             join("..", "envs", "openms.yaml")
         shell:
             """
-            python join("workflow", "scripts", "FBMN_SIRIUS.py") {input.input_matrix} {input.input_mgf} {input.input_graphml} {output.output_graphml} 2>> {log}
+            python workflow/scripts/FBMN_SIRIUS.py {input.input_matrix} {input.input_mgf} {input.input_graphml} {output.output_graphml} 2>> {log}
             """

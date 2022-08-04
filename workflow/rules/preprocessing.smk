@@ -144,5 +144,5 @@ rule FFM_matrix:
         join("..", "envs", "pyopenms.yaml")
     shell:
         """
-        python join("workflow", "scripts", "cleanup.py") {input.input_cmap} {output.output_tsv} 2>> {log}
+        python workflow/scripts/cleanup.py {input.input_cmap} {output.output_tsv} 2>> {log}
         """
