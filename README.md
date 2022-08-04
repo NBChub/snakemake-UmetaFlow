@@ -26,9 +26,6 @@ The pipeline consists of five interconnected steps:
 ### Overview
 ![dag](/images/UmetaFlow_graph.svg)
 
-### Detailed steps
-![dag](/images/UmetaFlow.svg)
-
 ## Usage
 
 ### Step 1: Clone the workflow
