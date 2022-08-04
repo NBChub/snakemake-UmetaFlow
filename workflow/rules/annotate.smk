@@ -68,36 +68,37 @@ else:
                 python join("workflow", "scripts", "SIRIUS_annotations.py") {input.matrix} {output.annotated} 2>> {log}    
                 """
 
-# 2) Run your aligned mzml files (from directory GNPSexport", "mzML) directly to GNPS for MS", "MS library matching to generate a tsv table of metabolites. 
-# Filter out the ones that have a mass error > 10.0 ppm and also metabolites that originate from libraries such as HMDB when your samples are generated from bacteria.
-# Annotate compounds in FeatureMatrix. The annotation can be considered a bit ambiguous because it is done with mz and RT information.
+# 2) After FBMN, download the cytoscape data and move the .TSV file from the directory "DB_result" under the workflow's directory "resources". This file has all the MSMS library matches that GNPS performs during FBMN. 
+# Filter out the ones that have a mass error > 10.0 ppm.
+# Annotate compounds in FeatureMatrix through the unique SCAN number
 
 GNPS_library = find_files("resources", "*.tsv")
 if GNPS_library:
     rule GNPS_annotations:
         input:
             lib= glob.glob(join("resources", "*.tsv")),
-            featurematrix= join("results", "annotations", "annotated_FeatureTable.tsv")
+            featurematrix= join("results", "annotations", "annotated_FeatureTable.tsv"),
+            mgf_path= join("results", "GNPSexport", "MSMS.mgf")
         output:
             gnps= join("results", "annotations", "GNPS_annotated_FeatureTable.tsv")
         log: join("workflow", "report", "logs", "annotate", "GNPS_annotations.log")
         threads: 4
         conda:
-            join("..", "envs", "openms.yaml")
+            join("..", "envs", "pyopenms.yaml")
         shell:
             """
-            python join("workflow", "scripts", "GNPS.py") {input.lib} {input.featurematrix} {output.gnps} 2>> {log}
+            python join("workflow", "scripts", "GNPS.py") {input.lib} {input.featurematrix} {input.mgf_path} {output.gnps} 2>> {log}
             """
 else:
     print("no file found")
     rule GNPS_annotations:
         input:
-            join("results", "annotations", "SIRIUS_CSI_annotated_FeatureTable.tsv")
+            join("results", "annotations", "annotated_FeatureTable.tsv")
         output:
             join("results", "annotations", "GNPS_annotated_FeatureTable.tsv")
         log: join("workflow", "report", "logs", "annotate", "GNPS_annotations.log")
         conda:
-            join("..", "envs", "openms.yaml")
+            join("..", "envs", "pyopenms.yaml")
         shell:
             """ 
             echo "No GNPS metabolite identification file was found" > {output} 2>> {log}

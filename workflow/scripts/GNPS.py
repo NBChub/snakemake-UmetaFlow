@@ -1,33 +1,50 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 import sys
+from pyteomics import mgf, auxiliary
 
-def GNPS_annotations(lib, featurematrix, gnps):
-    df= pd.read_csv(lib, sep='\t', encoding='latin-1')
+def GNPS_annotations(lib, featurematrix, mgf_path, gnps):
+    #import GNPS MSMS library matches
+    df= pd.read_csv(lib, sep="\t")
     df.drop(df.index[df['IonMode'] == "negative"], inplace=True)
     df.drop(df.index[df['MZErrorPPM'] > 10.0], inplace=True)
-    GNPS=df.filter(["Compound_Name", "RT_Query", "Precursor_MZ"])
-    GNPS=GNPS.rename(columns= {"RT_Query": "RetentionTime"})
-    GNPS=GNPS.drop_duplicates(subset="Compound_Name", keep='first')
-
-    DF_features= pd.read_csv(featurematrix, sep="\t")
-
-
-    DF_features.insert(0, 'GNPS_IDs', '')
-
-    for i, mz, rt in zip(DF_features.index, DF_features['mz'], DF_features['RT']):
+    GNPS=df.drop_duplicates(subset="Compound_Name", keep='first')
+    GNPS["#Scan#"]= GNPS["#Scan#"].astype(str)
+    #Import annonated feature matrix
+    Matrix= pd.read_csv(featurematrix, sep="\t")
+    Matrix["id"]= Matrix["id"].astype(str)
+    Matrix["feature_ids"]= Matrix["feature_ids"].values.tolist()
+    #Import MGF file with SCAN numbers
+    file= mgf.MGF(source=mgf_path, use_header=True, convert_arrays=2, read_charges=True, read_ions=False, dtype=None, encoding=None)
+    parameters=[]
+    for spectrum in file:
+        parameters.append(spectrum['params'])
+    mgf_file= pd.DataFrame(parameters)
+    mgf_file["feature_id"]= mgf_file["feature_id"].str.replace(r"e_", "")
+    #Add SCAN numbers to the feature matrix
+    Matrix.insert(0, "SCANS", "")
+    for i, id in zip(Matrix.index, Matrix["id"]):
         hits = []
-        for name, GNPS_mz, GNPS_rt, in zip(GNPS['Compound_Name'], GNPS['Precursor_MZ'], GNPS['RetentionTime']):
-            mass_delta = (abs(GNPS_mz-mz)/GNPS_mz)*1000000.0 if GNPS_mz != 0 else np.nan
-            if (GNPS_rt >= rt-30.0) & (GNPS_rt <= rt+30.0) & (mass_delta<= 10.0):
-                hit = f'{name}'
+        for scan, feature_id in zip(mgf_file["scans"], mgf_file["feature_id"]): 
+            if feature_id==id:
+                hit = f"{scan}"
                 if hit not in hits:
                     hits.append(hit)
-        DF_features['GNPS_IDs'][i] = ' ## '.join(hits)
+        Matrix["SCANS"][i] = " ## ".join(hits)                  
 
-    DF_features.to_csv(gnps, sep="\t", index = False)
-    return DF_features
+    Matrix.insert(0, "GNPS_IDs", "")
 
+    for i, scan in zip(Matrix.index, Matrix["SCANS"]):
+        hits = []
+        for name, scan_number, in zip(GNPS["Compound_Name"], GNPS["#Scan#"]):
+            if scan==scan_number:
+                hit = f"{name}"
+                if hit not in hits:
+                    hits.append(hit)
+        Matrix["GNPS_IDs"][i] = " ## ".join(hits)
+
+    Matrix.to_csv(gnps, sep="\t", index = False)
+    return Matrix
 
 if __name__ == "__main__":
-    GNPS_annotations(sys.argv[1], sys.argv[2], sys.argv[3])
+    GNPS_annotations(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
