@@ -12,13 +12,13 @@ If you have Agilent or Bruker files, skip that step (write "FALSE" for rule file
 
 ### `2) Pre-processing:`
 
-Converting raw data to a feature table with a series of OpenMS algorithms (see documentation [here](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/index.html)). 
+Converting raw data to a feature table with a series of OpenMS algorithms (see documentation [here](https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/nightly/html/index.html)). Important note: the MetaboAdductDecharger is in positive mode. Use adduct list: [H-1:-:1,H-2O-1:0:0.05,CH2O2:0:0.5] for negative mode.
 
 ![dag](/images/Preprocessing.svg) 
 
 ### `3) Re-quantification:` 
 
-Re-quantify all raw files to avoid missing values resulted by the pre-processing steps for statistical analysis and data exploration. Generate a FeatureMatrix for further statistical analysis.
+Re-quantify all raw files to avoid missing values resulted by the pre-processing steps for statistical analysis and data exploration. Generate a FeatureMatrix for further statistical analysis. Important note: the MetaboAdductDecharger is in positive mode. Use adduct list: [H-1:-:1,H-2O-1:0:0.05,CH2O2:0:0.5] for negative mode. Also, edit the script workflow/scripts/metaboliteidentification.py: comment the positive ionisation part of the script and uncomment the negative ionisation version. 
 
 ![dag](/images/Re-quantification.svg) 
 
