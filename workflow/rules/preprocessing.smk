@@ -116,7 +116,7 @@ rule IDMapper_FFM:
         IDMapper -id {input.var1} -in {input.var2}  -spectra:in {input.var3} -out {output} -log {log} 2>> {log} 
         """
 
-# 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m/z and RT (MS1 level).
+# 7) The FeatureLinkerUnlabeledKD is used to aggregate the feature information (from single files) into a ConsensusFeature, linking features from different files together, which have a similar m", "z and rt (MS1 level).
 
 rule FeatureLinker_FFM:
     input:
