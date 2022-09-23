@@ -24,7 +24,7 @@ Re-quantify all raw files to avoid missing values resulted by the pre-processing
 
 ### `4) SIRIUS and CSI:FingerID:`
 
-The pre-processed feature tables are then introduced to SIRIUS and CSI:FingerID for formula and structural predictions (see documentation [here](https://boecker-lab.github.io/docs.sirius.github.io/)).
+The pre-processed feature tables are then introduced to SIRIUS and CSI:FingerID for formula and structural predictions (see documentation [here](https://boecker-lab.github.io/docs.sirius.github.io/)). (For negative mode, replace the possible adducts with "[M-H]-, [M-H2O-H]-, [M-HCOOH]-").
 
 CSI:FingerID is using external Web servers (from the Boecher lab in Jena) for the structural library seach and all computations for the structural predictions. The disadvantage in this case is that the workflow is dependent on the functionality of their servers, queued jobs, etc. 
 
