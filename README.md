@@ -125,9 +125,16 @@ Get the latest pyOpenMS wheels (until pyOpenMS 3.0 is available in conda):
     find .snakemake/conda/*cp39*.whl > .snakemake/conda/requirements.txt
     rm .snakemake/conda/*.whl & rm .snakemake/conda/*.zip
 
-Create the environment with the executables manually:
+Download the latest SIRIUS executable manually until available as a bioconda installation:
+For MacOS:
+    (cd resources && wget https://github.com/boecker-lab/sirius/releases/download/v5.5.7/sirius-5.5.7-osx64-headless.zip && unzip *.zip)
 
-    mamba env create --prefix ".snakemake/conda/exe" -f "workflow/envs/exe.yaml"
+For Linux:
+    (cd resources && wget https://github.com/boecker-lab/sirius/releases/download/v5.5.7/sirius-5.5.7-linux64-headless.zip && unzip *.zip)
+
+Then, add your email and password to the scripts (required for SIRIUS versions > 5):
+    rule [SIRIUS and CSI:FingerID](workflow/rules/sirius_csi.smk) lines 22, 23 and 43, 44
+    rule [SIRIUS](workflow/rules/sirius.smk) lines 21, 22 and 40, 41
 
 Test your configuration by performing a dry-run via
 
