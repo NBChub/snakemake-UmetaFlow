@@ -112,7 +112,7 @@ Get the latest pyOpenMS wheels (until pyOpenMS 3.0 is available in conda):
     mkdir -p .snakemake/conda/
     wget -O .snakemake/conda/${MY_OS}-wheels.zip https://nightly.link/OpenMS/OpenMS/workflows/pyopenms-wheels/nightly/${MY_OS}-wheels.zip\?status\=completed
     (cd .snakemake/conda/ && unzip *.zip)
-    (cd && find *cp39*.whl > requirements.txt)
+    (cd .snakemake/conda/ && find *cp39*.whl > requirements.txt)
     rm .snakemake/conda/*.zip
 
 Download the latest SIRIUS executable manually from [here](https://github.com/boecker-lab/sirius/releases) until available as a conda-forge installation. Choose the headless zipped file compatible for your operating system (linux, macOS or windows) and unzip it under the directory "resources/".
