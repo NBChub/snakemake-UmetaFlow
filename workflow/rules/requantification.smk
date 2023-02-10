@@ -77,7 +77,7 @@ rule requantify:
     threads: 4
     shell:
         """
-        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 10.0 -threads {threads} -log {log} 2>> {log}
+        FeatureFinderMetaboIdent -id {input.var1} -in {input.var2} -out {output} -extract:mz_window 10.0 -extract:rt_window 30.0 -threads {threads} -log {log} 2>> {log}
         """
 
 # 4) Merge the re-quantified with the complete feature files
@@ -111,7 +111,7 @@ rule adduct_annotations_FFMident:
         join("..", "envs", "openms.yaml")
     shell:
         """
-        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1" -threads {threads} -log {log} 2>> {log}
+        MetaboliteAdductDecharger -in {input} -out_fm {output} -algorithm:MetaboliteFeatureDeconvolution:potential_adducts "H:+:0.6" "Na:+:0.1" "NH4:+:0.1" "H-1O-1:+:0.1" "H-3O-2:+:0.1" -algorithm:MetaboliteFeatureDeconvolution:charge_max "1" -algorithm:MetaboliteFeatureDeconvolution:charge_span_max "1"  -algorithm:MetaboliteFeatureDeconvolution:max_neutrals "1" -threads {threads} -algorithm:MetaboliteFeatureDeconvolution:retention_max_diff "3.0" -algorithm:MetaboliteFeatureDeconvolution:retention_max_diff_local "3.0" -log {log} 2>> {log}
         """
 # 6) Introduce the features to a protein identification file (idXML)- the only way to annotate MS2 spectra for GNPS FBMN  
 
@@ -135,7 +135,7 @@ rule IDMapper_FFMident:
 
 rule FeatureLinker_FFMident:
     input:
-        expand(join("results", "Interim", "Requantified", "IDMapper_{samples}.featureXML"), samples=SAMPLES)
+        expand(join("results", "Interim", "Requantified", "IDMapper_{samples}.featureXML"), samples=SUBSAMPLES)
     output:
         join("results", "Interim", "Requantified", "Requantified.consensusXML")
     log: join("workflow", "report", "logs", "requantification", "FeatureLinker_FFMident.log")
