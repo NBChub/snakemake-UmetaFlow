@@ -9,17 +9,17 @@ This is the Snakemake implementation of the [pyOpenMS workflow](https://github.c
 
 The pipeline consists of seven interconnected steps:
 
-1) File conversion: Simply add your Thermo raw files in data/raw/ and they will be converted to centroid mzML files. If you have Agilent or Bruker files, skip that step (write "FALSE" for rule fileconversion in the config.yaml file - see more under "Configure workflow") and convert them independently using [proteowizard](https://proteowizard.sourceforge.io/) and add them to the data/mzML/ directory.
+1) File conversion: Simply add your Thermo raw files under the directory data/raw/ and they will be converted to centroid mzML files. If you have Agilent, Bruker, or other vendor files, skip that step (write "FALSE" for rule fileconversion in the config.yaml file - see more under "Configure workflow"), convert them independently using [proteowizard](https://proteowizard.sourceforge.io/) and add them under the data/mzML/ directory.
 
-2) Pre-processing: converting raw data to a feature table with a series of algorithms. 
+2) Pre-processing: converting raw data to a feature table with a series of algorithms through feature detection, alignment and grouping. This step includes an optional filtering step of blank/QC/control samples if defined by the user.
 
-3) Re-quantification (optional): Re-quantify all raw files to avoid missing values resulted by the pre-processing workflow for statistical analysis and data exploration.
+3) Re-quantification (optional): Re-quantify all raw files to avoid missing values resulted by the pre-processing step for more reliable statistical analysis and data exploration.
 
 4) Structural and formula predictions (SIRIUS and CSI:FingeID) and annotation of the feature matrix with those predictions (MSI level 3).
 
 5) GNPSexport: generate all the files necessary to create a [FBMN](https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-openms/) or [IIMN](https://ccms-ucsd.github.io/GNPSDocumentation/fbmn-iin/#iimn-networks-with-collapsed-ion-identity-edges) job at GNPS. 
 
-6) Spectral matching with in-house or publicly available library (MGF format) and annotation of the feature matrix with those matches (MSI level 2).
+6) Spectral matching with in-house or a publicly available library (MGF/MSP/mzML format) and annotation of the feature matrix with matches that have a score above 0.6 (MSI level 2).
 
 7) After FBMN or IIMN: Integrate Sirius and CSI predictions to the network (GraphML) and MSMS spectral library annotations to the feature matrix- MSI level 2 (optional).
 
@@ -86,37 +86,50 @@ Get the latest pyOpenMS wheels (until pyOpenMS 3.0 is available in conda):
     (cd .snakemake/conda/ && find *cp39*.whl > requirements.txt)
     rm .snakemake/conda/*.zip
 
-Download the latest SIRIUS executable manually from [here](https://github.com/boecker-lab/sirius/releases) until available as a conda-forge installation.
-Choose the headless zipped file compatible for your operating system (linux, macOS or windows) and unzip it under the directory "resources/". Make sure to
-register using your university email and password. 
+Download the latest SIRIUS executable manually from [here](https://github.com/boecker-lab/sirius/releases) until available as a conda-forge installation. Choose the headless zipped file compatible for your operating system (linux, macOS or windows) and unzip it under the directory "resources/". Make sure to register using your university email and password. 
 
-Tip: Make sure to download a version >5.6. Avoid SNAPSHOT versions and get the headless zipped file. Example (for linux OS:)
+Tip: Download a version >5.6. Avoid SNAPSHOT versions. Example (for linux OS:)
     
-    (cd resources/ && wget https://github.com/boecker-lab/sirius/releases/download/v5.6.2/sirius-5.6.2-linux64-headless.zip && unzip *.zip)
+    (cd resources/ && wget https://github.com/boecker-lab/sirius/releases/download/v5.6.3/sirius-5.6.3-linux64-headless.zip && unzip *.zip)
 
 Then, add your email and password to the scripts (required for SIRIUS versions > 5):
-- rule [SIRIUS and CSI:FingerID](workflow/rules/sirius_csi.smk) lines 22, 23 and 43, 44
-- rule [SIRIUS](workflow/rules/sirius.smk) lines 21, 22 and 40, 41
+- rule [SIRIUS and CSI:FingerID](workflow/rules/sirius_csi.smk) lines 21, 22 and 42, 43
+- rule [SIRIUS](workflow/rules/sirius.smk) lines 18, 19 and 37, 38
 
 #### For both systems
 
-Build OpenMS on [Linux](https://abibuilder.cs.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_linux.html), [MacOS](https://abibuilder.cs.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_mac.html) or [Windows](https://abibuilder.cs.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_win.html) until the 3.0 release is published.
+Build OpenMS on [Linux](https://abibuilder.cs.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_linux.html), [MacOS](https://abibuilder.cs.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_mac.html) (or [Windows](https://abibuilder.cs.uni-tuebingen.de/archive/openms/Documentation/nightly/html/install_win.html)) until the 3.0 release is published.
 
 ### Step 3: Configure workflow
 
 Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution (write TRUE/FALSE if you want to run/skip the specific rules of the workflow), and `samples.tsv` to specify the samples (files) that will be processed. 
 
-**Suggestion: Use the Jupyter notebook [Create_sampletsv_file](./Create_sampletsv_file.ipynb) after you add all your files in the data/raw/ or data/mzML/ directory and avoid errors in sample names.**
+**Suggestion: Use the Jupyter notebook [Create_sampletsv_file](./Create_dataset_tsv.ipynb) after you add all your files in the data/raw/ or data/mzML/ directory and avoid errors in the sample names or simply run:**
+    
+    python data_files.py
 
-`samples.tsv` example:
+`config/dataset.tsv` example:
+
+|  sample_name |       comment                |
+|-------------:|-----------------------------:|
+| ISP2_blank   | blank media                  |
+| NBC_00162    | pyracrimicin                 |
+| MDNA_WGS_14  | epemicins_A_B                |
+
+If there are blanks in the file list, then add them to the config/blanks.tsv file
+`config/blanks.tsv` example:
+
+|  sample_name |       comment                |
+|-------------:|-----------------------------:|
+| ISP2_blank   | blank media                  |
+
+`config/samples.tsv` example:
 
 |  sample_name |       comment                |
 |-------------:|-----------------------------:|
 | NBC_00162    | pyracrimicin                 |
 | MDNA_WGS_14  | epemicins_A_B                |
 
-
-Further formatting rules can be defined in the `workflow/schemas/` folder.
 
 ### Step 4: Execute workflow
 
@@ -143,18 +156,18 @@ See the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/exe
 
 ### Step 5: Investigate results
 
-All the results are in a .TSV format and can be opened simply with excel or using pandas dataframes. All the files under results/interim can be ignored or deleted.
+All the results are in a .TSV format and can be opened simply with excel or using pandas dataframes. All the files under results/interim can be ignored and eventualy discarded.
 
 ## Developer Notes
 ### Config & Schemas
 
-* [Config & schemas](https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html) define the input formatting and are important to generate `wildcards`. The idea of using `samples` and `units` came from [here](https://github.com/snakemake-workflows/dna-seq-gatk-variant-calling). I think we should use `units.txt` as a central metadata of the runs which are regulary updated (and should be the same for all use case). Then, `samples.txt` can be used to decide which strains need to be assembled per use case. 
+* [Config & schemas](https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html) define the input formatting and are important to generate `wildcards`. The idea of using `samples` and `units` came from [here](https://github.com/snakemake-workflows/dna-seq-gatk-variant-calling).  
 
 ### Rules
 
 * [Snakefile](workflow/Snakefile): the main entry of the pipeline which tells the final output to be generated and the rules being used
-* [common.smk](workflow/rules/common.smk): a rule that generate the variable used (strain names) & other helper scripts
-* [The main rules (*.smk)](workflow/rules/): is the bash code that has been chopped into modular units, with defined input & output. Snakemake then chain this rules together to generate required jobs. This should be intuitive and makes things easier for adding / changing steps in the pipeline.
+* [common.smk](workflow/rules/common.smk): a rule that generates the variables used (sample names) & other helper scripts
+* [The main rules (*.smk)](workflow/rules/): the bash code that has been chopped into modular units, with defined input & output. Snakemake then chains this rules together to generate required jobs. This should be intuitive and makes things easier for adding / changing steps in the pipeline.
 
 ### Environments
 
@@ -162,7 +175,7 @@ All the results are in a .TSV format and can be opened simply with excel or usin
 * Note that not all dependencies are compatible/available as conda libraries. Once installed, the virtual environment are stored in `.snakemake/conda` with unique hashes. The ALE and pilon are example where environment needs to be modified / dependencies need to be installed.
 * It might be better to utilise containers / dockers and cloud execution for "hard to install" dependencies
 * Custom dependencies and databases are stored in the `resources/` folder.
-* Snakemake dependencies with conda packages is one of the drawbacks and why [Nextflow](https://www.nextflow.io/) might be more preferable. Nevertheless, the pythonic language of snakemake enable newcomers to learn and develop their own pipeline faster.
+* Snakemake dependencies with conda packages is one of the drawbacks and why [Nextflow](https://www.nextflow.io/) might be more preferable. Nevertheless, the pythonic language of snakemake enables newcomers to learn and develop their own pipeline faster.
 
 ### Test Data (only for testing the workflow with the example dataset)
 
