@@ -3,8 +3,8 @@ import glob
 import os
 import sys
 
-def sirius_annotations(matrix, sirius, annotated):
-    input_formulas= sirius.split()
+def sirius_annotations(matrix, annotated):
+    input_formulas= glob.glob(os.path.join("results", "Sirius", "formulas_*.tsv"))
     DF_SIRIUS = pd.DataFrame()
     list_of_df=[]
     for csv in input_formulas:
@@ -22,7 +22,7 @@ def sirius_annotations(matrix, sirius, annotated):
             print("Empty SIRIUS file")
     DF_SIRIUS= pd.concat(list_of_df,ignore_index=True)
     DF_SIRIUS= DF_SIRIUS.drop(columns="index")
-    DF_SIRIUS= DF_SIRIUS.rename(columns= {"chemical_formula": "formulas", "exp_mass_to_charge": "m/z", "retention_time": "RT (s)"})
+    DF_SIRIUS= DF_SIRIUS.rename(columns= {"chemical_formula": "formulas", "exp_mass_to_charge": "mz", "retention_time": "RT"})
     DF_SIRIUS["featureId"]= DF_SIRIUS["featureId"].str.replace(r"id_", "")
     for i, rows in DF_SIRIUS.iterrows():
         DF_SIRIUS["featureId"][i]= DF_SIRIUS["featureId"][i].split(",")
@@ -48,4 +48,4 @@ def sirius_annotations(matrix, sirius, annotated):
     return DF_features
 
 if __name__ == "__main__":
-    sirius_annotations(sys.argv[1], sys.argv[2], sys.argv[3])
+    sirius_annotations(sys.argv[1], sys.argv[2])

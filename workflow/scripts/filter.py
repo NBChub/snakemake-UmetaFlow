@@ -5,7 +5,7 @@ import pandas as pd
 import glob
 
 def filter(feature_files, out_filtered):
-    featurexml_files= feature_files.split()
+    featurexml_files= glob.glob(os.path.join("results", "Interim", "Preprocessed", "FFM_*.featureXML"))
     feature_maps = []
     for file in featurexml_files:
         fmap = FeatureMap()
