@@ -3,8 +3,8 @@ import glob
 import os
 import sys
 
-def sirius_csi_annotations(matrix, annotated):
-    input_formulas= glob.glob(os.path.join("results", "SiriusCSI", "formulas_*.tsv"))
+def sirius_csi_annotations(matrix, sirius, csi, annotated):
+    input_formulas= sirius.split()
     DF_SIRIUS = pd.DataFrame()
     list_of_df=[]
     for tsv in input_formulas:
@@ -18,8 +18,8 @@ def sirius_csi_annotations(matrix, annotated):
             df= df.drop(columns= df.filter(regex=fr"opt").columns)
             df=df.reset_index()
             list_of_df.append(df)
-        else: 
-            print("empty SIRIUS file")
+        else:
+            print("Empty SIRIUS file")
     DF_SIRIUS= pd.concat(list_of_df,ignore_index=True)
     DF_SIRIUS= DF_SIRIUS.drop(columns="index")
     DF_SIRIUS= DF_SIRIUS.rename(columns= {"chemical_formula": "formulas", "exp_mass_to_charge": "m/z", "retention_time": "RT(s)"})
@@ -27,7 +27,7 @@ def sirius_csi_annotations(matrix, annotated):
     for i, rows in DF_SIRIUS.iterrows():
         DF_SIRIUS["featureId"][i]= DF_SIRIUS["featureId"][i].split(",")
 
-    input_structures= glob.glob(os.path.join("results", "SiriusCSI", "structures_*.tsv"))
+    input_structures= csi.split()
     DF_CSI = pd.DataFrame()
     list_of_df=[]
     for tsv in input_structures:
@@ -42,8 +42,8 @@ def sirius_csi_annotations(matrix, annotated):
             df= df.drop(columns= df.filter(regex=fr"opt").columns)
             df=df.reset_index()
             list_of_df.append(df)
-        else: 
-            print("empty CSI file")
+        else:
+            print("Empty CSI file")  
     DF_CSI= pd.concat(list_of_df,ignore_index=True)
     DF_CSI= DF_CSI.drop(columns="index")
     DF_CSI= DF_CSI.rename(columns= {"chemical_formula": "formulas", "exp_mass_to_charge": "m/z", "retention_time": "RT(s)", "description":"name"})
@@ -71,8 +71,7 @@ def sirius_csi_annotations(matrix, annotated):
     DF_features.insert(0, "CSI_predictions_name", "")
     DF_features.insert(0, "CSI_predictions_formula", "")
     DF_features.insert(0, "CSI_predictions_smiles", "")
-    DF_features.insert(0, "CSI_db_links", "")
-
+    DF_features.insert(0, "CSI_db_links", "")    
     for i, id, sirius in zip(DF_features.index, DF_features["feature_ids"], DF_features["SIRIUS_predictions"]):
         hits1 = []
         hits2= []
@@ -99,4 +98,4 @@ def sirius_csi_annotations(matrix, annotated):
     return DF_features
 
 if __name__ == "__main__":
-    sirius_csi_annotations(sys.argv[1], sys.argv[2])
+    sirius_csi_annotations(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
