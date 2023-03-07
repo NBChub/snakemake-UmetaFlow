@@ -173,6 +173,7 @@ rule missing_values_filter:
         join("results", "Interim", "Preprocessed", "Preprocessed_unfiltered.consensusXML")
     output:
         join("results", "Interim", "Preprocessed", "Preprocessed.consensusXML")
+    log: join("workflow", "report", "logs", "preprocessing", "MissingValuesFilter.log")
     conda:
         join("..", "envs", "pyopenms.yaml")
     threads: 4
