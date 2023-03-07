@@ -168,18 +168,18 @@ rule FeatureLinker_FFM:
         """
 # 9) Filter out consensus features with too many missing values.
 
-    rule missing_values_filter:
-        input:
-            join("results", "Interim", "Preprocessed", "Preprocessed_unfiltered.consensusXML")
-        output:
-            join("results", "Interim", "Preprocessed", "Preprocessed.consensusXML")
-        conda:
-            join("..", "envs", "pyopenms.yaml")
-        threads: 4
-        shell:
-            """
-            python workflow/scripts/missing_values_filter.py {input} {output} 0.0 2>> {log}
-            """
+rule missing_values_filter:
+    input:
+        join("results", "Interim", "Preprocessed", "Preprocessed_unfiltered.consensusXML")
+    output:
+        join("results", "Interim", "Preprocessed", "Preprocessed.consensusXML")
+    conda:
+        join("..", "envs", "pyopenms.yaml")
+    threads: 4
+    shell:
+        """
+        python workflow/scripts/missing_values_filter.py {input} {output} 0.0 2>> {log}
+        """
 
 # 10) export the consensusXML file to a tsv file to produce a single matrix for PCA
 
