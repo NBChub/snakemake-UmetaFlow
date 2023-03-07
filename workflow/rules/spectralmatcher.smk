@@ -16,7 +16,7 @@ rule converter:
         FileConverter -in {input} -out {output} 2>> {log}
         """
 
-MGF_library = find_files("resources", "*.mgf")
+MGF_library = find_files("../resources", "*.mgf")
 if MGF_library:
     print("computing MSMS matches with library:", MGF_library)
     rule spectral_matcher:
