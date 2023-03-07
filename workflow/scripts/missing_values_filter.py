@@ -22,7 +22,7 @@ def filter(consensus_file, consensus_file_filtered, min_frac=0.0):
     n_samples = len(consensus_map.getColumnHeaders())
 
     for cf in consensus_map:
-        if len(cf.getFeatureList()) / n_samples >= min_frac:
+        if cf.size() / n_samples >= min_frac:
             cm_filtered.push_back(cf)
 
     print(f"Number of consensus features after filtering: {cm_filtered.size()}")
