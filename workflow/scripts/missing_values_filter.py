@@ -28,7 +28,7 @@ def filter(consensus_file, consensus_file_filtered, min_frac=0.0):
     print(f"Number of consensus features after filtering: {cm_filtered.size()}")
 
     ConsensusXMLFile().store(consensus_file_filtered, cm_filtered)
-    return out_featurexml
+    return consensus_file_filtered
 
 
 if __name__ == "__main__":
