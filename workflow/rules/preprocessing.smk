@@ -138,7 +138,7 @@ rule adduct_annotations_FFM:
 
 rule IDMapper_FFM:
     input:
-        var1= join("../resources", "emptyfile.idXML"),
+        var1= join("resources", "emptyfile.idXML"),
         var2= join("results", "Interim", "Preprocessed", "MFD_{sample}.featureXML"),
         var3= join("results", "Interim", "mzML", "Aligned_{sample}.mzML")
     output:
