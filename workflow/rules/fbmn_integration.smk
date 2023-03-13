@@ -41,7 +41,7 @@ else:
 # Filter out the ones that have a mass error > 10.0 ppm.
 # Annotate compounds in FeatureMatrix through the unique SCAN number (Annotate with metabolite annotations level 2 (MSI level 2))
 
-GNPS_library = find_files("../resources", "*.tsv")
+GNPS_library = find_files("resources", "*.tsv")
 if GNPS_library:
     rule GNPS_annotations:
         input:
