@@ -1,6 +1,10 @@
 import glob
 from os.path import join
 
+envvars:
+    "SIRIUS_EMAIL",
+    "SIRIUS_PASSWORD"
+
 # 1) SIRIUS generates formula predictions from scores calculated from 1) MS2 fragmentation scores (ppm error + intensity) and 2) MS1 isotopic pattern scores.        
 #    The CSI_fingerID function is another algorithm from the Boecher lab, just like SIRIUS adapter and is using the formula predictions from SIRIUS, to search in structural libraries and predict the structure of each formula.
 # "CSI:FingerID identifies the structure of a compound by searching in a molecular structure database. “Structure” refers to the identity and connectivity (with bond multiplicities) of the atoms, but no stereochemistry information. Elucidation of stereochemistry is currently beyond the power of automated search engines."
@@ -17,6 +21,8 @@ if (config["rules"]["requantification"]==True) and config["adducts"]["ion_mode"]
         log: join("workflow", "report", "logs", "sirius_csi", "SiriusAdapter_{samples}.log")
         params:
             exec_path = find_exec("resources", "sirius"),
+            USER_ENV=os.environ["SIRIUS_EMAIL"],
+            PSWD_ENV=os.environ["SIRIUS_PASSWORD"],
             instrument= config["sirius"]["instrument"],
             database= config["sirius"]["database"],
             ions= config["sirius"]["pos_ions_considered"],
