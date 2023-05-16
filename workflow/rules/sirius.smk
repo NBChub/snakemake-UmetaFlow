@@ -23,7 +23,7 @@ if (config["rules"]["requantification"]==True) and config["adducts"]["ion_mode"]
             threads= config["system"]["threads"]
         shell:
             """
-            SiriusAdapter -sirius_executable {params.exec_path} -sirius_user_email {params.USER_ENV} -sirius_user_password {params.PSWD_ENV} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile {params.instrument} -sirius:db {params.database} -sirius:ions_considered {params.ions} -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -sirius:compound_timeout 100 -debug 3 -threads {params.threads} -no_progress -log {log} 2>> {log}
+            SiriusAdapter -sirius_executable {params.exec_path} -sirius_user_email USER_ENV -sirius_user_password PSWD_ENV -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile {params.instrument} -sirius:db {params.database} -sirius:ions_considered {params.ions} -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -sirius:compound_timeout 100 -debug 3 -threads {params.threads} -no_progress -log {log} 2>> {log}
             """
 elif (config["rules"]["requantification"]==True) and config["adducts"]["ion_mode"]=="negative":
     rule sirius:
@@ -45,7 +45,7 @@ elif (config["rules"]["requantification"]==True) and config["adducts"]["ion_mode
             threads= config["system"]["threads"]
         shell:
             """
-            SiriusAdapter -sirius_executable {params.exec_path} -sirius_user_email {params.USER_ENV} -sirius_user_password {params.PSWD_ENV} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile {params.instrument} -sirius:db {params.database} -sirius:ions_considered {params.ions} -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -sirius:compound_timeout 100 -debug 3 -threads {params.threads} -no_progress -log {log} 2>> {log}
+            SiriusAdapter -sirius_executable {params.exec_path} -sirius_user_email USER_ENV -sirius_user_password PSWD_ENV -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile {params.instrument} -sirius:db {params.database} -sirius:ions_considered {params.ions} -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -sirius:compound_timeout 100 -debug 3 -threads {params.threads} -no_progress -log {log} 2>> {log}
             """
 
 elif (config["rules"]["requantification"]==False) and config["adducts"]["ion_mode"]=="positive":            
@@ -68,7 +68,7 @@ elif (config["rules"]["requantification"]==False) and config["adducts"]["ion_mod
             threads= config["system"]["threads"],
         shell:
             """
-            SiriusAdapter -sirius_executable {params.exec_path} -sirius_user_email {params.USER_ENV} -sirius_user_password {params.PSWD_ENV} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile {params.instrument} -sirius:db {params.database} -sirius:ions_considered {params.ions} -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -sirius:compound_timeout 100 -debug 3 -threads {params.threads} -no_progress -log {log} 2>> {log}
+            SiriusAdapter -sirius_executable {params.exec_path} -sirius_user_email USER_ENV -sirius_user_password PSWD_ENV -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile {params.instrument} -sirius:db {params.database} -sirius:ions_considered {params.ions} -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -sirius:compound_timeout 100 -debug 3 -threads {params.threads} -no_progress -log {log} 2>> {log}
             """
 
 elif (config["rules"]["requantification"]==False) and config["adducts"]["ion_mode"]=="negative":
@@ -91,7 +91,7 @@ elif (config["rules"]["requantification"]==False) and config["adducts"]["ion_mod
             threads= config["system"]["threads"],
         shell:
             """
-            SiriusAdapter -sirius_executable {params.exec_path} -sirius_user_email {params.USER_ENV} -sirius_user_password {params.PSWD_ENV} -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile {params.instrument} -sirius:db {params.database} -sirius:ions_considered {params.ions} -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -sirius:compound_timeout 100 -debug 3 -threads {params.threads} -no_progress -log {log} 2>> {log}
+            SiriusAdapter -sirius_executable {params.exec_path} -sirius_user_email USER_ENV -sirius_user_password PSWD_ENV -in {input.var1} -in_featureinfo {input.var2} -out_sirius {output} -preprocessing:filter_by_num_masstraces 2 -preprocessing:feature_only -sirius:profile {params.instrument} -sirius:db {params.database} -sirius:ions_considered {params.ions} -sirius:elements_enforced CHN[15]OS[4]Cl[2]P[2] -sirius:compound_timeout 100 -debug 3 -threads {params.threads} -no_progress -log {log} 2>> {log}
             """
 
 # 2) Convert the mzTab to a tsv file
