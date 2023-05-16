@@ -75,9 +75,11 @@ Step (ii): https://docs.github.com/en/github/authenticating-to-github/connecting
 > **SIRIUS** executable:
 >>Download the latest SIRIUS executable manually from [here](https://github.com/boecker-lab/sirius/releases) until available as a conda-forge installation. Choose the headless zipped file compatible for your operating system (linux, macOS or windows) and unzip it under the directory "resources/". Make sure to register using your university email and password. 
 >>
->><span style="color: red">Tip:</span> Download a version >5.6. Avoid SNAPSHOT versions. Make sure you register with your institution's email. Example (for linux OS:)
+>><span style="color: red">Tip:</span> Download a version >5.6.3. Make sure you register with your institution's email. Example (for linux OS:)
 >>    
->>     (cd resources/ && wget https://github.com/boecker-lab/sirius/releases/download/v5.6.3/sirius-5.6.3-linux64-headless.zip && unzip *.zip)
+>>     (cd resources/ && wget https://github.com/boecker-lab/sirius/releases/download/v5.7.0-SNAPSHOT/sirius-5.7.0-SNAPSHOT-linux64-headless.zip && unzip *.zip)
+>> 
+>>In the above example, we used a SNAPSHOT version of SIRIUS (pre-release) - this is not recommended but currently this is the only one available with some important fixes. This README file will be updated as soon as a stable release is published.
 
 > Build **OpenMS**:
 >>#### <span style="color: green"> **For both systems** </span> (challenging step!)
